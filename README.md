@@ -1,4 +1,4 @@
-# Minigin
+# Endjinn is a game engine starting from Minigin made for the Howest DAE course programming 4
 
 Minigin is a very small project using [SDL2](https://www.libsdl.org/) and [glm](https://github.com/g-truc/glm) for 2D c++ game projects. It is in no way a game engine, only a barebone start project where everything sdl related has been set up. It contains glm for vector math, to aleviate the need to write custom vector and matrix classes.
 
