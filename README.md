@@ -1,4 +1,5 @@
-# Endjinn is a game engine starting from Minigin made for the Howest DAE course programming 4
+# Endjinn is a game engine starting from Minigin 
+Made for the Howest DAE course programming 4
 
 ## Minigin description:
 
