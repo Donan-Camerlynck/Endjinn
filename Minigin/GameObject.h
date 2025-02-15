@@ -1,20 +1,29 @@
 #pragma once
 #include <memory>
+#include <vector>
 #include "Transform.h"
+#include <string>
+#include "BaseComponent.h"
 
 namespace dae
 {
+	template<typename CompType>
+	concept CompCon = requires(CompType)
+	{
+
+		{ std::is_base_of<dae::BaseComponent, CompType>::value };
+	};
 	class Texture2D;
 
 	// todo: this should become final.
-	class GameObject 
+	class GameObject final
 	{
 	public:
 		virtual void Update();
 		virtual void Render() const;
 
-		void SetTexture(const std::string& filename);
 		void SetPosition(float x, float y);
+		Transform GetTransform() { return m_transform; }
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -23,9 +32,73 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		//Addcomponent template function
+		template <CompCon CompType, typename... Args>
+		void AddComponent(Args&&... args)
+		{
+
+			auto component = std::make_unique<CompType>(this, std::forward<Args>(args)...);
+			bool componentAdded{ false };
+
+			for (unsigned int compIdx = 0; compIdx < m_Components.size(); compIdx++)
+			{
+				if (m_Components[compIdx].get())
+					continue;
+
+				m_Components[compIdx] = std::move(component);
+				componentAdded = true;
+				break;
+			}
+
+			if (!componentAdded)
+				m_Components.emplace_back(std::move(component));
+		}
+
+		//GetComponent template function
+		template <CompCon CompType>
+		CompType* const GetComponent()
+		{
+			//switch to using std::find_if
+			for (unsigned int compIdx = 0; compIdx < m_Components.size(); compIdx++)
+			{
+				auto compPtr{ dynamic_cast<CompType*>(m_Components[compIdx].get()) };
+				if (compPtr)
+					return compPtr;
+			}
+			return nullptr;
+		}
+		template<CompCon CompType>
+		void RemoveComponent()
+		{
+			//use stl lib
+			auto compPtr{ GetComponent<CompType>() };
+
+			for (unsigned int compIdx = 0; compIdx < m_Components.size(); compIdx++)
+			{
+				if (m_Components[compIdx].get() != compPtr)
+					continue;
+
+				m_Components[compIdx].reset();
+				return;
+			}
+		}
+
+		template <CompCon CompType>
+		bool HasComponent()
+		{
+			//switch to using std::any_of
+			for (int compIdx = 0; compIdx < m_Components.size(); compIdx++)
+			{
+				bool present{ dynamic_cast<CompType*>(m_Components[compIdx].get()) != nullptr };
+				if (present)
+					return true;
+			}
+			return false;
+		}
+
 	private:
 		Transform m_transform{};
-		// todo: mmm, every gameobject has a texture? Is that correct?
-		std::shared_ptr<Texture2D> m_texture{};
+
+		std::vector<std::unique_ptr<BaseComponent>> m_Components;
 	};
 }
