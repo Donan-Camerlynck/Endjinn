@@ -8,7 +8,6 @@ namespace dae
 {
 	class Texture2D;
 	class Font;
-	class GameObject;
 	class TextComponent : public BaseComponent
 	{
 	public:

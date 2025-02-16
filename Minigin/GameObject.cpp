@@ -5,6 +5,14 @@
 
 dae::GameObject::~GameObject() = default;
 
+void dae::GameObject::Initialize()
+{
+	for (int idx{}; idx < static_cast<int>(m_Components.size()); idx++)
+	{
+		m_Components[idx]->Initialize();
+	}
+}
+
 void dae::GameObject::Update()
 {
 	for (int idx{}; idx < static_cast<int>(m_Components.size()); idx++)

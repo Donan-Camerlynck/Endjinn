@@ -19,6 +19,7 @@ namespace dae
 	class GameObject final
 	{
 	public:
+		virtual void Initialize();
 		virtual void Update();
 		virtual void Render() const;
 
