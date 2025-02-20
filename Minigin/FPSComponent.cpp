@@ -28,11 +28,9 @@ void dae::FPSComponent::Update()
 	{
 		return;
 	}
-
-	auto textComp = m_pTextComp;
-	textComp->SetText(std::format("FPS: {:.1f}", m_FrameCount / m_AccumulatedSeconds));
+	m_pTextComp->SetText(std::format("FPS: {:.1f}", m_FrameCount / m_AccumulatedSeconds));
 	m_FrameCount = 0;
-	m_AccumulatedSeconds = 0;
+	m_AccumulatedSeconds -= m_UpdateInterval;
 
 }
 

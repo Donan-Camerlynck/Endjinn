@@ -11,12 +11,12 @@ Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
 
-void Scene::Add(std::shared_ptr<GameObject> object)
+void Scene::Add(std::unique_ptr<GameObject> object)
 {
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(std::shared_ptr<GameObject> object)
+void Scene::Remove(std::unique_ptr<GameObject> object)
 {
 	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 }
@@ -24,6 +24,26 @@ void Scene::Remove(std::shared_ptr<GameObject> object)
 void Scene::RemoveAll()
 {
 	m_objects.clear();
+}
+
+std::unique_ptr<GameObject> dae::Scene::Release(GameObject* object)
+{
+	
+		auto it = std::find_if(m_objects.begin(), m_objects.end(), [object](const auto& rootgo) {
+			return rootgo.get() == object;
+			});
+
+		std::unique_ptr<GameObject> child;
+		if (it != m_objects.end())
+		{
+			child = std::move(*it);
+			m_objects.erase(it);
+		}
+		
+		
+
+		return child;
+	
 }
 
 void dae::Scene::Initialize()
@@ -47,6 +67,14 @@ void Scene::Render() const
 	for (const auto& object : m_objects)
 	{
 		object->Render();
+	}
+}
+
+void dae::Scene::End()
+{
+	for (const auto& object : m_objects)
+	{
+		object->End();
 	}
 }
 

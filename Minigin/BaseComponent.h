@@ -24,7 +24,7 @@ namespace dae
 
 	private:
 		GameObject* m_Owner;
-		bool m_MarkedForRemoval;
+		bool m_MarkedForRemoval{false};
 	};
 
 }

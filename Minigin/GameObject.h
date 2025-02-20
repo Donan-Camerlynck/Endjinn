@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include <string>
 #include "BaseComponent.h"
+#include "Scene.h"
 
 namespace dae
 {
@@ -97,9 +98,33 @@ namespace dae
 			return false;
 		}
 
+		void SetLocalPos(glm::vec3 localPos);
+		void SetWorldPos(glm::vec3 worldPos);
+		glm::vec3 GetLocalPos() { return m_LocalPos; };
+		glm::vec3 GetWorldPos() { return m_WorldPos; };
+
+		bool IsChild(GameObject* parent);
+		void SetParent(GameObject* parent, bool keepWorldPos);
+		GameObject* GetChildAt(int idx);
+
+		void SetPositionDirty();
+		void UpdateWorldPos();
+
+		void End();
+
 	private:
 		Transform m_transform{};
 
 		std::vector<std::unique_ptr<BaseComponent>> m_Components;
+
+		std::vector<std::unique_ptr<GameObject>> m_Children{};
+		GameObject* m_pParent{};
+
+		Scene* m_pScene;
+
+		glm::vec3 m_WorldPos{};
+		glm::vec3 m_LocalPos{};
+
+		bool m_bPositionDirty;
 	};
 }
