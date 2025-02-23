@@ -2,6 +2,13 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 #include "Renderer.h"
+#include <iostream>
+
+dae::GameObject::GameObject(Scene* pOwner) :
+	m_pScene{ pOwner }
+{
+
+}
 
 dae::GameObject::~GameObject() = default;
 
@@ -10,15 +17,16 @@ void dae::GameObject::Initialize()
 	for (int idx{}; idx < static_cast<int>(m_Components.size()); idx++)
 	{
 		m_Components[idx]->Initialize();
-	}
+	}		
 	for (int idx{}; idx < static_cast<int>(m_Children.size()); idx++)
 	{
 		m_Children[idx]->Initialize();
-	}
+	}	
 }
 
 void dae::GameObject::Update()
 {
+	UpdateWorldPos();
 	for (int idx{}; idx < static_cast<int>(m_Components.size()); idx++)
 	{
 		m_Components[idx]->Update();
@@ -52,11 +60,13 @@ void dae::GameObject::SetPosition(float x, float y)
 void dae::GameObject::SetLocalPos(glm::vec3 localPos)
 {
 	m_LocalPos = localPos;
+	SetPositionDirty();
 }
 
 void dae::GameObject::SetWorldPos(glm::vec3 worldPos)
 {
 	m_WorldPos = worldPos;
+	SetPositionDirty();
 }
 
 void dae::GameObject::SetPositionDirty()

@@ -34,11 +34,6 @@ void dae::FPSComponent::Update()
 
 }
 
-void dae::FPSComponent::Render() const
-{
-	BaseComponent::Render();
-}
-
 dae::FPSComponent::FPSComponent(GameObject* owner)
 	:BaseComponent(owner)
 {

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 #include <algorithm>
+#include <stdexcept>
 
 using namespace dae;
 
@@ -11,9 +12,18 @@ Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
 
-void Scene::Add(std::unique_ptr<GameObject> object)
+GameObject* Scene::Add(std::unique_ptr<GameObject> object)
 {
-	m_objects.emplace_back(std::move(object));
+
+	if (!object)
+	{
+		return nullptr;
+	}
+	auto obj = std::move(object);
+	const auto pRaw = obj.get();
+
+	m_objects.emplace_back(std::move(obj));
+	return pRaw;
 }
 
 void Scene::Remove(std::unique_ptr<GameObject> object)
@@ -28,6 +38,7 @@ void Scene::RemoveAll()
 
 std::unique_ptr<GameObject> dae::Scene::Release(GameObject* object)
 {
+
 	
 		auto it = std::find_if(m_objects.begin(), m_objects.end(), [object](const auto& rootgo) {
 			return rootgo.get() == object;
@@ -39,8 +50,6 @@ std::unique_ptr<GameObject> dae::Scene::Release(GameObject* object)
 			child = std::move(*it);
 			m_objects.erase(it);
 		}
-		
-		
 
 		return child;
 	

@@ -22,7 +22,7 @@ void dae::SpriteComponent::Render() const
 		auto owner = GetOwner();
 		if (owner)
 		{
-			auto& pos = owner->GetTransform().GetPosition();
+			auto pos = owner->GetWorldPos();
 			Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
 		}
 	}

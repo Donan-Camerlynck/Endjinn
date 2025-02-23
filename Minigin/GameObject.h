@@ -27,7 +27,8 @@ namespace dae
 		void SetPosition(float x, float y);
 		Transform GetTransform() { return m_transform; }
 
-		GameObject() = default;
+		
+		GameObject(Scene* pOwner);
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -100,8 +101,8 @@ namespace dae
 
 		void SetLocalPos(glm::vec3 localPos);
 		void SetWorldPos(glm::vec3 worldPos);
-		glm::vec3 GetLocalPos() { return m_LocalPos; };
-		glm::vec3 GetWorldPos() { return m_WorldPos; };
+		glm::vec3 GetLocalPos() const { return m_LocalPos; };
+		glm::vec3 GetWorldPos() const { return m_WorldPos; };
 
 		bool IsChild(GameObject* parent);
 		void SetParent(GameObject* parent, bool keepWorldPos);
@@ -112,6 +113,8 @@ namespace dae
 
 		void End();
 
+
+
 	private:
 		Transform m_transform{};
 
@@ -119,6 +122,7 @@ namespace dae
 
 		std::vector<std::unique_ptr<GameObject>> m_Children{};
 		GameObject* m_pParent{};
+		
 
 		Scene* m_pScene;
 

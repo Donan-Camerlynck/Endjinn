@@ -9,7 +9,6 @@ namespace dae
 
 		void Initialize() override;
 		void Update() override;
-		void Render() const override;
 
 		FPSComponent(GameObject* owner);
 

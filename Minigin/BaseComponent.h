@@ -10,6 +10,7 @@ namespace dae
 		virtual void Update();
 		virtual void Render() const;
 
+		explicit BaseComponent(GameObject* owner) : m_Owner{ owner } {}
 		virtual ~BaseComponent() = default;
 		BaseComponent(const BaseComponent& other) = delete;
 		BaseComponent(BaseComponent&& other) = delete;
@@ -18,9 +19,8 @@ namespace dae
 
 		GameObject* GetOwner() const { return m_Owner; }
 
-	protected:
 
-		explicit BaseComponent(GameObject* owner) : m_Owner{ owner } {}
+		
 
 	private:
 		GameObject* m_Owner;
