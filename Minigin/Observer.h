@@ -2,7 +2,6 @@
 
 namespace dae
 {
-	enum class Event;
 	class IObserver
 	{
 
@@ -14,6 +13,6 @@ namespace dae
 		IObserver& operator=(const IObserver& other) = delete;
 		IObserver& operator=(IObserver&& other) = delete;
 
-		virtual void Notify(Event e) = 0;
+		virtual void Notify() = 0;
 	};
 }

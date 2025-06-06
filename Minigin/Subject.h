@@ -14,7 +14,7 @@ namespace dae
 		Subject(Subject&& other) = delete;
 		Subject& operator=(const Subject& other) = delete;
 		Subject& operator=(Subject&& other) = delete;
-		void NotifyAll(Event e);
+		void NotifyAll();
 		void AddObserver(IObserver* observer);
 		void RemoveObserver(IObserver* observer);
 

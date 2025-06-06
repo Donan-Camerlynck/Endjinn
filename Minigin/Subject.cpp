@@ -3,11 +3,11 @@
 namespace dae
 {
 
-	void Subject::NotifyAll(Event e)
+	void Subject::NotifyAll()
 	{
 		for (auto observer : m_Observers)
 		{
-			observer->Notify(e);
+			observer->Notify();
 		}
 	}
 

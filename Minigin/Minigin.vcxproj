@@ -191,7 +191,9 @@
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GamePad.h" />
+    <ClInclude Include="HealthCommand.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="ICommand.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Interfaces.h" />
@@ -224,7 +226,9 @@
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamePad.cpp" />
+    <ClCompile Include="HealthCommand.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />

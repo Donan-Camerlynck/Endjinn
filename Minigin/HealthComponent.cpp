@@ -7,6 +7,8 @@ dae::HealthComponent::HealthComponent(GameObject* owner, int maxHealth)
 {
 }
 
+
+
 void dae::HealthComponent::Update()
 {
 	if (m_bUpdateHealth)
@@ -27,21 +29,32 @@ void dae::HealthComponent::Update()
 	}
 }
 
+void dae::HealthComponent::Initialize()
+{
+	BaseComponent::Initialize();
+	m_HealthChangedEvent = std::make_unique<Subject>();
+	
+	
+}
+
 void dae::HealthComponent::DoDamage(int damage)
 {
 	m_Health -= damage;
 	m_bUpdateHealth = true;	
+	m_HealthChangedEvent->NotifyAll();
 }
 
 void dae::HealthComponent::Heal(int heal)
 {
 	m_Health += heal;
 	m_bUpdateHealth = true;
+	m_HealthChangedEvent->NotifyAll();
 }
 
 void dae::HealthComponent::SetHealth(int health)
 {
 	m_Health = health;
 	m_bUpdateHealth = true;
+	m_HealthChangedEvent->NotifyAll();
 }
 
