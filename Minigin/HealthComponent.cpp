@@ -5,6 +5,7 @@ dae::HealthComponent::HealthComponent(GameObject* owner, int maxHealth)
 	, m_Health(maxHealth)
 	, m_MaxHealth(maxHealth)
 {
+	m_HealthChangedEvent = std::make_unique<Subject>();
 }
 
 
@@ -32,7 +33,6 @@ void dae::HealthComponent::Update()
 void dae::HealthComponent::Initialize()
 {
 	BaseComponent::Initialize();
-	m_HealthChangedEvent = std::make_unique<Subject>();
 	
 	
 }
