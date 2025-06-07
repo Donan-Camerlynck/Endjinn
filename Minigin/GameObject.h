@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include <vector>
+#include <concepts>
+#include <type_traits>
 #include "Transform.h"
 #include <string>
 #include "BaseComponent.h"
@@ -11,8 +13,7 @@ namespace dae
 	template<typename CompType>
 	concept CompCon = requires(CompType)
 	{
-
-		{ std::is_base_of<dae::BaseComponent, CompType>::value };
+		std::is_base_of<dae::BaseComponent, CompType>::value;
 	};
 	class Texture2D;
 
