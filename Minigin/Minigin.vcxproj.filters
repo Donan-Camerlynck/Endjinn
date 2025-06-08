@@ -28,6 +28,9 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{e0c63b3e-cbcd-42c3-908a-f9d48563da24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{9c24c92b-d522-4690-ad49-9c0b165b5c1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -120,20 +123,14 @@
     <ClInclude Include="AxisCommand.h">
       <Filter>Commands</Filter>
     </ClInclude>
-    <ClInclude Include="HealthComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
     <ClInclude Include="Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Subject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HealthDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthCommand.h">
-      <Filter>Commands</Filter>
+    <ClInclude Include="BoxCollision.h">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -209,17 +206,14 @@
     <ClCompile Include="MoveCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Subject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HealthDisplayComponent.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Physics.h">
+      <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="HealthCommand.cpp">
-      <Filter>Commands</Filter>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

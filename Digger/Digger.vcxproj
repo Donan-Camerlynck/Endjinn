@@ -159,12 +159,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HealthCommand.cpp" />
+    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ScoreComand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HealthCommand.h" />
+    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="ScoreComand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />

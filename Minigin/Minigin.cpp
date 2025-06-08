@@ -9,6 +9,7 @@
 #include <thread>
 
 #include "InputManager.h"
+#include "Physics.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "TimeManager.h"
@@ -87,6 +88,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& inputManager = InputManager::GetInstance();
+	auto& physics = Physics::GetInstance();
 	sceneManager.Initialize();
 	inputManager.Initialize();
 	auto& input = InputManager::GetInstance();
@@ -107,6 +109,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lag += deltaTime;
 
 		doContinue = input.ProcessInput();
+		physics.Update();
 		sceneManager.Update();
 		renderer.Render();
 
@@ -114,4 +117,5 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		std::this_thread::sleep_for(sleepTime);
 	}
 	sceneManager.End();
+	physics.End();
 }
