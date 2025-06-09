@@ -13,3 +13,8 @@ void dae::BaseComponent::Update()
 void dae::BaseComponent::Render() const
 {
 }
+
+void dae::BaseComponent::End()
+{
+
+}

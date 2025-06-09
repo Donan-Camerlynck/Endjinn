@@ -55,8 +55,6 @@ void dae::GameObject::SetPosition(float x, float y)
 }
 
 
-
-
 void dae::GameObject::SetLocalPos(glm::vec3 localPos)
 {
 	m_LocalPos = localPos;
@@ -93,6 +91,10 @@ void dae::GameObject::End()
 	for (const auto& child : m_Children)
 	{
 		child->End();
+	}
+	for (int idx{}; idx < static_cast<int>(m_Children.size()); idx++)
+	{
+		m_Children[idx]->End();
 	}
 	m_Children.clear();
 }

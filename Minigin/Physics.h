@@ -1,11 +1,13 @@
 #pragma once
 #include "Singleton.h"
-#include <box2d.h>
 #include <memory>
 
+struct b2BodyId;
+struct b2BodyDef;
 
 namespace dae
 {
+
 
 	class Physics final : public Singleton<Physics>
 	{
@@ -18,6 +20,8 @@ namespace dae
 
 		void Update();
 		void End();
+
+		b2BodyId CreatePhysicsBody(b2BodyDef* bodyDef);
 
 	private:
 		friend class Singleton;

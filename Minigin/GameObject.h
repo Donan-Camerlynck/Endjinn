@@ -24,6 +24,7 @@ namespace dae
 		virtual void Initialize();
 		virtual void Update();
 		virtual void Render() const;
+		virtual void End();
 
 		void SetPosition(float x, float y);
 		Transform GetTransform() { return m_transform; }
@@ -112,9 +113,6 @@ namespace dae
 		void SetPositionDirty();
 		void UpdateWorldPos();
 
-		void End();
-
-
 
 	private:
 		Transform m_transform{};
@@ -130,6 +128,6 @@ namespace dae
 		glm::vec3 m_WorldPos{};
 		glm::vec3 m_LocalPos{};
 
-		bool m_bPositionDirty;
+		bool m_bPositionDirty{ false };
 	};
 }

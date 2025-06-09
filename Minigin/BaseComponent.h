@@ -9,6 +9,7 @@ namespace dae
 		virtual void Initialize();
 		virtual void Update();
 		virtual void Render() const;
+		virtual void End();
 
 		explicit BaseComponent(GameObject* owner) : m_Owner{ owner } {}
 		virtual ~BaseComponent() = default;

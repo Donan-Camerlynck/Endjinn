@@ -19,6 +19,12 @@ namespace dae
 			b2World_Step(m_WorldId, TimeManager::GetInstance().GetDeltaTime(), 4);
 		}
 
+
+		b2BodyId CreatePhysicsBody(b2BodyDef* bodyDef)
+		{
+			return b2CreateBody(m_WorldId, bodyDef);
+		}
+
 		void End()
 		{
 			b2DestroyWorld(m_WorldId);
@@ -44,6 +50,11 @@ namespace dae
 	void dae::Physics::End()
 	{
 		m_pImpl->End();
+	}
+
+	b2BodyId dae::Physics::CreatePhysicsBody(b2BodyDef* bodyDef)
+	{
+		return m_pImpl->CreatePhysicsBody(bodyDef);
 	}
 
 }
