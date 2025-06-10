@@ -63,7 +63,7 @@ bool dae::InputManager::ProcessKeyboardInput()
 					{
 						binding.shouldExecute = true;
 					}	
-					if (binding.key == e.key.keysym.scancode && binding.type == InputEventType::Pressed)
+					if (binding.key == e.key.keysym.scancode && binding.type == InputEventType::Pressed && binding.previousShouldExecute)
 					{
 						binding.shouldExecute = false;
 					}
@@ -129,8 +129,26 @@ void dae::InputManager::ProcessGamePadAxis()
 			}
 			if (bShouldExecute)
 			{
-				binding.command->SetDirection(axisValue);
-				binding.command->Execute();
+				if (std::abs(axisValue.x) > binding.deadZone || std::abs(axisValue.y) > binding.deadZone)
+				{
+					if (binding.diagonalAllowed)
+					{
+						binding.command->SetDirection(axisValue);
+					}
+					else
+					{
+						if (std::abs(axisValue.x) >= std::abs(axisValue.y))
+						{
+							binding.command->SetDirection({ axisValue.x, 0.f });
+						}
+						else
+						{
+							binding.command->SetDirection({ 0.f, axisValue.y });
+						}
+					}
+
+					binding.command->Execute();
+				}				
 			}
 		}
 	}
@@ -145,10 +163,12 @@ void dae::InputManager::ProcessKeyboardActions()
 			binding.command->Execute();
 			if (binding.type == InputEventType::Down || binding.type == InputEventType::Up)
 			{
+				binding.previousShouldExecute = binding.shouldExecute;
 				binding.shouldExecute = false;
 			}
 			else if (binding.type == InputEventType::Pressed)
 			{
+				binding.previousShouldExecute = binding.shouldExecute;
 				binding.shouldExecute = true;
 			}
 		}

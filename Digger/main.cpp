@@ -60,10 +60,12 @@ void load()
 	auto rootObj = scene.Add(std::move(goRoot));
 	rootObj->SetLocalPos(glm::vec3{ 200.f, 200.f, 1.f });
 
+
+	//create body info to pass in the constructor
 	dae::BodyInfo mainBodyInfo{
 		dae::BodyType::dynamicBody,
 		glm::vec2{280.f, 20.f},
-		0.f,
+		10.f,
 		0.f,
 		true
 	};
@@ -97,17 +99,19 @@ void load()
 	ScoreDisplay->SetLocalPos(glm::vec3{ 10.f, 150.f, 1.f });
 	scene.Add(std::move(ScoreDisplay));
 
-	input.AddCommand(SDL_SCANCODE_A, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ -1.f, 0.f }, mainObj));
-	input.AddCommand(SDL_SCANCODE_D, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ 1.f, 0.f }, mainObj));
-	input.AddCommand(SDL_SCANCODE_W, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ 0.f, -1.f }, mainObj));
-	input.AddCommand(SDL_SCANCODE_S, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ 0.f, 1.f }, mainObj));
+	dae::BodyComponent* mainBody = mainObj->GetComponent<dae::BodyComponent>();
 
-	input.AddCommand(dae::GamepadKey::DPad_Left, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ -1.f, 0.f }, mainObj), 0);
-	input.AddCommand(dae::GamepadKey::DPad_Right, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ 1.f, 0.f }, mainObj), 0);
-	input.AddCommand(dae::GamepadKey::DPad_Up, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ 0.f, -1.f }, mainObj), 0);
-	input.AddCommand(dae::GamepadKey::DPad_Down, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ 0.f, 1.f }, mainObj), 0);
+	input.AddCommand(SDL_SCANCODE_A, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ -1.f, 0.f }, mainBody));
+	input.AddCommand(SDL_SCANCODE_D, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 1.f, 0.f }, mainBody));
+	input.AddCommand(SDL_SCANCODE_W, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, -1.f }, mainBody));
+	input.AddCommand(SDL_SCANCODE_S, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, 1.f }, mainBody));
 
-	input.AddCommand(dae::GamepadAxis2D::LThumbStick, std::make_unique<dae::MoveCommand>(100.f, glm::vec2{ 0.f, 0.f }, mainObj), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Left, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ -1.f, 0.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Right, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 1.f, 0.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Up, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, -1.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Down, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, 1.f }, mainBody), 0);
+
+	input.AddCommand(dae::GamepadAxis2D::LThumbStick, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, 0.f }, mainBody), 0);
 
 	input.AddCommand(SDL_SCANCODE_X, dae::InputEventType::Down, std::make_unique<dae::HealthCommand>(mainObj, 1));
 

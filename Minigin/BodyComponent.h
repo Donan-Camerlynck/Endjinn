@@ -29,6 +29,8 @@ namespace dae
 		virtual void Initialize() override;
 		virtual void End() override;
 
+		void SetVelocity(glm::vec2 velocity);
+
 		BodyComponent(GameObject* owner, BodyInfo bodyInfo);
 		virtual ~BodyComponent() override = default;
 		BodyComponent(const BodyComponent& other) = delete;

@@ -1,21 +1,21 @@
 #include "MoveCommand.h"
 #include "GameObject.h"
 #include "TimeManager.h"
+#include <iostream>
 
-dae::MoveCommand::MoveCommand(float speed, glm::vec2 direction, GameObject* gameObject)
-	:m_Speed(speed), m_pGameObject(gameObject)
+dae::MoveCommand::MoveCommand(float speed, glm::vec2 direction, BodyComponent* body)
+	:m_Speed(speed), m_pBodyComp(body)
 {
 	m_Direction = glm::normalize(direction);
 }
 
 void dae::MoveCommand::Execute()
 {
-	if (!m_pGameObject)
+	if (!m_pBodyComp)
 	{
 		return;
 	}
-	glm::vec2 oldPos = m_pGameObject->GetLocalPos();
-	glm::vec2 newPos = oldPos + m_Direction * m_Speed * TimeManager::GetInstance().GetDeltaTime();
-
-	m_pGameObject->SetLocalPos(glm::vec3(newPos.x, newPos.y, 1.f));
+	glm::vec2 vel = m_Speed * m_Direction;
+	m_pBodyComp->SetVelocity(vel);
+	std::cout << "move command executed \n";
 }

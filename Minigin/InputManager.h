@@ -48,6 +48,8 @@ namespace dae
 			GamepadAxis2D axis;
 			unsigned int controllerID;
 			std::unique_ptr<AxisCommand> command;
+			float deadZone = 0.1f;
+			bool diagonalAllowed = false;
 		};
 		struct KeyboardActionBinding
 		{
@@ -55,6 +57,7 @@ namespace dae
 			InputEventType type;
 			std::unique_ptr<ICommand> command;
 			bool shouldExecute = false;
+			bool previousShouldExecute = false;
 		};
 
 		std::vector<std::unique_ptr<GamePad>> m_GamePads;
