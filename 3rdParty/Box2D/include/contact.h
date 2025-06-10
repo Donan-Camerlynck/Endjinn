@@ -67,10 +67,6 @@ typedef struct b2Contact
 	// b2ContactFlags
 	uint32_t flags;
 
-	// This is monotonically advanced when a contact is allocated in this slot
-	// Used to check for invalid b2ContactId
-	uint32_t generation;
-
 	bool isMarked;
 } b2Contact;
 
@@ -141,6 +137,7 @@ void b2DestroyContact( b2World* world, b2Contact* contact, bool wakeBodies );
 
 b2ContactSim* b2GetContactSim( b2World* world, b2Contact* contact );
 
+bool b2ShouldShapesCollide( b2Filter filterA, b2Filter filterB );
 
 bool b2UpdateContact( b2World* world, b2ContactSim* contactSim, b2Shape* shapeA, b2Transform transformA, b2Vec2 centerOffsetA,
 					  b2Shape* shapeB, b2Transform transformB, b2Vec2 centerOffsetB );

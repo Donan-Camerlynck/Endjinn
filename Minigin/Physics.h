@@ -18,6 +18,7 @@ namespace dae
 		Physics& operator=(const Physics& other) = delete;
 		Physics& operator=(Physics&& other) noexcept = delete;
 
+		void Initialize();
 		void Update();
 		void End();
 

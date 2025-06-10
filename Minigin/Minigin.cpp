@@ -91,6 +91,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& physics = Physics::GetInstance();
 	sceneManager.Initialize();
 	inputManager.Initialize();
+	physics.Initialize();
 	auto& input = InputManager::GetInstance();
 
 	// todo: this update loop could use some work.

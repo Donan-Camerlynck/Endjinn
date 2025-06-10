@@ -24,6 +24,7 @@ namespace dae
 
 	class BodyComponent : public BaseComponent
 	{
+	public:
 		virtual void Update() override;
 		virtual void Initialize() override;
 		virtual void End() override;

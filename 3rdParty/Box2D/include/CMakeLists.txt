@@ -40,8 +40,6 @@ set(BOX2D_SOURCE_FILES
 	motor_joint.c
 	mouse_joint.c
 	mover.c
-	physics_world.c
-	physics_world.h
 	prismatic_joint.c
 	revolute_joint.c
 	sensor.c
@@ -58,6 +56,8 @@ set(BOX2D_SOURCE_FILES
 	types.c
 	weld_joint.c
 	wheel_joint.c
+	world.c
+	world.h
 )
 
 set(BOX2D_API_FILES
@@ -86,6 +86,13 @@ target_include_directories(box2d
 )
 
 set(CMAKE_DEBUG_POSTFIX "d")
+
+if(NOT WIN32)
+	find_library(HAVE_LIBM m)
+	if(HAVE_LIBM)
+		target_link_libraries(box2d PRIVATE m)
+	endif()
+endif()
 
 # Box2D uses C17 for _Static_assert and anonymous unions
 set_target_properties(box2d PROPERTIES
@@ -177,8 +184,10 @@ elseif (UNIX)
 		# -mfpu=neon
 		# target_compile_options(box2d PRIVATE)
 	else()
+		# x64
 		if (BOX2D_AVX2)
 			message(STATUS "Box2D using AVX2")
+			# FMA -mfma -mavx -march=native
 			target_compile_definitions(box2d PRIVATE BOX2D_AVX2)
 			target_compile_options(box2d PRIVATE -mavx2)
 		else()

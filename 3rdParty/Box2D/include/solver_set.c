@@ -9,7 +9,7 @@
 #include "core.h"
 #include "island.h"
 #include "joint.h"
-#include "physics_world.h"
+#include "world.h"
 
 #include <string.h>
 

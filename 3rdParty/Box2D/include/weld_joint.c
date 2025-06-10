@@ -6,10 +6,23 @@
 #include "joint.h"
 #include "solver.h"
 #include "solver_set.h"
-#include "physics_world.h"
+#include "world.h"
 
 // needed for dll export
 #include "box2d/box2d.h"
+
+float b2WeldJoint_GetReferenceAngle( b2JointId jointId )
+{
+	b2JointSim* joint = b2GetJointSimCheckType( jointId, b2_weldJoint );
+	return joint->weldJoint.referenceAngle;
+}
+
+void b2WeldJoint_SetReferenceAngle( b2JointId jointId, float angleInRadians )
+{
+	B2_ASSERT( b2IsValidFloat( angleInRadians ) );
+	b2JointSim* joint = b2GetJointSimCheckType( jointId, b2_weldJoint );
+	joint->weldJoint.referenceAngle = b2ClampFloat(angleInRadians, -B2_PI, B2_PI);
+}
 
 void b2WeldJoint_SetLinearHertz( b2JointId jointId, float hertz )
 {
@@ -125,21 +138,21 @@ void b2PrepareWeldJoint( b2JointSim* base, b2StepContext* context )
 	joint->indexA = bodyA->setIndex == b2_awakeSet ? localIndexA : B2_NULL_INDEX;
 	joint->indexB = bodyB->setIndex == b2_awakeSet ? localIndexB : B2_NULL_INDEX;
 
-	// Compute joint anchor frames with world space rotation, relative to center of mass
-	joint->frameA.q = b2MulRot( bodySimA->transform.q, base->localFrameA.q );
-	joint->frameA.p = b2RotateVector( bodySimA->transform.q, b2Sub( base->localFrameA.p, bodySimA->localCenter ) );
-	joint->frameB.q = b2MulRot( bodySimB->transform.q, base->localFrameB.q );
-	joint->frameB.p = b2RotateVector( bodySimB->transform.q, b2Sub( base->localFrameB.p, bodySimB->localCenter ) );
+	b2Rot qA = bodySimA->transform.q;
+	b2Rot qB = bodySimB->transform.q;
 
-	// Compute the initial center delta. Incremental position updates are relative to this.
+	joint->anchorA = b2RotateVector( qA, b2Sub( base->localOriginAnchorA, bodySimA->localCenter ) );
+	joint->anchorB = b2RotateVector( qB, b2Sub( base->localOriginAnchorB, bodySimB->localCenter ) );
 	joint->deltaCenter = b2Sub( bodySimB->center, bodySimA->center );
+	joint->deltaAngle = b2RelativeAngle( qB, qA ) - joint->referenceAngle;
+	joint->deltaAngle = b2UnwindAngle( joint->deltaAngle );
 
 	float ka = iA + iB;
 	joint->axialMass = ka > 0.0f ? 1.0f / ka : 0.0f;
 
 	if ( joint->linearHertz == 0.0f )
 	{
-		joint->linearSoftness = base->constraintSoftness;
+		joint->linearSoftness = context->jointSoftness;
 	}
 	else
 	{
@@ -148,7 +161,7 @@ void b2PrepareWeldJoint( b2JointSim* base, b2StepContext* context )
 
 	if ( joint->angularHertz == 0.0f )
 	{
-		joint->angularSoftness = base->constraintSoftness;
+		joint->angularSoftness = context->jointSoftness;
 	}
 	else
 	{
@@ -177,8 +190,8 @@ void b2WarmStartWeldJoint( b2JointSim* base, b2StepContext* context )
 	b2BodyState* stateA = joint->indexA == B2_NULL_INDEX ? &dummyState : context->states + joint->indexA;
 	b2BodyState* stateB = joint->indexB == B2_NULL_INDEX ? &dummyState : context->states + joint->indexB;
 
-	b2Vec2 rA = b2RotateVector( stateA->deltaRotation, joint->frameA.p );
-	b2Vec2 rB = b2RotateVector( stateB->deltaRotation, joint->frameB.p );
+	b2Vec2 rA = b2RotateVector( stateA->deltaRotation, joint->anchorA );
+	b2Vec2 rB = b2RotateVector( stateB->deltaRotation, joint->anchorB );
 
 	stateA->linearVelocity = b2MulSub( stateA->linearVelocity, mA, joint->linearImpulse );
 	stateA->angularVelocity -= iA * ( b2Cross( rA, joint->linearImpulse ) + joint->angularImpulse );
@@ -211,17 +224,12 @@ void b2SolveWeldJoint( b2JointSim* base, b2StepContext* context, bool useBias )
 
 	// angular constraint
 	{
-		b2Rot qA = b2MulRot( stateA->deltaRotation, joint->frameA.q );
-		b2Rot qB = b2MulRot( stateB->deltaRotation, joint->frameB.q );
-		b2Rot relQ = b2InvMulRot( qA, qB );
-		float jointAngle = b2Rot_GetAngle( relQ );
-
 		float bias = 0.0f;
 		float massScale = 1.0f;
 		float impulseScale = 0.0f;
 		if ( useBias || joint->angularHertz > 0.0f )
 		{
-			float C = jointAngle;
+			float C = b2RelativeAngle( stateB->deltaRotation, stateA->deltaRotation ) + joint->deltaAngle;
 			bias = joint->angularSoftness.biasRate * C;
 			massScale = joint->angularSoftness.massScale;
 			impulseScale = joint->angularSoftness.impulseScale;
@@ -237,8 +245,8 @@ void b2SolveWeldJoint( b2JointSim* base, b2StepContext* context, bool useBias )
 
 	// linear constraint
 	{
-		b2Vec2 rA = b2RotateVector( stateA->deltaRotation, joint->frameA.p );
-		b2Vec2 rB = b2RotateVector( stateB->deltaRotation, joint->frameB.p );
+		b2Vec2 rA = b2RotateVector( stateA->deltaRotation, joint->anchorA );
+		b2Vec2 rB = b2RotateVector( stateB->deltaRotation, joint->anchorB );
 
 		b2Vec2 bias = b2Vec2_zero;
 		float massScale = 1.0f;
@@ -300,28 +308,3 @@ void b2DumpWeldJoint()
 	b2Dump("  joints[%d] = m_world->CreateJoint(&jd);\n", m_index);
 }
 #endif
-
-void b2DrawWeldJoint( b2DebugDraw* draw, b2JointSim* base, b2Transform transformA, b2Transform transformB, float drawSize )
-{
-	B2_ASSERT( base->type == b2_weldJoint );
-
-	b2Transform frameA = b2MulTransforms( transformA, base->localFrameA );
-	b2Transform frameB = b2MulTransforms( transformB, base->localFrameB );
-
-	b2Polygon box = b2MakeBox( 0.25f * drawSize, 0.125f * drawSize );
-
-	b2Vec2 points[4];
-
-	for (int i = 0; i < 4; ++i)
-	{
-		points[i] = b2TransformPoint(frameA, box.vertices[i]);
-	}
-	draw->DrawPolygonFcn( points, 4, b2_colorDarkOrange, draw->context );
-
-	for (int i = 0; i < 4; ++i)
-	{
-		points[i] = b2TransformPoint(frameB, box.vertices[i]);
-	}
-
-	draw->DrawPolygonFcn( points, 4, b2_colorDarkCyan, draw->context );
-}

@@ -10,10 +10,12 @@
 #include "id_pool.h"
 #include "island.h"
 #include "joint.h"
-#include "sensor.h"
 #include "shape.h"
 #include "solver_set.h"
-#include "physics_world.h"
+#include "world.h"
+
+// needed for dll export
+#include "sensor.h"
 
 #include "box2d/box2d.h"
 #include "box2d/id.h"
@@ -24,15 +26,6 @@
 B2_ARRAY_SOURCE( b2Body, b2Body )
 B2_ARRAY_SOURCE( b2BodySim, b2BodySim )
 B2_ARRAY_SOURCE( b2BodyState, b2BodyState )
-
-static void b2LimitVelocity( b2BodyState* state, float maxLinearSpeed )
-{
-	float v2 = b2LengthSquared( state->linearVelocity );
-	if ( v2 > maxLinearSpeed * maxLinearSpeed )
-	{
-		state->linearVelocity = b2MulSV( maxLinearSpeed / sqrtf( v2 ), state->linearVelocity );
-	}
-}
 
 // Get a validated body from a world using an id.
 b2Body* b2GetBodyFullId( b2World* world, b2BodyId bodyId )
@@ -280,7 +273,7 @@ b2BodyId b2CreateBody( b2WorldId worldId, const b2BodyDef* def )
 			i += 1;
 		}
 
-		while ( i < 32 )
+		while ( i < 32)
 		{
 			body->name[i] = 0;
 			i += 1;
@@ -836,14 +829,12 @@ void b2Body_SetTargetTransform( b2BodyId bodyId, b2Transform target, float timeS
 	{
 		b2Rot q1 = sim->transform.q;
 		b2Rot q2 = target.q;
-		float deltaAngle = b2RelativeAngle( q1, q2 );
+		float deltaAngle = b2RelativeAngle( q2, q1 );
 		angularVelocity = invTimeStep * deltaAngle;
 	}
 
-	float maxVelocity = b2Length( linearVelocity ) + b2AbsFloat( angularVelocity ) * sim->maxExtent;
-
-	// Return if velocity would be sleepy
-	if ( maxVelocity < body->sleepThreshold )
+	// Return if velocity would be zero
+	if ( b2LengthSquared( linearVelocity ) == 0.0f && b2AbsFloat( angularVelocity ) == 0.0f )
 	{
 		return;
 	}
@@ -967,8 +958,6 @@ void b2Body_ApplyLinearImpulse( b2BodyId bodyId, b2Vec2 impulse, b2Vec2 point, b
 		b2BodySim* bodySim = b2BodySimArray_Get( &set->bodySims, localIndex );
 		state->linearVelocity = b2MulAdd( state->linearVelocity, bodySim->invMass, impulse );
 		state->angularVelocity += bodySim->invInertia * b2Cross( b2Sub( point, bodySim->center ), impulse );
-
-		b2LimitVelocity(state, world->maxLinearSpeed );
 	}
 }
 
@@ -989,8 +978,6 @@ void b2Body_ApplyLinearImpulseToCenter( b2BodyId bodyId, b2Vec2 impulse, bool wa
 		b2BodyState* state = b2BodyStateArray_Get( &set->bodyStates, localIndex );
 		b2BodySim* bodySim = b2BodySimArray_Get( &set->bodySims, localIndex );
 		state->linearVelocity = b2MulAdd( state->linearVelocity, bodySim->invMass, impulse );
-
-		b2LimitVelocity( state, world->maxLinearSpeed );
 	}
 }
 

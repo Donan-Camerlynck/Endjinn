@@ -62,7 +62,6 @@ typedef float b2FrictionCallback( float frictionA, int userMaterialIdA, float fr
 typedef float b2RestitutionCallback( float restitutionA, int userMaterialIdA, float restitutionB, int userMaterialIdB );
 
 /// Result from b2World_RayCastClosest
-/// If there is initial overlap the fraction and normal will be zero while the point is an arbitrary point in the overlap region.
 /// @ingroup world
 typedef struct b2RayResult
 {
@@ -101,6 +100,12 @@ typedef struct b2WorldDef
 	/// puts a cap on the resolution speed. The resolution speed is increased by increasing the hertz and/or
 	/// decreasing the damping ratio.
 	float maxContactPushSpeed;
+
+	/// Joint stiffness. Cycles per second.
+	float jointHertz;
+
+	/// Joint bounciness. Non-dimensional.
+	float jointDampingRatio;
 
 	/// Maximum linear speed. Usually meters per second.
 	float maximumLinearSpeed;
@@ -482,7 +487,6 @@ typedef struct b2Profile
 	float storeImpulses;
 	float splitIslands;
 	float transforms;
-	float jointEvents;
 	float hitEvents;
 	float refit;
 	float bullets;
@@ -524,37 +528,6 @@ typedef enum b2JointType
 	b2_wheelJoint,
 } b2JointType;
 
-typedef struct b2JointDef
-{
-	/// User data pointer
-	void* userData;
-
-	/// The first attached body
-	b2BodyId bodyIdA;
-
-	/// The second attached body
-	b2BodyId bodyIdB;
-
-	/// The first local joint frame
-	b2Transform localFrameA;
-
-	/// The second local joint frame
-	b2Transform localFrameB;
-
-	/// Force threshold for joint events
-	float forceThreshold;
-
-	/// Torque threshold for joint events
-	float torqueThreshold;
-
-	/// Debug draw size
-	float drawSize;
-
-	/// Set this flag to true if the attached bodies should collide
-	bool collideConnected;
-
-} b2JointDef;
-
 /// Distance joint definition
 ///
 /// This requires defining an anchor point on both
@@ -564,8 +537,17 @@ typedef struct b2JointDef
 /// @ingroup distance_joint
 typedef struct b2DistanceJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body
+	b2BodyId bodyIdA;
+
+	/// The second attached body
+	b2BodyId bodyIdB;
+
+	/// The local anchor point relative to bodyA's origin
+	b2Vec2 localAnchorA;
+
+	/// The local anchor point relative to bodyB's origin
+	b2Vec2 localAnchorB;
 
 	/// The rest length of this joint. Clamped to a stable minimum value.
 	float length;
@@ -598,6 +580,12 @@ typedef struct b2DistanceJointDef
 	/// The desired motor speed, usually in meters per second
 	float motorSpeed;
 
+	/// Set this flag to true if the attached bodies should collide
+	bool collideConnected;
+
+	/// User data pointer
+	void* userData;
+
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
 } b2DistanceJointDef;
@@ -607,13 +595,22 @@ typedef struct b2DistanceJointDef
 B2_API b2DistanceJointDef b2DefaultDistanceJointDef( void );
 
 /// A motor joint is used to control the relative motion between two bodies
-/// You may move local frame A to change the target transform.
+///
 /// A typical usage is to control the movement of a dynamic body with respect to the ground.
 /// @ingroup motor_joint
 typedef struct b2MotorJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body
+	b2BodyId bodyIdA;
+
+	/// The second attached body
+	b2BodyId bodyIdB;
+
+	/// Position of bodyB minus the position of bodyA, in bodyA's frame
+	b2Vec2 linearOffset;
+
+	/// The bodyB angle minus bodyA angle in radians
+	float angularOffset;
 
 	/// The maximum motor force in newtons
 	float maxForce;
@@ -624,6 +621,12 @@ typedef struct b2MotorJointDef
 	/// Position correction factor in the range [0,1]
 	float correctionFactor;
 
+	/// Set this flag to true if the attached bodies should collide
+	bool collideConnected;
+
+	/// User data pointer
+	void* userData;
+
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
 } b2MotorJointDef;
@@ -633,14 +636,20 @@ typedef struct b2MotorJointDef
 B2_API b2MotorJointDef b2DefaultMotorJointDef( void );
 
 /// A mouse joint is used to make a point on a body track a specified world point.
-/// You may move local frame A to change the target point.
+///
 /// This a soft constraint and allows the constraint to stretch without
 /// applying huge forces. This also applies rotation constraint heuristic to improve control.
 /// @ingroup mouse_joint
 typedef struct b2MouseJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body. This is assumed to be static.
+	b2BodyId bodyIdA;
+
+	/// The second attached body.
+	b2BodyId bodyIdB;
+
+	/// The initial target point in world space
+	b2Vec2 target;
 
 	/// Stiffness in hertz
 	float hertz;
@@ -650,6 +659,12 @@ typedef struct b2MouseJointDef
 
 	/// Maximum force, typically in newtons
 	float maxForce;
+
+	/// Set this flag to true if the attached bodies should collide.
+	bool collideConnected;
+
+	/// User data pointer
+	void* userData;
 
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
@@ -664,8 +679,14 @@ B2_API b2MouseJointDef b2DefaultMouseJointDef( void );
 /// @ingroup filter_joint
 typedef struct b2FilterJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body.
+	b2BodyId bodyIdA;
+
+	/// The second attached body.
+	b2BodyId bodyIdB;
+
+	/// User data pointer
+	void* userData;
 
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
@@ -677,17 +698,30 @@ B2_API b2FilterJointDef b2DefaultFilterJointDef( void );
 
 /// Prismatic joint definition
 ///
-/// Body B may slide along the x-axis in local frame A. Body B cannot rotate relative to body A.
-/// The joint translation is zero when the local frame origins coincide in world space.
+/// This requires defining a line of motion using an axis and an anchor point.
+/// The definition uses local anchor points and a local axis so that the initial
+/// configuration can violate the constraint slightly. The joint translation is zero
+/// when the local anchor points coincide in world space.
 /// @ingroup prismatic_joint
 typedef struct b2PrismaticJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body
+	b2BodyId bodyIdA;
 
-	/// The target translation for the joint in meters. The spring-damper will drive
-	/// to this translation.
-	float targetTranslation;
+	/// The second attached body
+	b2BodyId bodyIdB;
+
+	/// The local anchor point relative to bodyA's origin
+	b2Vec2 localAnchorA;
+
+	/// The local anchor point relative to bodyB's origin
+	b2Vec2 localAnchorB;
+
+	/// The local translation unit axis in bodyA
+	b2Vec2 localAxisA;
+
+	/// The constrained angle between the bodies: bodyB_angle - bodyA_angle
+	float referenceAngle;
 
 	/// Enable a linear spring along the prismatic joint axis
 	bool enableSpring;
@@ -716,6 +750,12 @@ typedef struct b2PrismaticJointDef
 	/// The desired motor speed, typically in meters per second
 	float motorSpeed;
 
+	/// Set this flag to true if the attached bodies should collide
+	bool collideConnected;
+
+	/// User data pointer
+	void* userData;
+
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
 } b2PrismaticJointDef;
@@ -731,18 +771,28 @@ B2_API b2PrismaticJointDef b2DefaultPrismaticJointDef( void );
 /// initial configuration can violate the constraint slightly. You also need to
 /// specify the initial relative angle for joint limits. This helps when saving
 /// and loading a game.
-/// The local anchor points are measured from the body's origin rather than the center of mass because:
+/// The local anchor points are measured from the body's origin
+/// rather than the center of mass because:
 /// 1. you might not know where the center of mass will be
 /// 2. if you add/remove shapes from a body and recompute the mass, the joints will be broken
 /// @ingroup revolute_joint
 typedef struct b2RevoluteJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body
+	b2BodyId bodyIdA;
 
-	/// The target angle for the joint in radians. The spring-damper will drive
-	/// to this angle.
-	float targetAngle;
+	/// The second attached body
+	b2BodyId bodyIdB;
+
+	/// The local anchor point relative to bodyA's origin
+	b2Vec2 localAnchorA;
+
+	/// The local anchor point relative to bodyB's origin
+	b2Vec2 localAnchorB;
+
+	/// The bodyB angle minus bodyA angle in the reference state (radians).
+	/// This defines the zero angle for the joint limit.
+	float referenceAngle;
 
 	/// Enable a rotational spring on the revolute hinge axis
 	bool enableSpring;
@@ -756,10 +806,10 @@ typedef struct b2RevoluteJointDef
 	/// A flag to enable joint limits
 	bool enableLimit;
 
-	/// The lower angle for the joint limit in radians. Minimum of -0.99*pi radians.
+	/// The lower angle for the joint limit in radians. Minimum of -0.95*pi radians.
 	float lowerAngle;
 
-	/// The upper angle for the joint limit in radians. Maximum of 0.99*pi radians.
+	/// The upper angle for the joint limit in radians. Maximum of 0.95*pi radians.
 	float upperAngle;
 
 	/// A flag to enable the joint motor
@@ -770,6 +820,15 @@ typedef struct b2RevoluteJointDef
 
 	/// The desired motor speed in radians per second
 	float motorSpeed;
+
+	/// Scale the debug draw
+	float drawSize;
+
+	/// Set this flag to true if the attached bodies should collide
+	bool collideConnected;
+
+	/// User data pointer
+	void* userData;
 
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
@@ -787,8 +846,21 @@ B2_API b2RevoluteJointDef b2DefaultRevoluteJointDef( void );
 /// @ingroup weld_joint
 typedef struct b2WeldJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body
+	b2BodyId bodyIdA;
+
+	/// The second attached body
+	b2BodyId bodyIdB;
+
+	/// The local anchor point relative to bodyA's origin
+	b2Vec2 localAnchorA;
+
+	/// The local anchor point relative to bodyB's origin
+	b2Vec2 localAnchorB;
+
+	/// The bodyB angle minus bodyA angle in the reference state (radians)
+	/// todo maybe make this a b2Rot
+	float referenceAngle;
 
 	/// Linear stiffness expressed as Hertz (cycles per second). Use zero for maximum stiffness.
 	float linearHertz;
@@ -802,6 +874,12 @@ typedef struct b2WeldJointDef
 	/// Linear damping ratio, non-dimensional. Use 1 for critical damping.
 	float angularDampingRatio;
 
+	/// Set this flag to true if the attached bodies should collide
+	bool collideConnected;
+
+	/// User data pointer
+	void* userData;
+
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
 } b2WeldJointDef;
@@ -812,13 +890,27 @@ B2_API b2WeldJointDef b2DefaultWeldJointDef( void );
 
 /// Wheel joint definition
 ///
-/// Body B is a wheel that may rotate freely and slide along the local x-axis in frame A.
-/// The joint translation is zero when the local frame origins coincide in world space.
+/// This requires defining a line of motion using an axis and an anchor point.
+/// The definition uses local  anchor points and a local axis so that the initial
+/// configuration can violate the constraint slightly. The joint translation is zero
+/// when the local anchor points coincide in world space.
 /// @ingroup wheel_joint
 typedef struct b2WheelJointDef
 {
-	/// Base joint definition
-	b2JointDef base;
+	/// The first attached body
+	b2BodyId bodyIdA;
+
+	/// The second attached body
+	b2BodyId bodyIdB;
+
+	/// The local anchor point relative to bodyA's origin
+	b2Vec2 localAnchorA;
+
+	/// The local anchor point relative to bodyB's origin
+	b2Vec2 localAnchorB;
+
+	/// The local translation unit axis in bodyA
+	b2Vec2 localAxisA;
 
 	/// Enable a linear spring along the local axis
 	bool enableSpring;
@@ -846,6 +938,12 @@ typedef struct b2WheelJointDef
 
 	/// The desired motor speed in radians per second
 	float motorSpeed;
+
+	/// Set this flag to true if the attached bodies should collide
+	bool collideConnected;
+
+	/// User data pointer
+	void* userData;
 
 	/// Used internally to detect a valid definition. DO NOT SET.
 	int internalValue;
@@ -954,13 +1052,8 @@ typedef struct b2ContactBeginTouchEvent
 	/// Id of the second shape
 	b2ShapeId shapeIdB;
 
-	/// The transient contact id. This contact maybe destroyed automatically by Box2D when the world is modified or simulated.
-	/// Used b2Contact_IsValid before using this id.
-	b2ContactId contactId;
-
 	/// The initial contact manifold. This is recorded before the solver is called,
-	/// so all the impulses will be zero. You can use the contact id to access the manifold impulses
-	/// using b2Contact_GetManifold.
+	/// so all the impulses will be zero.
 	b2Manifold manifold;
 } b2ContactBeginTouchEvent;
 
@@ -979,13 +1072,9 @@ typedef struct b2ContactEndTouchEvent
 	///	@warning this shape may have been destroyed
 	///	@see b2Shape_IsValid
 	b2ShapeId shapeIdB;
-
-	/// Id of the contact
-	b2ContactId contactId;
 } b2ContactEndTouchEvent;
 
 /// A hit touch event is generated when two shapes collide with a speed faster than the hit speed threshold.
-/// This may be reported for speculative contacts that have a confirmed impulse.
 typedef struct b2ContactHitEvent
 {
 	/// Id of the first shape
@@ -994,9 +1083,7 @@ typedef struct b2ContactHitEvent
 	/// Id of the second shape
 	b2ShapeId shapeIdB;
 
-	/// Point where the shapes hit at the beginning of the time step.
-	/// This is a mid-point between the two surfaces. It could be at speculative
-	/// point where the two shapes were not touching at the beginning of the time step.
+	/// Point where the shapes hit
 	b2Vec2 point;
 
 	/// Normal vector pointing from shape A to shape B
@@ -1060,26 +1147,6 @@ typedef struct b2BodyEvents
 	int moveCount;
 } b2BodyEvents;
 
-/// Joint events report joints that are awake and have a force and/or torque exceeding the threshold
-/// The observed forces and torques are not returned for efficiency reasons.
-typedef struct b2JointEvent
-{
-	b2JointId jointId;
-	void* userData;
-} b2JointEvent;
-
-/// Joint events are buffered in the Box2D world and are available
-/// as event arrays after the time step is complete.
-/// Note: this data becomes invalid if joints are destroyed
-typedef struct b2JointEvents
-{
-	/// Array of events
-	b2JointEvent* jointEvents;
-
-	/// Number of events
-	int count;
-} b2JointEvents;
-
 /// The contact data for two shapes. By convention the manifold normal points
 /// from shape A to shape B.
 /// @see b2Shape_GetContactData() and b2Body_GetContactData()
@@ -1128,18 +1195,17 @@ typedef bool b2PreSolveFcn( b2ShapeId shapeIdA, b2ShapeId shapeIdB, b2Manifold* 
 /// @ingroup world
 typedef bool b2OverlapResultFcn( b2ShapeId shapeId, void* context );
 
-/// Prototype callback for ray and shape casts.
+/// Prototype callback for ray casts.
 /// Called for each shape found in the query. You control how the ray cast
 /// proceeds by returning a float:
 /// return -1: ignore this shape and continue
 /// return 0: terminate the ray cast
 /// return fraction: clip the ray to this point
 /// return 1: don't clip the ray and continue
-/// A cast with initial overlap will return a zero fraction and a zero normal.
 /// @param shapeId the shape hit by the ray
 /// @param point the point of initial intersection
-/// @param normal the normal vector at the point of intersection, zero for a shape cast with initial overlap
-/// @param fraction the fraction along the ray at the point of intersection, zero for a shape cast with initial overlap
+/// @param normal the normal vector at the point of intersection
+/// @param fraction the fraction along the ray at the point of intersection
 /// @param context the user context
 /// @return -1 to filter, 0 to terminate, fraction to clip the ray for closest hit, 1 to continue
 /// @see b2World_CastRay

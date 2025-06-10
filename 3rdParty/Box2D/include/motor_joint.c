@@ -6,10 +6,34 @@
 #include "joint.h"
 #include "solver.h"
 #include "solver_set.h"
-#include "physics_world.h"
+#include "world.h"
 
 // needed for dll export
 #include "box2d/box2d.h"
+
+void b2MotorJoint_SetLinearOffset( b2JointId jointId, b2Vec2 linearOffset )
+{
+	b2JointSim* joint = b2GetJointSimCheckType( jointId, b2_motorJoint );
+	joint->motorJoint.linearOffset = linearOffset;
+}
+
+b2Vec2 b2MotorJoint_GetLinearOffset( b2JointId jointId )
+{
+	b2JointSim* joint = b2GetJointSimCheckType( jointId, b2_motorJoint );
+	return joint->motorJoint.linearOffset;
+}
+
+void b2MotorJoint_SetAngularOffset( b2JointId jointId, float angularOffset )
+{
+	b2JointSim* joint = b2GetJointSimCheckType( jointId, b2_motorJoint );
+	joint->motorJoint.angularOffset = b2ClampFloat( angularOffset, -B2_PI, B2_PI );
+}
+
+float b2MotorJoint_GetAngularOffset( b2JointId jointId )
+{
+	b2JointSim* joint = b2GetJointSimCheckType( jointId, b2_motorJoint );
+	return joint->motorJoint.angularOffset;
+}
 
 void b2MotorJoint_SetMaxForce( b2JointId jointId, float maxForce )
 {
@@ -110,17 +134,14 @@ void b2PrepareMotorJoint( b2JointSim* base, b2StepContext* context )
 	joint->indexA = bodyA->setIndex == b2_awakeSet ? localIndexA : B2_NULL_INDEX;
 	joint->indexB = bodyB->setIndex == b2_awakeSet ? localIndexB : B2_NULL_INDEX;
 
-	// Compute joint anchor frames with world space rotation, relative to center of mass
-	joint->frameA.q = b2MulRot( bodySimA->transform.q, base->localFrameA.q );
-	joint->frameA.p = b2RotateVector( bodySimA->transform.q, b2Sub( base->localFrameA.p, bodySimA->localCenter ) );
-	joint->frameB.q = b2MulRot( bodySimB->transform.q, base->localFrameB.q );
-	joint->frameB.p = b2RotateVector( bodySimB->transform.q, b2Sub( base->localFrameB.p, bodySimB->localCenter ) );
+	joint->anchorA = b2RotateVector( bodySimA->transform.q, b2Sub( base->localOriginAnchorA, bodySimA->localCenter ) );
+	joint->anchorB = b2RotateVector( bodySimB->transform.q, b2Sub( base->localOriginAnchorB, bodySimB->localCenter ) );
+	joint->deltaCenter = b2Sub( b2Sub( bodySimB->center, bodySimA->center ), joint->linearOffset );
+	joint->deltaAngle = b2RelativeAngle( bodySimB->transform.q, bodySimA->transform.q ) - joint->angularOffset;
+	joint->deltaAngle = b2UnwindAngle( joint->deltaAngle );
 
-	// Compute the initial center delta. Incremental position updates are relative to this.
-	joint->deltaCenter = b2Sub( bodySimB->center, bodySimA->center );
-
-	b2Vec2 rA = joint->frameA.p;
-	b2Vec2 rB = joint->frameB.p;
+	b2Vec2 rA = joint->anchorA;
+	b2Vec2 rB = joint->anchorB;
 
 	b2Mat22 K;
 	K.cx.x = mA + mB + rA.y * rA.y * iA + rB.y * rB.y * iB;
@@ -141,8 +162,6 @@ void b2PrepareMotorJoint( b2JointSim* base, b2StepContext* context )
 
 void b2WarmStartMotorJoint( b2JointSim* base, b2StepContext* context )
 {
-	B2_ASSERT( base->type == b2_motorJoint );
-
 	float mA = base->invMassA;
 	float mB = base->invMassB;
 	float iA = base->invIA;
@@ -153,20 +172,21 @@ void b2WarmStartMotorJoint( b2JointSim* base, b2StepContext* context )
 	// dummy state for static bodies
 	b2BodyState dummyState = b2_identityBodyState;
 
-	b2BodyState* stateA = joint->indexA == B2_NULL_INDEX ? &dummyState : context->states + joint->indexA;
-	b2BodyState* stateB = joint->indexB == B2_NULL_INDEX ? &dummyState : context->states + joint->indexB;
+	b2BodyState* bodyA = joint->indexA == B2_NULL_INDEX ? &dummyState : context->states + joint->indexA;
+	b2BodyState* bodyB = joint->indexB == B2_NULL_INDEX ? &dummyState : context->states + joint->indexB;
 
-	b2Vec2 rA = b2RotateVector( stateA->deltaRotation, joint->frameA.p );
-	b2Vec2 rB = b2RotateVector( stateB->deltaRotation, joint->frameB.p );
+	b2Vec2 rA = b2RotateVector( bodyA->deltaRotation, joint->anchorA );
+	b2Vec2 rB = b2RotateVector( bodyB->deltaRotation, joint->anchorB );
 
-	stateA->linearVelocity = b2MulSub( stateA->linearVelocity, mA, joint->linearImpulse );
-	stateA->angularVelocity -= iA * ( b2Cross( rA, joint->linearImpulse ) + joint->angularImpulse );
-	stateB->linearVelocity = b2MulAdd( stateB->linearVelocity, mB, joint->linearImpulse );
-	stateB->angularVelocity += iB * ( b2Cross( rB, joint->linearImpulse ) + joint->angularImpulse );
+	bodyA->linearVelocity = b2MulSub( bodyA->linearVelocity, mA, joint->linearImpulse );
+	bodyA->angularVelocity -= iA * ( b2Cross( rA, joint->linearImpulse ) + joint->angularImpulse );
+	bodyB->linearVelocity = b2MulAdd( bodyB->linearVelocity, mB, joint->linearImpulse );
+	bodyB->angularVelocity += iB * ( b2Cross( rB, joint->linearImpulse ) + joint->angularImpulse );
 }
 
-void b2SolveMotorJoint( b2JointSim* base, b2StepContext* context )
+void b2SolveMotorJoint( b2JointSim* base, b2StepContext* context, bool useBias )
 {
+	B2_UNUSED( useBias );
 	B2_ASSERT( base->type == b2_motorJoint );
 
 	float mA = base->invMassA;
@@ -178,22 +198,20 @@ void b2SolveMotorJoint( b2JointSim* base, b2StepContext* context )
 	b2BodyState dummyState = b2_identityBodyState;
 
 	b2MotorJoint* joint = &base->motorJoint;
-	b2BodyState* stateA = joint->indexA == B2_NULL_INDEX ? &dummyState : context->states + joint->indexA;
-	b2BodyState* stateB = joint->indexB == B2_NULL_INDEX ? &dummyState : context->states + joint->indexB;
+	b2BodyState* bodyA = joint->indexA == B2_NULL_INDEX ? &dummyState : context->states + joint->indexA;
+	b2BodyState* bodyB = joint->indexB == B2_NULL_INDEX ? &dummyState : context->states + joint->indexB;
 
-	b2Vec2 vA = stateA->linearVelocity;
-	float wA = stateA->angularVelocity;
-	b2Vec2 vB = stateB->linearVelocity;
-	float wB = stateB->angularVelocity;
+	b2Vec2 vA = bodyA->linearVelocity;
+	float wA = bodyA->angularVelocity;
+	b2Vec2 vB = bodyB->linearVelocity;
+	float wB = bodyB->angularVelocity;
 
 	// angular constraint
 	{
-		b2Rot qA = b2MulRot( stateA->deltaRotation, joint->frameA.q );
-		b2Rot qB = b2MulRot( stateB->deltaRotation, joint->frameB.q );
-		b2Rot relQ = b2InvMulRot( qA, qB );
+		float angularSeperation = b2RelativeAngle( bodyB->deltaRotation, bodyA->deltaRotation ) + joint->deltaAngle;
+		angularSeperation = b2UnwindAngle( angularSeperation );
 
-		float jointAngle = b2Rot_GetAngle( relQ );
-		float angularBias = context->inv_h * joint->correctionFactor * jointAngle;
+		float angularBias = context->inv_h * joint->correctionFactor * angularSeperation;
 
 		float Cdot = wB - wA;
 		float impulse = -joint->angularMass * ( Cdot + angularBias );
@@ -209,10 +227,10 @@ void b2SolveMotorJoint( b2JointSim* base, b2StepContext* context )
 
 	// linear constraint
 	{
-		b2Vec2 rA = b2RotateVector( stateA->deltaRotation, joint->frameA.p );
-		b2Vec2 rB = b2RotateVector( stateB->deltaRotation, joint->frameB.p );
+		b2Vec2 rA = b2RotateVector( bodyA->deltaRotation, joint->anchorA );
+		b2Vec2 rB = b2RotateVector( bodyB->deltaRotation, joint->anchorB );
 
-		b2Vec2 ds = b2Add( b2Sub( stateB->deltaPosition, stateA->deltaPosition ), b2Sub( rB, rA ) );
+		b2Vec2 ds = b2Add( b2Sub( bodyB->deltaPosition, bodyA->deltaPosition ), b2Sub( rB, rA ) );
 		b2Vec2 linearSeparation = b2Add( joint->deltaCenter, ds );
 		b2Vec2 linearBias = b2MulSV( context->inv_h * joint->correctionFactor, linearSeparation );
 
@@ -239,10 +257,10 @@ void b2SolveMotorJoint( b2JointSim* base, b2StepContext* context )
 		wB += iB * b2Cross( rB, impulse );
 	}
 
-	stateA->linearVelocity = vA;
-	stateA->angularVelocity = wA;
-	stateB->linearVelocity = vB;
-	stateB->angularVelocity = wB;
+	bodyA->linearVelocity = vA;
+	bodyA->angularVelocity = wA;
+	bodyB->linearVelocity = vB;
+	bodyB->angularVelocity = wB;
 }
 
 #if 0

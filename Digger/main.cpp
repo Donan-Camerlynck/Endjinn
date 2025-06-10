@@ -25,6 +25,7 @@
 #include "ScoreDisplayComponent.h"
 #include "ScoreComponent.h"
 #include "ScoreComand.h"
+#include <BodyComponent.h>
 
 void load()
 {
@@ -59,10 +60,19 @@ void load()
 	auto rootObj = scene.Add(std::move(goRoot));
 	rootObj->SetLocalPos(glm::vec3{ 200.f, 200.f, 1.f });
 
+	dae::BodyInfo mainBodyInfo{
+		dae::BodyType::dynamicBody,
+		glm::vec2{280.f, 20.f},
+		0.f,
+		0.f,
+		true
+	};
+
 	auto go4 = std::make_unique<dae::GameObject>(&scene);
 	go4->AddComponent<dae::SpriteComponent>("digger.png");
 	go4->AddComponent<dae::HealthComponent>(3);
 	go4->AddComponent<dae::ScoreComponent>(0);
+	go4->AddComponent<dae::BodyComponent>(mainBodyInfo);
 	go4->SetLocalPos(glm::vec3{ 280.f, 20.f, 1.f });
 	auto mainObj = scene.Add(std::move(go4));
 

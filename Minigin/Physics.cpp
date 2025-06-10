@@ -8,10 +8,23 @@ namespace dae
 	{
 	public:
 		Impl()
-			:m_World(std::make_unique<b2WorldDef>(b2DefaultWorldDef())), m_WorldId(b2CreateWorld(m_World.get())), m_TimeStep(1.f/60.f)
+			:m_WorldId(CreateWorld()), m_TimeStep(1.f / 60.f)
 		{
-			m_World.get()->gravity = { 0.0f, -10.0f };
 			
+		}
+
+		void Initialize()
+		{
+			
+		}
+
+		b2WorldId CreateWorld()
+		{
+			b2Vec2 gravity = { 0.0f, -10.0f };
+			b2WorldDef worldDef{ b2DefaultWorldDef() };
+			worldDef.gravity = gravity;
+			b2WorldId worldId = b2CreateWorld(&worldDef);
+			return worldId;
 		}
 
 		void Update()
@@ -30,8 +43,7 @@ namespace dae
 			b2DestroyWorld(m_WorldId);
 		}
 
-	private:
-		std::unique_ptr<b2WorldDef> m_World;
+	private:		
 		b2WorldId m_WorldId;
 		float m_TimeStep;
 	};
@@ -41,6 +53,11 @@ namespace dae
 	{
 	}
 	Physics::~Physics() = default;
+
+	void dae::Physics::Initialize()
+	{
+		m_pImpl->Initialize();
+	}
 
 	void dae::Physics::Update()
 	{
