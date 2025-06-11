@@ -1,7 +1,6 @@
 #include "MoveCommand.h"
 #include "GameObject.h"
 #include "TimeManager.h"
-#include <iostream>
 
 dae::MoveCommand::MoveCommand(float speed, glm::vec2 direction, BodyComponent* body)
 	:m_Speed(speed), m_pBodyComp(body)
@@ -17,5 +16,4 @@ void dae::MoveCommand::Execute()
 	}
 	glm::vec2 vel = m_Speed * m_Direction;
 	m_pBodyComp->SetVelocity(vel);
-	std::cout << "move command executed \n";
 }

@@ -1,26 +1,11 @@
 #pragma once
 #include "BaseComponent.h"
+#include "Body.h"
 #include <glm.hpp>
 #include <memory>
 
 namespace dae
 {
-
-	enum class BodyType
-	{
-		staticBody,
-		kinematicBody,
-		dynamicBody
-	};
-
-	struct BodyInfo
-	{
-		BodyType type;
-		glm::vec2 position;
-		float linearDamping = 0.f;
-		float gravityScale = 0.f;
-		bool fixedRotation = true;
-	};
 
 	class BodyComponent : public BaseComponent
 	{
@@ -31,7 +16,7 @@ namespace dae
 
 		void SetVelocity(glm::vec2 velocity);
 
-		BodyComponent(GameObject* owner, BodyInfo bodyInfo);
+		BodyComponent(GameObject*, BodyInfo bodyInfo);
 		virtual ~BodyComponent() override = default;
 		BodyComponent(const BodyComponent& other) = delete;
 		BodyComponent(BodyComponent&& other) = delete;
@@ -39,7 +24,6 @@ namespace dae
 		BodyComponent& operator=(BodyComponent&& other) = delete;
 
 	private:
-		class Impl;
-		std::unique_ptr<Impl> m_pImpl;
+		std::unique_ptr<Body> m_pBody;
 	};
 }

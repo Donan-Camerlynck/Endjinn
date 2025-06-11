@@ -229,6 +229,7 @@ xcopy "$(SolutionDir)3rdParty\Box2d\lib\$(Configuration)\$(PlatformTarget)\*.dll
     <ClInclude Include="..\3rdParty\imgui-1.91.8\imstb_truetype.h" />
     <ClInclude Include="AxisCommand.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="Body.h" />
     <ClInclude Include="BodyComponent.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
@@ -237,6 +238,7 @@ xcopy "$(SolutionDir)3rdParty\Box2d\lib\$(Configuration)\$(PlatformTarget)\*.dll
     <ClInclude Include="ICommand.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Interfaces.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="Observer.h" />
@@ -263,12 +265,14 @@ xcopy "$(SolutionDir)3rdParty\Box2d\lib\$(Configuration)\$(PlatformTarget)\*.dll
     <ClCompile Include="..\3rdParty\imgui-1.91.8\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.91.8\imgui_widgets.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="Body.cpp" />
     <ClCompile Include="BodyComponent.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamePad.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Minigin.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="Physics.cpp" />
