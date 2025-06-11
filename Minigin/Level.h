@@ -1,46 +1,38 @@
 #pragma once
 #include <vector>
 #include "GameObject.h"
-#include <box2d.h>
+#include "Body.h"
+#include "Tile.h"
 
 namespace dae
 {
 
-	enum class TileType
-	{
-		empty,
-		dirt
-	};
 
-	struct Tile
-	{
-		b2WorldId worldId;
-		TileType type;
-		GameObject* containingObject{};
-	};
-
-	class Level
+	class Level : public Singleton<Level>
 	{
 	public:
-		Level();
 
-		~Level();
-		Level(const Level&) = delete;
-		Level(Level&&) = delete;
-		Level& operator=(const Level&) = delete;
-		Level& operator=(Level&&) = delete;
-
-		void Initialize();
+		void Initialize(int rows, int columns);
 		void Update();
+		void Render();
 		void End();
 	private:
-		std::vector<std::vector<Tile>> m_Tiles;
-		//dae::BodyInfo mainBodyInfo{
-		//dae::BodyType::dynamicBody,
-		//glm::vec2{280.f, 20.f},
-		//10.f,
-		//0.f,
-		//true
-		//};
+		int m_Rows{};
+		int m_Columns{};
+
+		std::vector<std::vector<std::unique_ptr<Tile>>> m_Tiles;
+		
+		dae::BodyInfo m_MainTileBodyInfo
+		{
+			dae::BodyType::staticBody,
+			glm::vec2{280.f, 20.f},
+			10.f,
+			0.f,
+			true
+		};
+
+		//some data to collect from file to init the level
+
+		//texture data for all tile types
 	};
 }

@@ -26,6 +26,7 @@
 #include "ScoreComponent.h"
 #include "ScoreComand.h"
 #include <BodyComponent.h>
+#include "Level.h"
 
 void load()
 {
@@ -35,6 +36,9 @@ void load()
 	auto fontSmall = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 16);
 
 	auto& input = dae::InputManager::GetInstance();
+
+	auto& level = dae::Level::GetInstance();
+	level.Initialize(4, 4);
 
 	auto go3 = std::make_unique<dae::GameObject>(&scene);
 	go3->AddComponent<dae::SpriteComponent>("background.tga");

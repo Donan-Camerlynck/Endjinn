@@ -15,6 +15,8 @@ namespace dae
 
 		}
 
+
+
 		void Initialize()
 		{
 			b2BodyDef pBody = b2DefaultBodyDef();
@@ -73,9 +75,9 @@ namespace dae
 	{
 
 	}
-	Body::~Body()
-	{
-	}
+
+	Body::~Body() = default;
+
 
 	void Body::Initialize()
 	{
