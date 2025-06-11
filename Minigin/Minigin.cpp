@@ -14,6 +14,7 @@
 #include "Renderer.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
+#include "Level.h"
 
 SDL_Window* g_window{};
 
@@ -112,6 +113,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		doContinue = input.ProcessInput();
 		physics.Update();
 		sceneManager.Update();
+
 		renderer.Render();
 
 		const auto sleepTime = currentTime + std::chrono::milliseconds(static_cast<int>(msPerFrame)) - std::chrono::high_resolution_clock::now();

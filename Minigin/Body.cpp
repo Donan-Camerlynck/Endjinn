@@ -16,7 +16,6 @@ namespace dae
 		}
 
 
-
 		void Initialize()
 		{
 			b2BodyDef pBody = b2DefaultBodyDef();
@@ -27,6 +26,11 @@ namespace dae
 			pBody.linearDamping = m_BodyInfo.linearDamping;
 			b2BodyId bodyId = Physics::GetInstance().CreatePhysicsBody(&pBody);
 			m_BodyId = { bodyId.index1, bodyId.world0, bodyId.generation };
+
+			b2ShapeDef shapeDef = b2DefaultShapeDef();
+
+			b2Polygon box = b2MakeBox(m_BodyInfo.dimensions.x, m_BodyInfo.dimensions.x);
+			b2ShapeId myShapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
 		}
 
 		void Update()
@@ -39,6 +43,12 @@ namespace dae
 
 		}
 
+		glm::vec2 GetPos()
+		{
+			b2Vec2 pos{b2Body_GetPosition(ConvertToB2BodyId(m_BodyId))};
+			return glm::vec2{ pos.x, pos.y };
+		}
+
 		BodyIdTemp GetBodyId()
 		{
 			return m_BodyId;
@@ -46,7 +56,7 @@ namespace dae
 
 		void SetVelocity(glm::vec2 vel)
 		{
-			b2Body_SetLinearVelocity(b2BodyId{  m_BodyId.index1, m_BodyId.world0, m_BodyId.generation }, b2Vec2{ vel.x, vel.y });
+			b2Body_SetLinearVelocity(ConvertToB2BodyId(m_BodyId), b2Vec2{vel.x, vel.y});
 		}
 
 		static b2BodyType ConvertBodyType(BodyType type)
@@ -61,6 +71,11 @@ namespace dae
 				return b2_dynamicBody;
 			}
 			return b2_staticBody;
+		}
+
+		b2BodyId ConvertToB2BodyId(BodyIdTemp bodyId)
+		{
+			return b2BodyId{ bodyId.index1, bodyId.world0, bodyId.generation };
 		}
 
 	private:
@@ -97,6 +112,11 @@ namespace dae
 	void Body::SetVelocity(glm::vec2 velocity)
 	{
 		m_pImpl->SetVelocity(velocity);
+	}
+
+	glm::vec2 Body::GetPosition()
+	{
+		return m_pImpl->GetPos();
 	}
 
 	BodyIdTemp Body::GetBodyId()

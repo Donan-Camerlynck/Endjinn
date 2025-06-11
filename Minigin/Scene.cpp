@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "GameObject.h"
+#include "Level.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -77,6 +78,7 @@ void Scene::Render() const
 	{
 		object->Render();
 	}
+	Level::GetInstance().Render();
 }
 
 void dae::Scene::End()

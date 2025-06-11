@@ -129,9 +129,6 @@
     <ClInclude Include="Subject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BoxCollision.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="BodyComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -224,9 +221,6 @@
     <ClCompile Include="Physics.h">
       <Filter>Physics</Filter>
     </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BodyComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -238,6 +232,9 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

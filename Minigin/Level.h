@@ -26,6 +26,7 @@ namespace dae
 		{
 			dae::BodyType::staticBody,
 			glm::vec2{280.f, 20.f},
+			glm::vec2{0.5f, 0.5f},
 			10.f,
 			0.f,
 			true

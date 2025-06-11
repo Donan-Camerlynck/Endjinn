@@ -23,9 +23,11 @@ namespace dae
 	{
 		BodyType type;
 		glm::vec2 position;
+		glm::vec2 dimensions;
 		float linearDamping = 0.f;
 		float gravityScale = 0.f;
 		bool fixedRotation = true;
+
 	};
 
 	class Body
@@ -43,6 +45,9 @@ namespace dae
 		void Update();
 		void End();
 		void SetVelocity(glm::vec2 velocity);
+
+		glm::vec2 GetPosition();
+
 		BodyIdTemp GetBodyId();
 
 	private:

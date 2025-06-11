@@ -1,5 +1,6 @@
 #include "Physics.h"
 #include "TimeManager.h"
+#include "Renderer.h"
 #include <box2d.h>
 
 namespace dae
@@ -32,6 +33,8 @@ namespace dae
 			b2World_Step(m_WorldId, TimeManager::GetInstance().GetDeltaTime(), 4);
 		}
 
+		
+
 
 		b2BodyId CreatePhysicsBody(b2BodyDef* bodyDef)
 		{
@@ -63,6 +66,8 @@ namespace dae
 	{
 		m_pImpl->Update();
 	}
+
+	
 
 	void dae::Physics::End()
 	{

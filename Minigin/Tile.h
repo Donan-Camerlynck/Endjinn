@@ -15,12 +15,15 @@ namespace dae
 	class Tile
 	{
 	public:
-		Tile(BodyInfo tileBodyInfo);
+		Tile(BodyInfo tileBodyInfo, TileType type, glm::vec2 dimensions);
 		~Tile();
+
+		void Render();
 
 	private:
 		std::unique_ptr<Body> m_Body;
-		TileType type{TileType::empty};
+		TileType m_Type{TileType::empty};
+		glm::vec2 m_Dimensions{};
 		GameObject* containingObject{};
 	};
 }

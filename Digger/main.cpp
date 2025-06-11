@@ -38,7 +38,7 @@ void load()
 	auto& input = dae::InputManager::GetInstance();
 
 	auto& level = dae::Level::GetInstance();
-	level.Initialize(4, 4);
+	level.Initialize(12, 9);
 
 	auto go3 = std::make_unique<dae::GameObject>(&scene);
 	go3->AddComponent<dae::SpriteComponent>("background.tga");
@@ -69,6 +69,7 @@ void load()
 	dae::BodyInfo mainBodyInfo{
 		dae::BodyType::dynamicBody,
 		glm::vec2{280.f, 20.f},
+		glm::vec2{0.5f, 0.5f},
 		10.f,
 		0.f,
 		true
