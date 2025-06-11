@@ -84,7 +84,7 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
-void dae::Renderer::RenderBox(float x, float y, float width, float height)
+void dae::Renderer::RenderDebugBox(float x, float y, float width, float height, bool isColliding)
 {
 	SDL_Rect dst{};
 	dst.x = static_cast<int>(x);
@@ -92,7 +92,13 @@ void dae::Renderer::RenderBox(float x, float y, float width, float height)
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_SetRenderDrawColor(GetSDLRenderer(), 255, 0, 0, 255); // Red outline
+	if (isColliding)
+	{
+		SDL_SetRenderDrawColor(GetSDLRenderer(), 0, 255, 0, 255); // green outline
+	}
 	SDL_RenderDrawRect(GetSDLRenderer(), &dst);
 }
+
+
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

@@ -6,8 +6,8 @@ namespace dae
 
 
 
-	Tile::Tile(BodyInfo tileBodyInfo, TileType type, glm::vec2 dimensions)
-		:m_Body(std::make_unique<Body>(tileBodyInfo)), m_Type(type), m_Dimensions(dimensions)
+	Tile::Tile(BodyInfo tileBodyInfo, TileType type, glm::vec2 dimensions, std::unique_ptr<UserDataOverlap> userDataOverlap)
+		:m_Body(std::make_unique<Body>(tileBodyInfo, std::move(userDataOverlap))), m_Type(type), m_Dimensions(dimensions)
 	{
 		m_Body->Initialize();
 	}
@@ -18,6 +18,6 @@ namespace dae
 	{
 		auto& renderer = Renderer::GetInstance();
 		glm::vec2 pos{ m_Body->GetPosition() };
-		renderer.RenderBox(pos.x, pos.y, m_Dimensions.x, m_Dimensions.y);
+		renderer.RenderDebugBox(pos.x, pos.y, m_Dimensions.x, m_Dimensions.y, m_IsColliding);
 	}
 }

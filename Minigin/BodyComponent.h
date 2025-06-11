@@ -16,7 +16,7 @@ namespace dae
 
 		void SetVelocity(glm::vec2 velocity);
 
-		BodyComponent(GameObject*, BodyInfo bodyInfo);
+		BodyComponent(GameObject*, BodyInfo bodyInfo, std::unique_ptr<UserDataOverlap> userDataOverlap);
 		virtual ~BodyComponent() override = default;
 		BodyComponent(const BodyComponent& other) = delete;
 		BodyComponent(BodyComponent&& other) = delete;

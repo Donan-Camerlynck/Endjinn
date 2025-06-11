@@ -9,8 +9,8 @@ namespace dae
 	class Body::Impl
 	{
 	public:
-		Impl(BodyInfo bodyinfo)
-			: m_BodyInfo(bodyinfo)
+		Impl(BodyInfo bodyinfo, std::unique_ptr<UserDataOverlap> userDataOverlap)
+			: m_BodyInfo(bodyinfo), m_UserDataOverlap(std::move(userDataOverlap))
 		{
 
 		}
@@ -28,7 +28,9 @@ namespace dae
 			m_BodyId = { bodyId.index1, bodyId.world0, bodyId.generation };
 
 			b2ShapeDef shapeDef = b2DefaultShapeDef();
-
+			shapeDef.isSensor = m_BodyInfo.isSensor;
+			shapeDef.enableSensorEvents = true;
+			shapeDef.userData = m_UserDataOverlap.get();
 			b2Polygon box = b2MakeBox(m_BodyInfo.dimensions.x, m_BodyInfo.dimensions.x);
 			b2ShapeId myShapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
 		}
@@ -81,12 +83,13 @@ namespace dae
 	private:
 		BodyInfo m_BodyInfo;
 		BodyIdTemp m_BodyId{};
+		std::unique_ptr<UserDataOverlap> m_UserDataOverlap;
 	};
 
 
 
-	Body::Body(BodyInfo bodyInfo)
-		:m_pImpl(std::make_unique<Impl>(bodyInfo))
+	Body::Body(BodyInfo bodyInfo, std::unique_ptr<UserDataOverlap> userDataOverlap)
+		:m_pImpl(std::make_unique<Impl>(bodyInfo, std::move(userDataOverlap)))
 	{
 
 	}

@@ -7,7 +7,7 @@ struct b2BodyDef;
 
 namespace dae
 {
-
+	
 
 	class Physics final : public Singleton<Physics>
 	{

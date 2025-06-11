@@ -236,5 +236,8 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Structs.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

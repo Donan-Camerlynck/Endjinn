@@ -283,6 +283,7 @@ xcopy "$(SolutionDir)3rdParty\Box2d\lib\$(Configuration)\$(PlatformTarget)\*.dll
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="Structs.h" />
     <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />

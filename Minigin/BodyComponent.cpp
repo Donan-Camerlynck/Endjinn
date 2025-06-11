@@ -11,8 +11,8 @@ namespace dae
 		return b2BodyId{ idToConvert.index1, idToConvert.world0, idToConvert.generation };
 	}
 
-	BodyComponent::BodyComponent(GameObject* owner, BodyInfo bodyInfo)
-		:BaseComponent(owner), m_pBody(std::make_unique<Body>(bodyInfo))
+	BodyComponent::BodyComponent(GameObject* owner, BodyInfo bodyInfo, std::unique_ptr<UserDataOverlap> userDataOverlap)
+		:BaseComponent(owner), m_pBody(std::make_unique<Body>(bodyInfo, std::move(userDataOverlap)))
 	{
 		
 	}

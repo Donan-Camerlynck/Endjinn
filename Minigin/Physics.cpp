@@ -2,6 +2,8 @@
 #include "TimeManager.h"
 #include "Renderer.h"
 #include <box2d.h>
+#include "Structs.h"
+#include "Level.h"
 
 namespace dae
 { 
@@ -31,6 +33,25 @@ namespace dae
 		void Update()
 		{
 			b2World_Step(m_WorldId, TimeManager::GetInstance().GetDeltaTime(), 4);
+
+			b2SensorEvents sensorEvents = b2World_GetSensorEvents(m_WorldId);
+			//box2d code for begin overlap events
+			for (int i = 0; i < sensorEvents.beginCount; ++i)
+			{
+				b2SensorBeginTouchEvent* beginTouch = sensorEvents.beginEvents + i;
+				UserDataOverlap* myUserData = reinterpret_cast<UserDataOverlap*>(b2Shape_GetUserData(beginTouch->visitorShapeId));
+				// process begin event
+				if (myUserData->isGameObject)
+				{
+
+				}
+				else
+				{
+					Level::GetInstance().SetTileIsColliding(myUserData->row, myUserData->column, true);
+				}
+			}
+
+			
 		}
 
 		

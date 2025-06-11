@@ -24,7 +24,8 @@ namespace dae
 				//add logic to determine location of tile
 				BodyInfo tileInfo = m_MainTileBodyInfo;
 				tileInfo.position = glm::vec2{x * columnWidth, y * rowHeight};
-				m_Tiles[y].emplace_back(std::make_unique<Tile>(tileInfo, TileType::empty, dimensions));
+				std::unique_ptr<UserDataOverlap> userDataOverlap = std::make_unique<UserDataOverlap>(false, x, y);
+				m_Tiles[y].emplace_back(std::make_unique<Tile>(tileInfo, TileType::empty, dimensions, std::move(userDataOverlap)));
 			}
 		}
 	}
@@ -37,5 +38,9 @@ namespace dae
 				tile.Render();
 			}
 		}
+	}
+	void Level::SetTileIsColliding(int row, int column, bool isColliding)
+	{
+		m_Tiles[row][column]->SetIsColliding(isColliding);
 	}
 }

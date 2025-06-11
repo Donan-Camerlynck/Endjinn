@@ -1,6 +1,7 @@
 #pragma once
 #include <glm.hpp>
 #include <memory>
+#include "Structs.h"
 
 struct BodyIdTemp
 {
@@ -34,7 +35,7 @@ namespace dae
 	{
 	public:
 
-		Body( BodyInfo bodyInfo);
+		Body( BodyInfo bodyInfo, std::unique_ptr<UserDataOverlap> userDataOverlap);
 		~Body();
 		Body(const Body& other) = delete;
 		Body(Body&& other) = delete;

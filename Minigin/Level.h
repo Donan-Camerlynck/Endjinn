@@ -16,6 +16,8 @@ namespace dae
 		void Update();
 		void Render();
 		void End();
+
+		void SetTileIsColliding(int row, int column, bool isColliding);
 	private:
 		int m_Rows{};
 		int m_Columns{};

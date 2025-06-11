@@ -78,11 +78,14 @@ void load()
 		true
 	};
 
+	
+
 	auto go4 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
+	std::unique_ptr<dae::UserDataOverlap> userDataOverlapMain = std::make_unique<dae::UserDataOverlap>(true, -1, -1, go4.get() );
 	go4->AddComponent<dae::SpriteComponent>("digger.png");
 	go4->AddComponent<dae::HealthComponent>(3);
 	go4->AddComponent<dae::ScoreComponent>(0);
-	go4->AddComponent<dae::BodyComponent>(mainBodyInfo);
+	go4->AddComponent<dae::BodyComponent>(mainBodyInfo, std::move(userDataOverlapMain));
 	go4->SetLocalPos(glm::vec3{ 280.f, 20.f, 1.f });
 	auto mainObj = scene.Add(std::move(go4));
 
