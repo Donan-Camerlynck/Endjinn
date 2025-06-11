@@ -28,6 +28,8 @@
 #include <BodyComponent.h>
 #include "Level.h"
 
+
+
 void load()
 {
 	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
@@ -40,27 +42,27 @@ void load()
 	auto& level = dae::Level::GetInstance();
 	level.Initialize(12, 9);
 
-	auto go3 = std::make_unique<dae::GameObject>(&scene);
+	auto go3 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	go3->AddComponent<dae::SpriteComponent>("background.tga");
 	scene.Add(std::move(go3));
 
-	auto go2 = std::make_unique<dae::GameObject>(&scene);
+	auto go2 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	go2->AddComponent<dae::SpriteComponent>("logo.tga");
 	go2->SetLocalPos(glm::vec3{ 216.f, 180.f, 1.f });
 	scene.Add(std::move(go2));
 
-	auto go = std::make_unique<dae::GameObject>(&scene);
+	auto go = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	go->AddComponent<dae::TextComponent>(font, "Programming 4 Assignment");
 	go->SetLocalPos(glm::vec3{ 80.f, 20.f, 1.f });
 	scene.Add(std::move(go));
 
-	auto fps = std::make_unique<dae::GameObject>(&scene);
+	auto fps = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	fps->AddComponent<dae::FPSComponent>();
-	fps->AddComponent<dae::TextComponent>(font, "FPS");
+	fps->AddComponent<dae::TextComponent>(fontSmall, "FPS");
 	fps->SetLocalPos(glm::vec3{ 10.f, 10.f, 1.f });
 	scene.Add(std::move(fps));
 
-	auto goRoot = std::make_unique<dae::GameObject>(&scene);
+	auto goRoot = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	auto rootObj = scene.Add(std::move(goRoot));
 	rootObj->SetLocalPos(glm::vec3{ 200.f, 200.f, 1.f });
 
@@ -72,10 +74,11 @@ void load()
 		glm::vec2{0.5f, 0.5f},
 		10.f,
 		0.f,
+		true,
 		true
 	};
 
-	auto go4 = std::make_unique<dae::GameObject>(&scene);
+	auto go4 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
 	go4->AddComponent<dae::SpriteComponent>("digger.png");
 	go4->AddComponent<dae::HealthComponent>(3);
 	go4->AddComponent<dae::ScoreComponent>(0);
@@ -84,7 +87,7 @@ void load()
 	auto mainObj = scene.Add(std::move(go4));
 
 
-	auto go5 = std::make_unique<dae::GameObject>(&scene);
+	auto go5 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
 	go5->AddComponent<dae::SpriteComponent>("digger2.png");
 	go5->AddComponent<dae::RotationComponent>(60.f, 300.f);
 	auto childObj = scene.Add(std::move(go5));
@@ -92,13 +95,13 @@ void load()
 	mainObj->SetParent(rootObj, false);
 	childObj->SetParent(mainObj, false);
 
-	auto HealthDisplay = std::make_unique<dae::GameObject>(&scene);
+	auto HealthDisplay = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	HealthDisplay->AddComponent<dae::TextComponent>(fontSmall, "Player 1 health: ");
 	HealthDisplay->AddComponent<dae::HealthDisplayComponent>(mainObj);
 	HealthDisplay->SetLocalPos(glm::vec3{ 10.f, 100.f, 1.f });
 	scene.Add(std::move(HealthDisplay));
 
-	auto ScoreDisplay = std::make_unique<dae::GameObject>(&scene);
+	auto ScoreDisplay = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	ScoreDisplay->AddComponent<dae::TextComponent>(fontSmall, "Player 1 score: ");
 	ScoreDisplay->AddComponent<dae::ScoreDisplayComponent>(mainObj);
 	ScoreDisplay->SetLocalPos(glm::vec3{ 10.f, 150.f, 1.f });

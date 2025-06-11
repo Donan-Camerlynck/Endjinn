@@ -8,8 +8,20 @@
 #include "BaseComponent.h"
 #include "Scene.h"
 
+
+
 namespace dae
 {
+	enum class RenderLayer
+	{
+		BackGround,
+		ObjectBottom,
+		ObjectMiddle,
+		ObjectTop,
+		UI,
+		numLayers
+	};
+
 	template<typename CompType>
 	concept CompCon = requires(CompType)
 	{
@@ -30,7 +42,7 @@ namespace dae
 		Transform GetTransform() { return m_transform; }
 
 		
-		GameObject(Scene* pOwner);
+		GameObject(Scene* pOwner, RenderLayer renderLayer);
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -113,7 +125,8 @@ namespace dae
 		void SetPositionDirty();
 		void UpdateWorldPos();
 
-
+		RenderLayer GetRenderLayer() { return m_RenderLayer; }
+		
 	private:
 		Transform m_transform{};
 
@@ -121,6 +134,8 @@ namespace dae
 
 		std::vector<std::unique_ptr<GameObject>> m_Children{};
 		GameObject* m_pParent{};
+
+		RenderLayer m_RenderLayer{ RenderLayer::ObjectMiddle };
 		
 
 		Scene* m_pScene;

@@ -74,11 +74,18 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	for (const auto& object : m_objects)
+
+	for (int i{ }; i < static_cast<int>(RenderLayer::numLayers); ++i)
 	{
-		object->Render();
+		for (const auto& object : m_objects)
+		{
+			if (static_cast<int>(object->GetRenderLayer()) == i)
+			{
+				object->Render();
+			}
+		}
 	}
-	Level::GetInstance().Render();
+	Level::GetInstance().Render(); //debugDraw always on top
 }
 
 void dae::Scene::End()

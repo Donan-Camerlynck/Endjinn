@@ -27,7 +27,7 @@ namespace dae
 		float linearDamping = 0.f;
 		float gravityScale = 0.f;
 		bool fixedRotation = true;
-
+		bool isSensor{ false };
 	};
 
 	class Body
@@ -53,6 +53,6 @@ namespace dae
 	private:
 		class Impl;
 		std::unique_ptr<Impl> m_pImpl;
-		BodyIdTemp m_BodyId;
+		BodyIdTemp m_BodyId{};
 	};
 }

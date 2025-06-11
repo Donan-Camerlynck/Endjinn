@@ -4,10 +4,10 @@
 #include "Renderer.h"
 #include <iostream>
 
-dae::GameObject::GameObject(Scene* pOwner) :
-	m_pScene{ pOwner }
+dae::GameObject::GameObject(Scene* pOwner, RenderLayer renderLayer) :
+	m_pScene{ pOwner }, m_RenderLayer(renderLayer)
 {
-
+	
 }
 
 dae::GameObject::~GameObject() = default;
