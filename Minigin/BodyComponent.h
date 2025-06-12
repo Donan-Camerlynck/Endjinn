@@ -12,6 +12,7 @@ namespace dae
 	public:
 		virtual void Update() override;
 		virtual void Initialize() override;
+		virtual void Render() const override;
 		virtual void End() override;
 
 		void SetVelocity(glm::vec2 velocity);
@@ -25,5 +26,6 @@ namespace dae
 
 	private:
 		std::unique_ptr<Body> m_pBody;
+		BodyInfo m_BodyInfo;
 	};
 }

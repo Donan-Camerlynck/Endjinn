@@ -99,6 +99,12 @@ void dae::Renderer::RenderDebugBox(float x, float y, float width, float height, 
 	SDL_RenderDrawRect(GetSDLRenderer(), &dst);
 }
 
+void dae::Renderer::RenderDebugPoint(float x, float y)
+{
+	SDL_SetRenderDrawColor(GetSDLRenderer(), 255, 0, 0, 255); // Red outline
+	SDL_RenderDrawPointF(GetSDLRenderer(), x, y);
+}
+
 
 
 SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }

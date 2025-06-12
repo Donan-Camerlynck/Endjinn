@@ -25,7 +25,7 @@ namespace dae
 
 	private:
 		bool m_IsColliding{ false };
-		std::unique_ptr<Body> m_Body;
+		std::unique_ptr<Body> m_pBody;
 		TileType m_Type{TileType::empty};
 		glm::vec2 m_Dimensions{};
 		GameObject* containingObject{};

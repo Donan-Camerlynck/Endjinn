@@ -23,6 +23,8 @@ namespace dae
 
 		void RenderDebugBox(float x, float y, float width, float height, bool isColliding);
 
+		void RenderDebugPoint(float x, float y);
+
 		SDL_Renderer* GetSDLRenderer() const;
 
 		const SDL_Color& GetBackgroundColor() const { return m_clearColor; }

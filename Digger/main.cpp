@@ -70,8 +70,8 @@ void load()
 	//create body info to pass in the constructor
 	dae::BodyInfo mainBodyInfo{
 		dae::BodyType::dynamicBody,
-		glm::vec2{280.f, 20.f},
-		glm::vec2{0.5f, 0.5f},
+		glm::vec2{0.f, 0.f},
+		glm::vec2{35.f, 35.f},
 		10.f,
 		0.f,
 		true,
@@ -86,17 +86,17 @@ void load()
 	go4->AddComponent<dae::HealthComponent>(3);
 	go4->AddComponent<dae::ScoreComponent>(0);
 	go4->AddComponent<dae::BodyComponent>(mainBodyInfo, std::move(userDataOverlapMain));
-	go4->SetLocalPos(glm::vec3{ 280.f, 20.f, 1.f });
+	go4->SetLocalPos(glm::vec3{ 0.f, 0.f, 1.f });
 	auto mainObj = scene.Add(std::move(go4));
 
 
-	auto go5 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
-	go5->AddComponent<dae::SpriteComponent>("digger2.png");
-	go5->AddComponent<dae::RotationComponent>(60.f, 300.f);
-	auto childObj = scene.Add(std::move(go5));
+	//auto go5 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
+	//go5->AddComponent<dae::SpriteComponent>("digger2.png");
+	//go5->AddComponent<dae::RotationComponent>(60.f, 300.f);
+	//auto childObj = scene.Add(std::move(go5));
 
 	mainObj->SetParent(rootObj, false);
-	childObj->SetParent(mainObj, false);
+	///childObj->SetParent(mainObj, false);
 
 	auto HealthDisplay = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	HealthDisplay->AddComponent<dae::TextComponent>(fontSmall, "Player 1 health: ");
@@ -112,17 +112,17 @@ void load()
 
 	dae::BodyComponent* mainBody = mainObj->GetComponent<dae::BodyComponent>();
 
-	input.AddCommand(SDL_SCANCODE_A, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ -1.f, 0.f }, mainBody));
-	input.AddCommand(SDL_SCANCODE_D, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 1.f, 0.f }, mainBody));
-	input.AddCommand(SDL_SCANCODE_W, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, -1.f }, mainBody));
-	input.AddCommand(SDL_SCANCODE_S, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, 1.f }, mainBody));
+	input.AddCommand(SDL_SCANCODE_A, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ -1.f, 0.f }, mainBody));
+	input.AddCommand(SDL_SCANCODE_D, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ 1.f, 0.f }, mainBody));
+	input.AddCommand(SDL_SCANCODE_W, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ 0.f, -1.f }, mainBody));
+	input.AddCommand(SDL_SCANCODE_S, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ 0.f, 1.f }, mainBody));
 
-	input.AddCommand(dae::GamepadKey::DPad_Left, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ -1.f, 0.f }, mainBody), 0);
-	input.AddCommand(dae::GamepadKey::DPad_Right, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 1.f, 0.f }, mainBody), 0);
-	input.AddCommand(dae::GamepadKey::DPad_Up, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, -1.f }, mainBody), 0);
-	input.AddCommand(dae::GamepadKey::DPad_Down, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, 1.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Left, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ -1.f, 0.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Right, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ 1.f, 0.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Up, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ 0.f, -1.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadKey::DPad_Down, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ 0.f, 1.f }, mainBody), 0);
 
-	input.AddCommand(dae::GamepadAxis2D::LThumbStick, std::make_unique<dae::MoveCommand>(200.f, glm::vec2{ 0.f, 0.f }, mainBody), 0);
+	input.AddCommand(dae::GamepadAxis2D::LThumbStick, std::make_unique<dae::MoveCommand>(50.f, glm::vec2{ 0.f, 0.f }, mainBody), 0);
 
 	input.AddCommand(SDL_SCANCODE_X, dae::InputEventType::Down, std::make_unique<dae::HealthCommand>(mainObj, 1));
 

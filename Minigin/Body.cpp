@@ -19,7 +19,7 @@ namespace dae
 		void Initialize()
 		{
 			b2BodyDef pBody = b2DefaultBodyDef();
-			pBody.position = b2Vec2{ m_BodyInfo.position.x, m_BodyInfo.position.y };
+			pBody.position = b2Vec2{ m_BodyInfo.position.x + m_BodyInfo.dimensions.x / 2, m_BodyInfo.position.y + m_BodyInfo.dimensions.x / 2 };
 			pBody.type = ConvertBodyType(m_BodyInfo.type);
 			pBody.fixedRotation = m_BodyInfo.fixedRotation;
 			pBody.gravityScale = m_BodyInfo.gravityScale;
@@ -31,8 +31,13 @@ namespace dae
 			shapeDef.isSensor = m_BodyInfo.isSensor;
 			shapeDef.enableSensorEvents = true;
 			shapeDef.userData = m_UserDataOverlap.get();
-			b2Polygon box = b2MakeBox(m_BodyInfo.dimensions.x, m_BodyInfo.dimensions.x);
-			b2ShapeId myShapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
+			
+
+			b2Polygon box = b2MakeBox(m_BodyInfo.dimensions.x / 2, m_BodyInfo.dimensions.x / 2);
+			
+			m_MyShapeId = b2CreatePolygonShape(bodyId, &shapeDef, &box);
+			
+			
 		}
 
 		void Update()
@@ -51,10 +56,24 @@ namespace dae
 			return glm::vec2{ pos.x, pos.y };
 		}
 
+		glm::vec2 GetDim()
+		{
+			return m_BodyInfo.dimensions;
+		}
+
+		std::tuple<glm::vec2, glm::vec2> GetAABB()
+		{
+			std::tuple<glm::vec2, glm::vec2> aabb = std::make_tuple<glm::vec2, glm::vec2>(glm::vec2{ b2Shape_GetAABB(m_MyShapeId).lowerBound.x, b2Shape_GetAABB(m_MyShapeId).lowerBound.y }, glm::vec2{ b2Shape_GetAABB(m_MyShapeId).upperBound.x, b2Shape_GetAABB(m_MyShapeId).upperBound.y });
+			
+			return aabb;
+		}
+
 		BodyIdTemp GetBodyId()
 		{
 			return m_BodyId;
 		}
+
+
 
 		void SetVelocity(glm::vec2 vel)
 		{
@@ -83,7 +102,9 @@ namespace dae
 	private:
 		BodyInfo m_BodyInfo;
 		BodyIdTemp m_BodyId{};
+		glm::vec2 m_Center{};
 		std::unique_ptr<UserDataOverlap> m_UserDataOverlap;
+		b2ShapeId m_MyShapeId{};
 	};
 
 
@@ -121,6 +142,18 @@ namespace dae
 	{
 		return m_pImpl->GetPos();
 	}
+
+	glm::vec2 Body::GetDimensions()
+	{
+		return m_pImpl->GetDim();
+	}
+
+	std::tuple<glm::vec2, glm::vec2> Body::GetAABB()
+	{
+		return m_pImpl->GetAABB();
+	}
+
+
 
 	BodyIdTemp Body::GetBodyId()
 	{

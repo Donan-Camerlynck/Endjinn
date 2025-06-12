@@ -48,6 +48,9 @@ namespace dae
 		void SetVelocity(glm::vec2 velocity);
 
 		glm::vec2 GetPosition();
+		glm::vec2 GetDimensions();
+
+		std::tuple<glm::vec2, glm::vec2> GetAABB();
 
 		BodyIdTemp GetBodyId();
 
