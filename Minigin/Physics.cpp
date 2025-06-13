@@ -51,6 +51,24 @@ namespace dae
 				}
 			}
 
+			for (int i = 0; i < sensorEvents.endCount; ++i)
+			{
+				b2SensorEndTouchEvent* endTouch = sensorEvents.endEvents + i;
+				if (b2Shape_IsValid(endTouch->visitorShapeId))
+				{
+					UserDataOverlap* myUserData = reinterpret_cast<UserDataOverlap*>(b2Shape_GetUserData(endTouch->visitorShapeId));
+					// process end event
+					if (myUserData->isGameObject)
+					{
+
+					}
+					else
+					{
+						Level::GetInstance().SetTileIsColliding(myUserData->row, myUserData->column, false);
+					}
+				}
+			}
+
 			
 		}
 
