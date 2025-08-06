@@ -40,7 +40,7 @@ void load()
 	auto& input = dae::InputManager::GetInstance();
 
 	auto& level = dae::Level::GetInstance();
-	level.Initialize(12, 9);
+	level.Load("LevelLayout0.csv");
 
 	auto go3 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	go3->AddComponent<dae::SpriteComponent>("background.tga");
@@ -82,7 +82,7 @@ void load()
 
 	auto go4 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
 	std::unique_ptr<dae::UserDataOverlap> userDataOverlapMain = std::make_unique<dae::UserDataOverlap>(true, -1, -1, go4.get() );
-	go4->AddComponent<dae::SpriteComponent>("digger.png");
+	go4->AddComponent<dae::SpriteComponent>("Sprites/RedTank.png");
 	go4->AddComponent<dae::HealthComponent>(3);
 	go4->AddComponent<dae::ScoreComponent>(0);
 	go4->AddComponent<dae::BodyComponent>(mainBodyInfo, std::move(userDataOverlapMain));

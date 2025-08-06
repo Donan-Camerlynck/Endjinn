@@ -13,6 +13,7 @@ namespace dae
 	public:
 
 		void Initialize(int rows, int columns);
+		void Load(const std::string levelPath);
 		void Update();
 		void Render();
 		void End();

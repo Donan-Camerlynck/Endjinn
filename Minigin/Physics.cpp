@@ -47,7 +47,7 @@ namespace dae
 				}
 				else
 				{
-					Level::GetInstance().SetTileIsColliding(myUserData->row, myUserData->column, true);
+					//Level::GetInstance().SetTileIsColliding(myUserData->row, myUserData->column, true);
 				}
 			}
 
@@ -64,7 +64,7 @@ namespace dae
 					}
 					else
 					{
-						Level::GetInstance().SetTileIsColliding(myUserData->row, myUserData->column, false);
+						//Level::GetInstance().SetTileIsColliding(myUserData->row, myUserData->column, false);
 					}
 				}
 			}
