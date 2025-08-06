@@ -39,7 +39,7 @@ namespace dae
 	{
 
 		const std::filesystem::path fullPath = dae::ResourceManager::GetInstance().GetPath()/ levelPath;
-		const auto filename = std::filesystem::path(fullPath).filename().string();
+		const auto filename = std::filesystem::path(fullPath).string();
 
 		//read csv
 		std::ifstream file;
