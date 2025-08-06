@@ -21,6 +21,7 @@ namespace dae
 		Tile(TileType type, glm::vec2 coordinates);
 		~Tile();
 
+		void SetSize(glm::vec2 size) { m_Size = size; }
 		//void SetIsColliding(bool isColliding) { m_IsColliding = isColliding; }
 
 		void Render();
@@ -31,6 +32,9 @@ namespace dae
 
 		TileType m_Type{TileType::empty};
 		glm::vec2 m_Coordinates{};
+		glm::vec2 m_Size{};
+
+		std::vector<std::shared_ptr<Texture2D>> m_pTextures{};
 
 		//glm::vec2 m_Dimensions{};
 		//GameObject* containingObject{};

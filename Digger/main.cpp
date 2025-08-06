@@ -42,14 +42,14 @@ void load()
 	auto& level = dae::Level::GetInstance();
 	level.Load("LevelLayout0.csv");
 
-	auto go3 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
+	/*auto go3 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	go3->AddComponent<dae::SpriteComponent>("background.tga");
-	scene.Add(std::move(go3));
+	scene.Add(std::move(go3));*/
 
-	auto go2 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
+	/*auto go2 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	go2->AddComponent<dae::SpriteComponent>("logo.tga");
 	go2->SetLocalPos(glm::vec3{ 216.f, 180.f, 1.f });
-	scene.Add(std::move(go2));
+	scene.Add(std::move(go2));*/
 
 	auto go = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	go->AddComponent<dae::TextComponent>(font, "Programming 4 Assignment");

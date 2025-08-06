@@ -61,7 +61,7 @@ namespace dae
 			std::vector<std::unique_ptr<Tile>> row;
 			std::stringstream ss(line);
 			std::string value;
-
+			columnCount = 0;
 			while (std::getline(ss, value, ','))
 			{
 				int tileCode = std::stoi(value);
@@ -80,9 +80,34 @@ namespace dae
 
 			m_Tiles.push_back(std::move(row));
 			rowCount++;
+			if(m_Columns < columnCount)	m_Columns = columnCount;
 		}
 
 		file.close();
+		m_Rows = rowCount;
+		m_Columns = columnCount;
+		SetupLevel();
+	}
+
+	void Level::SetupLevel()
+	{
+		if (m_Tiles.empty())
+		{
+			return;
+		}
+
+		//calculate size per tile
+		int columnWidth = 640 / m_Rows;
+		int rowHeight = 480 / m_Columns;
+
+		//set size for every tile
+		for (size_t row{}; row < m_Tiles.size(); row++)
+		{
+			for (size_t column{}; column < m_Tiles[row].size(); column++)
+			{
+				m_Tiles[row][column].get()->SetSize(glm::vec2{columnWidth, rowHeight});
+			}
+		}
 	}
 
 	void Level::Render()

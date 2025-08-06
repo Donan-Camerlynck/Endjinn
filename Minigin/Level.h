@@ -12,13 +12,14 @@ namespace dae
 	{
 	public:
 
-		void Initialize(int rows, int columns);
+		//void Initialize(int rows, int columns);
 		void Load(const std::string levelPath);
+		void SetupLevel();
 		void Update();
 		void Render();
 		void End();
 
-		void SetTileIsColliding(int row, int column, bool isColliding);
+		//void SetTileIsColliding(int row, int column, bool isColliding);
 	private:
 		int m_Rows{};
 		int m_Columns{};
