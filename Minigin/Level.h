@@ -16,7 +16,7 @@ namespace dae
 		void SetupLevel();
 		void Update();
 		void Render();
-		bool AreAllTilesWalkable(const Rect& aabb, float tileW, float tileH);
+		bool AreAllTilesWalkable(const Rect& aabb);
 		void End();
 		int GetRows() { return m_Rows; }
 		int GetColumns() { return m_Columns; }

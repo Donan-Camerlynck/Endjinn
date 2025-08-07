@@ -103,19 +103,19 @@ namespace dae
 		}
 	}
 
-	bool Level::AreAllTilesWalkable(const Rect& aabb, float tileW, float tileH)
+	bool Level::AreAllTilesWalkable(const Rect& aabb)
 	{
-		float left = aabb.position.x / tileW;
-		float top = aabb.position.y / tileH;
-		float right = (aabb.position.x + aabb.size.x - 0.001f) / tileW;
-		float bottom = (aabb.position.y + aabb.size.y - 0.001f) / tileH;
+		float left = aabb.position.x + 1.f;
+		float top = aabb.position.y + 1.f;
+		float right = (aabb.position.x + aabb.size.x - 2.f);
+		float bottom = (aabb.position.y + aabb.size.y - 2.f);
 
 
 		for (float y = top; y <= bottom; ++y)
 		{
 			for (float x = left; x <= right; ++x)
 			{
-				if (x < 0 || y < 0 || y >= m_Tiles.size() || x >= m_Tiles[0].size())
+				if (x < 0 || y < 0 || y >= m_Tiles.size() * m_Rows || x >= m_Tiles[0].size() * m_Columns)
 					return false;
 
 				if (m_Tiles[static_cast<int>(y / m_TileHeight)][static_cast<int>(x / m_TileWidth)]->GetType() != dae::TileType::path)

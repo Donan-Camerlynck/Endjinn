@@ -9,6 +9,7 @@ namespace dae
 		MovementComponent(GameObject* owner, float speed);
 		void Move(glm::vec2 direction);
 		void Update() override;
+		void Render() const override;
 		
 	private:
 		float m_Speed{};
@@ -17,6 +18,7 @@ namespace dae
 		bool m_bNeedsToMove{ false };
 
 		glm::vec2 m_DesiredPosition{};
+		glm::vec2 m_Direction{};
 	};
 }
 

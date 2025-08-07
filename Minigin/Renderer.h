@@ -21,7 +21,7 @@ namespace dae
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
 
-		void RenderDebugBox(float x, float y, float width, float height, bool isColliding);
+		void RenderDebugBox(float x, float y, float width, float height);
 
 		void RenderDebugPoint(float x, float y);
 

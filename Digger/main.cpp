@@ -50,10 +50,10 @@ void load()
 	go2->SetLocalPos(glm::vec3{ 216.f, 180.f, 1.f });
 	scene.Add(std::move(go2));*/
 
-	auto go = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
-	go->AddComponent<dae::TextComponent>(font, "Programming 4 Assignment");
-	go->SetLocalPos(glm::vec3{ 80.f, 20.f, 1.f });
-	scene.Add(std::move(go));
+	//auto go = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
+	//go->AddComponent<dae::TextComponent>(font, "Programming 4 Assignment");
+	//go->SetLocalPos(glm::vec3{ 80.f, 20.f, 1.f });
+	//scene.Add(std::move(go));
 
 	auto fps = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	fps->AddComponent<dae::FPSComponent>();
@@ -63,17 +63,16 @@ void load()
 
 	auto goRoot = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	auto rootObj = scene.Add(std::move(goRoot));
-	rootObj->SetLocalPos(glm::vec3{ 200.f, 200.f, 1.f });
+	rootObj->SetLocalPos(glm::vec3{ 0.f, 0.f, 1.f });
 
 	auto go4 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
-	std::unique_ptr<dae::UserDataOverlap> userDataOverlapMain = std::make_unique<dae::UserDataOverlap>(true, -1, -1, go4.get() );
 	go4->AddComponent<dae::SpriteComponent>("Sprites/RedTank.png");
 	go4->AddComponent<dae::HealthComponent>(3);
 	go4->AddComponent<dae::ScoreComponent>(0);
 	go4->AddComponent<dae::MovementComponent>(50.f);
-	go4->SetLocalPos(glm::vec3{ 0.f, 0.f, 1.f });
+	go4->SetLocalPos(glm::vec2{ level.GetTileWidth() * 2 , level.GetTileHeight() * 2 });
 	auto mainObj = scene.Add(std::move(go4));
-
+	
 
 	//auto go5 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
 	//go5->AddComponent<dae::SpriteComponent>("digger2.png");
@@ -81,7 +80,7 @@ void load()
 	//auto childObj = scene.Add(std::move(go5));
 
 	mainObj->SetParent(rootObj, false);
-	///childObj->SetParent(mainObj, false);
+	//childObj->SetParent(mainObj, false);
 
 	auto HealthDisplay = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	HealthDisplay->AddComponent<dae::TextComponent>(fontSmall, "Player 1 health: ");
