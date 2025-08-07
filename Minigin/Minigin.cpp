@@ -56,11 +56,11 @@ dae::Minigin::Minigin(const std::string &dataPath)
 	}
 
 	g_window = SDL_CreateWindow(
-		"Programming 4 assignment",
+		"Tron",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		640,
-		480,
+		596,
 		SDL_WINDOW_OPENGL
 	);
 	if (g_window == nullptr) 

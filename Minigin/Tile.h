@@ -22,6 +22,8 @@ namespace dae
 		~Tile();
 
 		void SetSize(glm::vec2 size) { m_Size = size; }
+
+		glm::vec2 m_Coordinates{};
 		//void SetIsColliding(bool isColliding) { m_IsColliding = isColliding; }
 
 		void Render();
@@ -31,7 +33,6 @@ namespace dae
 		//std::unique_ptr<Body> m_pBody;
 
 		TileType m_Type{TileType::empty};
-		glm::vec2 m_Coordinates{};
 		glm::vec2 m_Size{};
 
 		std::vector<std::shared_ptr<Texture2D>> m_pTextures{};
