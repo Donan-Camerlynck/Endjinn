@@ -55,13 +55,13 @@ void dae::GameObject::SetPosition(float x, float y)
 }
 
 
-void dae::GameObject::SetLocalPos(glm::vec3 localPos)
+void dae::GameObject::SetLocalPos(glm::vec2 localPos)
 {
 	m_LocalPos = localPos;
 	SetPositionDirty();
 }
 
-void dae::GameObject::SetWorldPos(glm::vec3 worldPos)
+void dae::GameObject::SetWorldPos(glm::vec2 worldPos)
 {
 	m_WorldPos = worldPos;
 	SetPositionDirty();

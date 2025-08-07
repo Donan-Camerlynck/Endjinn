@@ -113,10 +113,10 @@ namespace dae
 			return false;
 		}
 
-		void SetLocalPos(glm::vec3 localPos);
-		void SetWorldPos(glm::vec3 worldPos);
-		glm::vec3 GetLocalPos() const { return m_LocalPos; };
-		glm::vec3 GetWorldPos() const { return m_WorldPos; };
+		void SetLocalPos(glm::vec2 localPos);
+		void SetWorldPos(glm::vec2 worldPos);
+		glm::vec2 GetLocalPos() const { return m_LocalPos; };
+		glm::vec2 GetWorldPos() const { return m_WorldPos; };
 
 		bool IsChild(GameObject* parent);
 		void SetParent(GameObject* parent, bool keepWorldPos);
@@ -140,8 +140,8 @@ namespace dae
 
 		Scene* m_pScene;
 
-		glm::vec3 m_WorldPos{};
-		glm::vec3 m_LocalPos{};
+		glm::vec2 m_WorldPos{};
+		glm::vec2 m_LocalPos{};
 
 		bool m_bPositionDirty{ false };
 	};

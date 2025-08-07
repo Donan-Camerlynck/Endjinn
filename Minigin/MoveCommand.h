@@ -1,7 +1,7 @@
 #pragma once
 #include "AxisCommand.h"
 #include <glm.hpp>
-#include "BodyComponent.h"
+#include "MovementComponent.h"
 
 namespace dae
 {
@@ -10,13 +10,11 @@ namespace dae
 	class MoveCommand : public AxisCommand
 	{
 	public:
-		explicit MoveCommand(float speed, glm::vec2 direction, BodyComponent* body);
+		explicit MoveCommand(glm::vec2 direction, MovementComponent* moveComp);
 		void Execute() override;
 
 	private:
-		BodyComponent* m_pBodyComp;
-		float m_Speed;
-
+		MovementComponent* m_pMoveComp;
 
 	};
 }

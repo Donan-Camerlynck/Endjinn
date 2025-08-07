@@ -70,17 +70,15 @@ namespace dae
 		}
 
 		//calculate size per tile
-		int columnWidth;
-		int rowHeight;
 		if (m_Rows <= m_Columns)
 		{
-			columnWidth = 640 / m_Columns;
-			rowHeight = columnWidth;
+			m_TileWidth = 640 / m_Columns;
+			m_TileHeight = m_TileWidth;
 		}
 		else
 		{
-			rowHeight = 480 / m_Rows;
-			columnWidth = rowHeight;
+			m_TileHeight = 480 / m_Rows;
+			m_TileWidth = m_TileHeight;
 		}
 		
 
@@ -89,8 +87,8 @@ namespace dae
 		{
 			for (size_t column{}; column < m_Tiles[row].size(); column++)
 			{
-				m_Tiles[row][column].get()->SetSize(glm::vec2{columnWidth, rowHeight});
-				m_Tiles[row][column].get()->m_Coordinates = glm::vec2{ m_Tiles[row][column].get()->m_Coordinates.x * rowHeight, m_Tiles[row][column].get()->m_Coordinates.y * columnWidth };
+				m_Tiles[row][column].get()->SetSize(glm::vec2{ m_TileWidth, m_TileHeight });
+				m_Tiles[row][column].get()->m_Coordinates = glm::vec2{ m_Tiles[row][column].get()->m_Coordinates.x * m_TileWidth, m_Tiles[row][column].get()->m_Coordinates.y * m_TileHeight };
 			}
 		}
 	}
@@ -103,6 +101,29 @@ namespace dae
 				tile.Render();
 			}
 		}
+	}
+
+	bool Level::AreAllTilesWalkable(const Rect& aabb, float tileW, float tileH)
+	{
+		float left = aabb.position.x / tileW;
+		float top = aabb.position.y / tileH;
+		float right = (aabb.position.x + aabb.size.x - 0.001f) / tileW;
+		float bottom = (aabb.position.y + aabb.size.y - 0.001f) / tileH;
+
+
+		for (float y = top; y <= bottom; ++y)
+		{
+			for (float x = left; x <= right; ++x)
+			{
+				if (x < 0 || y < 0 || y >= m_Tiles.size() || x >= m_Tiles[0].size())
+					return false;
+
+				if (m_Tiles[static_cast<int>(y / m_TileHeight)][static_cast<int>(x / m_TileWidth)]->GetType() != dae::TileType::path)
+					return false;
+			}
+		}
+
+		return true;
 	}
 	
 }
