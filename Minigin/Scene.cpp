@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "Level.h"
-
+#include "BulletManager.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -70,6 +70,7 @@ void Scene::Update()
 	{
 		object->Update();
 	}
+	BulletManager::GetInstance().Update();
 }
 
 void Scene::Render() const
@@ -85,6 +86,7 @@ void Scene::Render() const
 			}
 		}
 	}
+	BulletManager::GetInstance().Render();
 }
 
 void dae::Scene::End()

@@ -11,6 +11,7 @@
 
 #include "SceneManager.h"
 #include "ResourceManager.h"
+#include "BulletManager.h"
 #include "TextComponent.h"
 #include "GameObject.h"
 #include "Scene.h"
@@ -40,6 +41,10 @@ void load()
 
 	auto& level = dae::Level::GetInstance();
 	level.Load("LevelLayout0.csv");
+
+	auto& bulletManager = dae::BulletManager::GetInstance();
+	bulletManager.SetTexture("Sprites/BulletNPC.png");
+	
 
 	/*auto go3 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::BackGround);
 	go3->AddComponent<dae::SpriteComponent>("background.tga");
@@ -94,6 +99,7 @@ void load()
 	ScoreDisplay->SetLocalPos(glm::vec3{ 10.f, 150.f, 1.f });
 	scene.Add(std::move(ScoreDisplay));
 
+	bulletManager.SpawnBullet(glm::vec2{ level.GetTileWidth() * 2 +2, level.GetTileHeight() * 2 +2 }, glm::vec2{100.f, 10.f}, mainObj);
 
 	input.AddCommand(SDL_SCANCODE_A, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(glm::vec2{ -1.f, 0.f }, mainObj->GetComponent<dae::MovementComponent>()));
 	input.AddCommand(SDL_SCANCODE_D, dae::InputEventType::Pressed, std::make_unique<dae::MoveCommand>(glm::vec2{ 1.f, 0.f }, mainObj->GetComponent<dae::MovementComponent>()));

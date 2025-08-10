@@ -125,5 +125,10 @@ namespace dae
 
 		return true;
 	}
+
+	Tile* Level::GetTileAtPos(glm::vec2 pos)
+	{
+		return m_Tiles[static_cast<int>(pos.y / m_TileHeight)][static_cast<int>(pos.x / m_TileWidth)].get();
+	}
 	
 }

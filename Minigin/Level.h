@@ -17,6 +17,7 @@ namespace dae
 		void Update();
 		void Render();
 		bool AreAllTilesWalkable(const Rect& aabb);
+		Tile* GetTileAtPos(glm::vec2 pos);
 		void End();
 		int GetRows() { return m_Rows; }
 		int GetColumns() { return m_Columns; }

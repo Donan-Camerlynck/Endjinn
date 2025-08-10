@@ -21,6 +21,7 @@ namespace dae
 
 		void SetSize(glm::vec2 size) { m_Size = size; }
 		TileType GetType() { return m_Type; }
+		glm::vec2 GetSize() { return m_Size; }
 		glm::vec2 m_Coordinates{};
 
 		void Render();
