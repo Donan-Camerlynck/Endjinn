@@ -18,6 +18,7 @@ namespace dae
 
 	void Bullet::Update()
 	{
+        
 		glm::vec2 oldPos = m_Position;
 		m_Position += m_Velocity * TimeManager::GetInstance().GetDeltaTime();
 

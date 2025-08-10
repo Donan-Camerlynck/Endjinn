@@ -42,6 +42,15 @@
     <ClCompile Include="HealthDisplayComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="ShootingComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ShootCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="AimCommand.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScoreComand.h">
@@ -61,6 +70,15 @@
     </ClInclude>
     <ClInclude Include="HealthDisplayComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="AimCommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

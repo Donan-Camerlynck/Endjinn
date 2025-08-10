@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AimCommand.cpp" />
     <ClCompile Include="HealthCommand.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="HealthDisplayComponent.cpp" />
@@ -166,14 +167,19 @@
     <ClCompile Include="ScoreComand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
+    <ClCompile Include="ShootCommand.cpp" />
+    <ClCompile Include="ShootingComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AimCommand.h" />
     <ClInclude Include="HealthCommand.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="ScoreComand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
+    <ClInclude Include="ShootCommand.h" />
+    <ClInclude Include="ShootingComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include "glm.hpp"
 #include <string>
 #include <memory>
 namespace dae
@@ -20,6 +21,8 @@ namespace dae
 		SpriteComponent(SpriteComponent&& other) = delete;
 		SpriteComponent& operator=(const SpriteComponent& other) = delete;
 		SpriteComponent& operator=(SpriteComponent&& other) = delete;
+
+		glm::vec2 GetSize();
 	private:
 		bool m_NeedsUpdate;
 		std::shared_ptr<Texture2D> m_pTexture{};

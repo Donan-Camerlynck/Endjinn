@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include "Texture2D.h"
 
 dae::SpriteComponent::SpriteComponent(GameObject* owner, const std::string& textureFilename) :
 	BaseComponent(owner)
@@ -9,7 +10,10 @@ dae::SpriteComponent::SpriteComponent(GameObject* owner, const std::string& text
 	SetTexture(textureFilename);
 }
 
-
+glm::vec2 dae::SpriteComponent::GetSize()
+{
+	return static_cast<glm::vec2>(m_pTexture->GetSize());
+}
 
 void dae::SpriteComponent::Update()
 {

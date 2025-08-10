@@ -1,0 +1,24 @@
+#pragma once
+#include <BaseComponent.h>
+#include <glm.hpp>
+
+namespace dae
+{
+    class ShootingComponent : public BaseComponent
+    {
+    public:
+        ShootingComponent(GameObject* owner,  float speed);
+        virtual ~ShootingComponent() override = default;
+        ShootingComponent(const ShootingComponent& other) = delete;
+        ShootingComponent(ShootingComponent&& other) = delete;
+        ShootingComponent& operator=(const ShootingComponent& other) = delete;
+        ShootingComponent& operator=(ShootingComponent&& other) = delete;
+        void Shoot();
+        void SetDirection(glm::vec2 direction);
+    private:
+        glm::vec2 m_Direction{};
+        float m_Speed;
+    };
+
+}
+
