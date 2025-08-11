@@ -124,8 +124,8 @@ void load()
 
 	input.AddCommand(SDL_SCANCODE_L, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{1,0}, mainObj->GetComponent<dae::ShootingComponent>()));
 	input.AddCommand(SDL_SCANCODE_J, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ -1,0 }, mainObj->GetComponent<dae::ShootingComponent>()));
-	input.AddCommand(SDL_SCANCODE_I, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ 0,1 }, mainObj->GetComponent<dae::ShootingComponent>()));
-	input.AddCommand(SDL_SCANCODE_K, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ 0,-1 }, mainObj->GetComponent<dae::ShootingComponent>()));
+	input.AddCommand(SDL_SCANCODE_I, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ 0,-1 }, mainObj->GetComponent<dae::ShootingComponent>()));
+	input.AddCommand(SDL_SCANCODE_K, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ 0,1 }, mainObj->GetComponent<dae::ShootingComponent>()));
 
 }
 
