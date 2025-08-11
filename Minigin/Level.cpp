@@ -130,5 +130,25 @@ namespace dae
 	{
 		return m_Tiles[static_cast<int>(pos.y / m_TileHeight)][static_cast<int>(pos.x / m_TileWidth)].get();
 	}
+
+	std::tuple<int, int> Level::GetRowColIdx(const glm::vec2& pos)
+	{
+		int colIdx = static_cast<int>(pos.x) / m_TileWidth;
+		int rowIdx = static_cast<int>(pos.y) / m_TileHeight;
+
+		return std::make_tuple(rowIdx, colIdx);
+	}
+
+	glm::vec2 Level::PositionFromRowCol(int row, int col)
+	{
+		const float x = static_cast<float>(col * m_TileWidth) + m_TileWidth / 2.f;
+		const float y = static_cast<float>(row * m_TileHeight) + m_TileHeight / 2.f;
+		return { x, y };
+	}
+
+	Tile* Level::GetTileFromIdx(int row, int col)
+	{
+		return m_Tiles[row][col].get();
+	}
 	
 }

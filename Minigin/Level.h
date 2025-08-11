@@ -23,6 +23,9 @@ namespace dae
 		int GetColumns() { return m_Columns; }
 		int GetTileHeight() { return m_TileHeight; }
 		int GetTileWidth() { return m_TileWidth; }
+		std::tuple<int, int> GetRowColIdx(const glm::vec2& pos);
+		glm::vec2 PositionFromRowCol(int row, int col);
+		Tile* GetTileFromIdx(int row, int col);
 
 		//void SetTileIsColliding(int row, int column, bool isColliding);
 	private:

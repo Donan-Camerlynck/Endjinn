@@ -144,6 +144,12 @@
     <ClInclude Include="Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ASarPathFinding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -244,6 +250,12 @@
     </ClCompile>
     <ClCompile Include="BulletManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASarPathFinding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
