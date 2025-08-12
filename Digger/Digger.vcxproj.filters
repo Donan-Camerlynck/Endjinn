@@ -51,6 +51,12 @@
     <ClCompile Include="AimCommand.cpp">
       <Filter>Commands</Filter>
     </ClCompile>
+    <ClCompile Include="AIPathState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AIRoamState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScoreComand.h">
@@ -79,6 +85,12 @@
     </ClInclude>
     <ClInclude Include="AimCommand.h">
       <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="AIPathState.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AIRoamState.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

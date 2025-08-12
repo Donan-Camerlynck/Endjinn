@@ -1,4 +1,4 @@
-#include "ASarPathFinding.h"
+#include "AStarPathFinding.h"
 #include "Level.h"
 #include <set>
 
@@ -13,7 +13,7 @@ namespace dae
 	}
 
 
-	std::deque<glm::vec2> AStarPathfinding::findPath(const glm::vec2& startPos, const glm::vec2& targetPos)
+	std::deque<glm::vec2> AStarPathfinding::FindPath(const glm::vec2& startPos, const glm::vec2& targetPos)
 	{
 		std::vector<Node> openList;
 		std::set<Node> closedList;

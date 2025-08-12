@@ -29,6 +29,8 @@
 #include "Level.h"
 #include "ShootCommand.h"
 #include "AimCommand.h"
+#include <AIComponent.h>
+#include "AIRoamState.h"
 
 
 
@@ -80,6 +82,16 @@ void load()
 	go4->AddComponent<dae::ShootingComponent>(150.f);
 	go4->SetLocalPos(glm::vec2{ level.GetTileWidth() * 2 , level.GetTileHeight() * 2 });
 	auto mainObj = scene.Add(std::move(go4));
+
+	auto go5 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
+	go5->AddComponent<dae::SpriteComponent>("Sprites/GreenTank.png");
+	go5->AddComponent<dae::HealthComponent>(3);
+	go5->AddComponent<dae::ScoreComponent>(0);
+	go5->AddComponent<dae::MovementComponent>(50.f);
+	go5->AddComponent<dae::AIComponent>( std::make_unique<dae::AIRoamState>(go5.get(), go5->GetComponent<dae::MovementComponent>()));
+	go5->GetComponent<dae::AIComponent>()->SetTarget(mainObj);
+	go5->SetLocalPos(glm::vec2{ level.GetTileWidth() * 2 , level.GetTileHeight() * 36 });
+	auto enemyObj = scene.Add(std::move(go5));
 	
 
 	//auto go5 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
@@ -88,7 +100,7 @@ void load()
 	//auto childObj = scene.Add(std::move(go5));
 
 	mainObj->SetParent(rootObj, false);
-	//childObj->SetParent(mainObj, false);
+	enemyObj->SetParent(rootObj, false);
 
 	auto HealthDisplay = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::UI);
 	HealthDisplay->AddComponent<dae::TextComponent>(fontSmall, "Player 1 health: ");

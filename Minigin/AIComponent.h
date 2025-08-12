@@ -3,6 +3,8 @@
 #include <deque>
 #include <glm.hpp>
 
+#include <memory>
+#include "AIState.h"
 
 namespace dae
 {
@@ -10,23 +12,30 @@ namespace dae
 	class AIComponent : public BaseComponent
 	{
 	public:
-		AIComponent(GameObject* owner);
-		virtual ~AIComponent() override;
+		AIComponent(GameObject* owner, std::unique_ptr<AIState> state);
+		virtual ~AIComponent() override = default;
 		AIComponent(const AIComponent& other) = delete;
 		AIComponent(AIComponent&& other) = delete;
 		AIComponent& operator=(const AIComponent& other) = delete;
 		AIComponent& operator=(AIComponent&& other) = delete;
 
-		void MoveTo(GameObject* pTarget);
+		//void MoveTo(GameObject* pTarget);
 		void Update() override;
+		GameObject* GetTarget() { return m_pTarget; }
+		void SetTarget(GameObject* target);
+		float GetPathingDistance() { return m_PathingDistance; }
+		void SetState(std::unique_ptr<AIState> newState);
 
 	private:
+		std::unique_ptr<AIState> m_pState;
 		float m_speed{ 150.f };
+		float m_PathingDistance{ 150.f };
 
 		std::deque<glm::vec2> m_Path;
 
 		float m_PathCalcInterval{ 0.5f };
 		float m_CalcTime{};
 
+		GameObject* m_pTarget;
 	};
 }

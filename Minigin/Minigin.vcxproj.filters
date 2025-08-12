@@ -31,6 +31,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{9c24c92b-d522-4690-ad49-9c0b165b5c1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{4828b180-6ad0-49a8-be4d-96a1214a9550}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -135,19 +138,22 @@
     <ClInclude Include="Tile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MovementComponent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BulletManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ASarPathFinding.h">
+    <ClInclude Include="AStarPathFinding.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AIComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AIState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -242,19 +248,19 @@
     <ClCompile Include="Structs.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="MovementComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BulletManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ASarPathFinding.cpp">
+    <ClCompile Include="AStarPathFinding.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AIComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

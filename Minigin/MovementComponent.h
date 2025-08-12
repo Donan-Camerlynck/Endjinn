@@ -10,11 +10,11 @@ namespace dae
 		void Move(glm::vec2 direction);
 		void Update() override;
 		void Render() const override;
-		
+		bool CanMoveTo(glm::vec2 direction);
 	private:
 		float m_Speed{};
 
-		bool CanMoveTo(glm::vec2 direction);
+		
 		bool m_bNeedsToMove{ false };
 
 		glm::vec2 m_DesiredPosition{};
