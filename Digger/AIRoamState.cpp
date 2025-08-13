@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "AIPathState.h"
 #include "TimeManager.h"
+#include <iostream>
 
 dae::AIRoamState::AIRoamState(GameObject* owner, MovementComponent* moveComp)
 	:m_pAIOwner(owner), m_pMoveComp(moveComp)
@@ -11,25 +12,42 @@ dae::AIRoamState::AIRoamState(GameObject* owner, MovementComponent* moveComp)
 void dae::AIRoamState::Update()
 {
 	m_CurrentRoamTimer += dae::TimeManager::GetInstance().GetDeltaTime();
-	std::vector<glm::vec2> moves{ {1,0},{-1,0},{0,1},{0,-1} };
+	std::vector<glm::vec2> moves{ {1,0},{-1,0},{0,-1},{0,1} };
 	std::vector<glm::vec2> possibleMoves{};
-	if (m_CurrentRoamTimer > m_MaxRoamInterval)
+	m_PreviousNumberOptions = m_CurrentNumberOptions;
+
+	for (glm::vec2 move : moves)
 	{
-		m_CurrentRoamTimer -= m_MaxRoamInterval;
-		possibleMoves.clear();
-		for (glm::vec2 move : moves)
+		if (m_pMoveComp->CanMoveTo(move))
 		{
-			if (m_pMoveComp->CanMoveTo(move))
-			{
-				possibleMoves.push_back(move);
-			}
+			possibleMoves.push_back(move);
 		}
 	}
-	if (!possibleMoves.empty())
+
+	m_CurrentNumberOptions = possibleMoves.size();
+
+	if (m_CurrentRoamTimer >= m_MaxRoamInterval || m_CurrentNumberOptions > m_PreviousNumberOptions)
 	{
-		glm::vec2 choice = possibleMoves[rand() % possibleMoves.size()];
-		m_pMoveComp->Move(choice);
+		m_CurrentRoamTimer = 0;
+		
+		
+		if (!possibleMoves.empty())
+		{
+			
+			for (auto& move : possibleMoves)
+			{
+				std::cout << move.x << ", " << move.y << std::endl;
+			}
+			m_Choice = possibleMoves[rand() % possibleMoves.size()];
+		}
+		else
+		{
+			m_CurrentRoamTimer = m_MaxRoamInterval;
+		}
 	}
+	
+	m_pMoveComp->Move(m_Choice);
+	
 	if (ShouldPath())
 	{
 		m_pAIOwner->GetComponent<AIComponent>()->SetState(std::make_unique<AIPathState>(m_pAIOwner, m_pMoveComp));

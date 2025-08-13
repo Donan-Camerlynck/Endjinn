@@ -41,7 +41,9 @@ bool dae::MovementComponent::CanMoveTo(glm::vec2 direction)
 {
     dae::Level& level = dae::Level::GetInstance();
 
-    glm::vec2 newPosition = GetOwner()->GetWorldPos() + direction; // proposed position
+    //Tile* tile = level.GetTileAtPos(GetOwner()->GetWorldPos() + direction * glm::vec2(level.GetTileWidth() / 2, level.GetTileHeight() / 2));
+
+    glm::vec2 newPosition = GetOwner()->GetWorldPos() + direction * glm::vec2(level.GetTileWidth() / 4, level.GetTileHeight() / 4); // proposed position
 
     Rect futureAABB;
     futureAABB.position = newPosition; // top-left corner of the character
@@ -50,7 +52,7 @@ bool dae::MovementComponent::CanMoveTo(glm::vec2 direction)
     bool bCanMoveTo = level.AreAllTilesWalkable(futureAABB);
     if (bCanMoveTo)
     {
-        m_DesiredPosition = newPosition;
+        m_DesiredPosition = GetOwner()->GetWorldPos() + direction;
     }
     return bCanMoveTo;
 }

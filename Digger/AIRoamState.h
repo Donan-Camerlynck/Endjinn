@@ -23,7 +23,11 @@ namespace dae
 		GameObject* m_pAIOwner;
 		MovementComponent* m_pMoveComp;
 		bool ShouldPath();
-		float m_MaxRoamInterval{1.f};
+		float m_MaxRoamInterval{1.5f};
 		float m_CurrentRoamTimer{};
+		glm::vec2 m_Choice{};
+		glm::vec2 m_LastChoice{};
+		int m_CurrentNumberOptions{};
+		int m_PreviousNumberOptions{};
 	};
 }
