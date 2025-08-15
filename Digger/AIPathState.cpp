@@ -9,7 +9,8 @@
 dae::AIPathState::AIPathState(GameObject* owner, MovementComponent* moveComp)
 	:m_pAIOwner(owner), m_pMoveComp(moveComp), m_pAStar(std::make_unique<AStarPathfinding>(dae::Level::GetInstance().GetRows(), dae::Level::GetInstance().GetColumns()))
 {
-
+	m_TileSize.x = dae::Level::GetInstance().GetTileWidth() /2;
+	m_TileSize.y = dae::Level::GetInstance().GetTileHeight() /2;
 }
 
 void dae::AIPathState::Update()
@@ -26,7 +27,7 @@ void dae::AIPathState::Update()
 	if (!m_Path.empty())
 	{
 		glm::ivec2 aiPos = m_pAIOwner->GetWorldPos();
-		glm::ivec2 target = m_Path.front();
+		glm::ivec2 target = m_Path.front() + m_TileSize;
 
 		// Movement direction toward current target
 		glm::vec2 direction = target - aiPos;

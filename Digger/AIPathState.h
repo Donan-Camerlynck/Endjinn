@@ -33,6 +33,7 @@ namespace dae
 		float m_CurrentPathCalcTime{};
 
 		std::deque<glm::ivec2> m_Path{};
+		glm::ivec2 m_TileSize{};
 
 		glm::ivec2 m_CurrentPathNode{};
 		glm::ivec2 m_NextPathNode{};
