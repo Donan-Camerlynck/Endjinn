@@ -1,16 +1,15 @@
 #pragma once
-#include "ICommand.h"
+#include "AxisCommand.h"
 #include "ShootingComponent.h"
 namespace dae
 {
-	class AimCommand : public ICommand
+	class AimCommand : public AxisCommand
 	{
 	public:
-		explicit AimCommand(glm::ivec2 direction, ShootingComponent* moveComp);
+		explicit AimCommand(glm::vec2 direction, ShootingComponent* moveComp);
 		void Execute() override;
 
 	private:
-		glm::ivec2 m_Direction;
 		ShootingComponent* m_pShootComp;
 	};
 

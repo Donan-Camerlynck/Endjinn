@@ -9,10 +9,10 @@ namespace dae
 	class AxisCommand : public ICommand
 	{
 	public:
-		void SetDirection(glm::ivec2 direction) { m_Direction = direction; } 
+		void SetDirection(glm::vec2 direction) { m_Direction = direction; } 
 
 	protected:
-		glm::ivec2 m_Direction{};
+		glm::vec2 m_Direction{};
 		
 	};
 

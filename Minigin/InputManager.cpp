@@ -24,13 +24,13 @@ void dae::InputManager::AddCommand(SDL_Scancode key, InputEventType type, std::u
 	m_KeyboardBindings.push_back({ key, type, std::move(command), false });
 }
 
-void dae::InputManager::AddCommand(GamepadAxis2D axis, std::unique_ptr<AxisCommand> command, unsigned int controllerID)
+void dae::InputManager::AddCommand(GamepadAxis2D axis, std::unique_ptr<AxisCommand> command, unsigned int controllerID, bool diagonalAllowed)
 {
 	if (m_GamePads.size() <= controllerID)
 	{
 		m_GamePads.push_back(std::make_unique<GamePad>(controllerID));
 	}
-	m_GamePadAxisBindings.push_back({ axis, controllerID, std::move(command) });
+	m_GamePadAxisBindings.push_back({ axis, controllerID, std::move(command), 0.1f ,diagonalAllowed });
 }
 
 bool dae::InputManager::ProcessKeyboardInput()

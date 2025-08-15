@@ -139,6 +139,7 @@ void load()
 	input.AddCommand(SDL_SCANCODE_I, dae::InputEventType::Pressed, std::make_unique<dae::AimCommand>(glm::vec2{ 0,-1 }, mainObj->GetComponent<dae::ShootingComponent>()));
 	input.AddCommand(SDL_SCANCODE_K, dae::InputEventType::Pressed, std::make_unique<dae::AimCommand>(glm::vec2{ 0,1 }, mainObj->GetComponent<dae::ShootingComponent>()));
 
+	input.AddCommand(dae::GamepadAxis2D::RThumbStick, std::make_unique<dae::AimCommand>(glm::ivec2{ 0, 0 }, mainObj->GetComponent<dae::ShootingComponent>()), 0, true);
 }
 
 int main(int, char*[])

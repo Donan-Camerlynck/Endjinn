@@ -13,7 +13,6 @@ namespace dae
 
 	}
 
-
 	Bullet::~Bullet() = default;
 
 	void Bullet::Update()
@@ -22,7 +21,7 @@ namespace dae
 		glm::vec2 oldPos = m_Position;
 		m_Position += m_Velocity * TimeManager::GetInstance().GetDeltaTime();
 
-		//check collision
+		//check level collision
 		Tile* CurrentTile = Level::GetInstance().GetTileAtPos(m_Position);
         if (CurrentTile->GetType() == TileType::wall)
         {
@@ -34,7 +33,7 @@ namespace dae
             else
             {
                 //determine bounce
-                glm::vec2 tileCenter = CurrentTile->m_Coordinates; // e.g., tilePos + half tile size
+                glm::vec2 tileCenter = CurrentTile->m_Coordinates;
                 glm::vec2 diff = oldPos - tileCenter;
 
                 if (std::abs(diff.x) > std::abs(diff.y))
@@ -53,6 +52,7 @@ namespace dae
                 m_Position = oldPos;
             }
 		}
+
 
 	}
 

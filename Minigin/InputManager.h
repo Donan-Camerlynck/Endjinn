@@ -29,7 +29,7 @@ namespace dae
 		void Initialize();
 		void AddCommand(GamepadKey key, InputEventType type, std::unique_ptr<ICommand> command, unsigned int controllerID);
 		void AddCommand(SDL_Scancode key, InputEventType type, std::unique_ptr<ICommand> command);
-		void AddCommand(GamepadAxis2D axis, std::unique_ptr<AxisCommand> command, unsigned int controllerID);
+		void AddCommand(GamepadAxis2D axis, std::unique_ptr<AxisCommand> command, unsigned int controllerID, bool diagonalAllowed = false);
 	
 		bool ProcessKeyboardInput();
 		void ProcessGamePadActions();

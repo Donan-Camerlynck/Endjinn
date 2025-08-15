@@ -14,10 +14,12 @@ namespace dae
         ShootingComponent& operator=(const ShootingComponent& other) = delete;
         ShootingComponent& operator=(ShootingComponent&& other) = delete;
         void Shoot();
+        void Update() override;
         void SetDirection(glm::vec2 direction);
     private:
         glm::vec2 m_Direction{};
         float m_Speed;
+        bool m_bShouldShoot;
     };
 
 }
