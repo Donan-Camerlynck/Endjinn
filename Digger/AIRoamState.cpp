@@ -24,7 +24,7 @@ void dae::AIRoamState::Update()
 		}
 	}
 
-	m_CurrentNumberOptions = possibleMoves.size();
+	m_CurrentNumberOptions = static_cast<int>(possibleMoves.size());
 
 	if (m_CurrentRoamTimer >= m_MaxRoamInterval || m_CurrentNumberOptions > m_PreviousNumberOptions)
 	{
