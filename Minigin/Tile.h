@@ -10,7 +10,8 @@ namespace dae
 	{
 		empty,
 		wall,
-		path
+		path,
+		teleporter
 	};
 
 	class Tile

@@ -91,7 +91,7 @@ void dae::Renderer::RenderDebugBox(float x, float y, float width, float height)
 	dst.y = static_cast<int>(y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
-	SDL_SetRenderDrawColor(GetSDLRenderer(), 255, 0, 0, 255); // Red outline
+	SDL_SetRenderDrawColor(GetSDLRenderer(), 255, 255, 255, 255); // Red outline
 	
 	SDL_RenderDrawRect(GetSDLRenderer(), &dst);
 }

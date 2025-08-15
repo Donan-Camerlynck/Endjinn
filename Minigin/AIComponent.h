@@ -21,17 +21,18 @@ namespace dae
 
 		//void MoveTo(GameObject* pTarget);
 		void Update() override;
+		void Render() const override;
 		GameObject* GetTarget() { return m_pTarget; }
 		void SetTarget(GameObject* target);
-		float GetPathingDistance() { return m_PathingDistance; }
+		int GetPathingDistance() { return m_PathingDistance; }
 		void SetState(std::unique_ptr<AIState> newState);
 
 	private:
 		std::unique_ptr<AIState> m_pState;
 		float m_speed{ 150.f };
-		float m_PathingDistance{ 150.f };
+		int m_PathingDistance{ 250 };
 
-		std::deque<glm::vec2> m_Path;
+		std::deque<glm::ivec2> m_Path;
 
 		float m_PathCalcInterval{ 0.5f };
 		float m_CalcTime{};

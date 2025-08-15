@@ -38,7 +38,7 @@ void dae::TextComponent::Render() const
 		if (owner)
 		{
 			auto pos = owner->GetWorldPos();
-			Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+			Renderer::GetInstance().RenderTexture(*m_pTexture, static_cast<float>(pos.x), static_cast<float>(pos.y));
 		}
 
 	}

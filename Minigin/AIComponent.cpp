@@ -1,8 +1,14 @@
 #include "AIComponent.h"
+#include "Renderer.h"
 
 void dae::AIComponent::Update()
 {
 	m_pState->Update();
+}
+
+void dae::AIComponent::Render() const
+{
+	m_pState->Render();
 }
 
 void dae::AIComponent::SetState(std::unique_ptr<AIState> newState)

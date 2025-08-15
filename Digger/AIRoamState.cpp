@@ -12,11 +12,11 @@ dae::AIRoamState::AIRoamState(GameObject* owner, MovementComponent* moveComp)
 void dae::AIRoamState::Update()
 {
 	m_CurrentRoamTimer += dae::TimeManager::GetInstance().GetDeltaTime();
-	std::vector<glm::vec2> moves{ {1,0},{-1,0},{0,-1},{0,1} };
-	std::vector<glm::vec2> possibleMoves{};
+	std::vector<glm::ivec2> moves{ {1,0},{-1,0},{0,-1},{0,1} };
+	std::vector<glm::ivec2> possibleMoves{};
 	m_PreviousNumberOptions = m_CurrentNumberOptions;
 
-	for (glm::vec2 move : moves)
+	for (glm::ivec2 move : moves)
 	{
 		if (m_pMoveComp->CanMoveTo(move))
 		{
@@ -62,6 +62,10 @@ void dae::AIRoamState::Exit()
 void dae::AIRoamState::Enter()
 {
 
+}
+
+void dae::AIRoamState::Render()
+{
 }
 
 bool dae::AIRoamState::ShouldPath()

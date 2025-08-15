@@ -3,6 +3,7 @@
 #include "Level.h"
 #include "Renderer.h"
 #include "TimeManager.h"
+#include <iostream>
 
 dae::MovementComponent::MovementComponent(GameObject* owner, float speed)
 	:BaseComponent(owner), m_Speed(speed)
@@ -14,47 +15,84 @@ void dae::MovementComponent::Update()
 {
     if (m_bNeedsToMove)
     {
-        GetOwner()->SetLocalPos(GetOwner()->GetWorldPos() + m_Direction * m_Speed * dae::TimeManager::GetInstance().GetDeltaTime());
+        if (!CanMoveTo(m_Direction))
+        {
+            m_bNeedsToMove = false;
+            return;
+        }
+       // dae::Level& level= dae::Level::GetInstance();
+        glm::vec2 oldPos = GetOwner()->GetWorldPos();
+        glm::vec2 dir = m_Direction;
+        glm::vec2 offset{};
+        m_MoveVector = dir * m_Speed * dae::TimeManager::GetInstance().GetDeltaTime();
+
+        if (m_MoveVector.x > 1.f)
+        {
+            offset.x = 1.f;
+            m_MoveVector.x -= 1.f;
+        }
+        if (m_MoveVector.x < -1.f)
+        {
+            offset.x = -1.f;
+            m_MoveVector.x += 1.f;
+        }
+        if (m_MoveVector.y > 1.f)
+        {
+            offset.y = 1.f;
+            m_MoveVector.y -= 1.f;
+        }
+        if (m_MoveVector.y < -1.f)
+        {
+            offset.y = -1.f;
+            m_MoveVector.y += 1.f;
+        }
+
+        glm::vec2 updatedPos = oldPos + offset;
+       
+        GetOwner()->SetLocalPos(updatedPos);
+        
+
+
+        //std::cout << "oldPos: " << oldPos.x << " " << oldPos.y << " newPos: " << newPos.x << " " << newPos.y << std::endl;
         m_bNeedsToMove = false;
+
     }
+    
 }
 
 void dae::MovementComponent::Render() const
 {
     dae::Level& level = dae::Level::GetInstance();
-    Rect futureAABB;
+    Rect futureAABB{};
     futureAABB.position = GetOwner()->GetWorldPos();
-    futureAABB.size = glm::vec2(level.GetTileWidth() * 2 , level.GetTileHeight() * 2 );
-    dae::Renderer::GetInstance().RenderDebugBox(futureAABB.position.x, futureAABB.position.y, futureAABB.size.x, futureAABB.size.y);
+    futureAABB.size = glm::vec2(level.GetTileWidth()  , level.GetTileHeight() );
+    dae::Renderer::GetInstance().RenderDebugBox(futureAABB.position.x - futureAABB.size.x /2, futureAABB.position.y - futureAABB.size.y /2, futureAABB.size.x, futureAABB.size.y);
 }
 
-void dae::MovementComponent::Move(glm::vec2 direction)
+void dae::MovementComponent::Move(glm::ivec2 direction)
 {
-    if (!m_bNeedsToMove)
-    {
-        m_bNeedsToMove = CanMoveTo(direction);
-        m_Direction = direction;
-    }
+    
+    m_Direction = direction;
+    m_bNeedsToMove = true;
+   
 }
 
-bool dae::MovementComponent::CanMoveTo(glm::vec2 direction)
+bool dae::MovementComponent::CanMoveTo(glm::ivec2 direction)
 {
     dae::Level& level = dae::Level::GetInstance();
 
-    //Tile* tile = level.GetTileAtPos(GetOwner()->GetWorldPos() + direction * glm::vec2(level.GetTileWidth() / 2, level.GetTileHeight() / 2));
+    //glm::ivec2 newPosition = GetOwner()->GetWorldPos() + direction * 2; // proposed position
 
-    glm::vec2 newPosition = GetOwner()->GetWorldPos() + direction * glm::vec2(level.GetTileWidth() / 4, level.GetTileHeight() / 4); // proposed position
-
-    Rect futureAABB;
-    futureAABB.position = newPosition; // top-left corner of the character
-    futureAABB.size = glm::vec2(level.GetTileWidth() * 2 , level.GetTileHeight() * 2 );
-
-    bool bCanMoveTo = level.AreAllTilesWalkable(futureAABB);
-    if (bCanMoveTo)
+    if (level.IsTileWalkable(GetOwner()->GetWorldPos(), direction))
     {
-        m_DesiredPosition = GetOwner()->GetWorldPos() + direction;
+        return true;
     }
-    return bCanMoveTo;
+    else
+    {
+        return false;
+    }
+
+   
 }
 
 

@@ -2,10 +2,10 @@
 #include "GameObject.h"
 #include "TimeManager.h"
 
-dae::MoveCommand::MoveCommand(glm::vec2 direction, MovementComponent* moveComp)
+dae::MoveCommand::MoveCommand(glm::ivec2 direction, MovementComponent* moveComp)
 	:m_pMoveComp(moveComp)
 {
-	m_Direction = glm::normalize(direction);
+	 m_Direction = direction;
 }
 
 void dae::MoveCommand::Execute()

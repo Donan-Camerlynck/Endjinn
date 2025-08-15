@@ -26,10 +26,12 @@ namespace dae
 			return row == other.row and col == other.col;
 		}
 
-		bool operator<(const Node& other) const
-		{
-			return fCost < other.fCost;
+		bool operator<(const Node& other) const {
+			if (row != other.row) return row < other.row;
+			return col < other.col;
 		}
+
+		
 	};
 
 	class AStarPathfinding final
@@ -42,7 +44,7 @@ namespace dae
 		AStarPathfinding& operator=(const AStarPathfinding& other) = delete;
 		AStarPathfinding& operator=(AStarPathfinding&& other) = delete;
 
-		std::deque<glm::vec2> FindPath(const glm::vec2& startPos, const glm::vec2& targetPos);
+		std::deque<glm::ivec2> FindPath(const glm::ivec2& startPos, const glm::ivec2& targetPos);
 	private:
 		int m_Rows{};
 		int m_Cols{};

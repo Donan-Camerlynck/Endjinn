@@ -6,11 +6,11 @@ namespace dae
 	class AimCommand : public ICommand
 	{
 	public:
-		explicit AimCommand(glm::vec2 direction, ShootingComponent* moveComp);
+		explicit AimCommand(glm::ivec2 direction, ShootingComponent* moveComp);
 		void Execute() override;
 
 	private:
-		glm::vec2 m_Direction;
+		glm::ivec2 m_Direction;
 		ShootingComponent* m_pShootComp;
 	};
 

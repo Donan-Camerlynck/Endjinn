@@ -26,13 +26,13 @@ namespace dae
 		switch (m_Type)
 		{
 		case TileType::empty:
-			renderer.RenderTexture(*m_pTextures[0], m_Coordinates.x, m_Coordinates.y, m_Size.x, m_Size.y);
+			renderer.RenderTexture(*m_pTextures[0], m_Coordinates.x - m_Size.x/2, m_Coordinates.y - m_Size.y/2, m_Size.x, m_Size.y);
 			break;
 		case TileType::wall:
-			renderer.RenderTexture(*m_pTextures[1], m_Coordinates.x, m_Coordinates.y, m_Size.x, m_Size.y);
+			renderer.RenderTexture(*m_pTextures[1], m_Coordinates.x - m_Size.x / 2, m_Coordinates.y - m_Size.y / 2, m_Size.x, m_Size.y);
 			break;
 		case TileType::path:
-			renderer.RenderTexture(*m_pTextures[2], m_Coordinates.x, m_Coordinates.y, m_Size.x, m_Size.y);
+			renderer.RenderTexture(*m_pTextures[2], m_Coordinates.x - m_Size.x / 2, m_Coordinates.y - m_Size.y / 2, m_Size.x, m_Size.y);
 			break;
 		}
 		

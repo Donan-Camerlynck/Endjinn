@@ -1,6 +1,6 @@
 #include "AimCommand.h"
 
-dae::AimCommand::AimCommand(glm::vec2 direction, ShootingComponent* shootComp)
+dae::AimCommand::AimCommand(glm::ivec2 direction, ShootingComponent* shootComp)
 	:m_Direction(direction), m_pShootComp(shootComp)
 {
 

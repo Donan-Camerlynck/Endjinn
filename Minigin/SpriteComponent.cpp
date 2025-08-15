@@ -27,7 +27,8 @@ void dae::SpriteComponent::Render() const
 		if (owner)
 		{
 			auto pos = owner->GetWorldPos();
-			Renderer::GetInstance().RenderTexture(*m_pTexture, pos.x, pos.y);
+			auto size = m_pTexture->GetSize();
+			Renderer::GetInstance().RenderTexture(*m_pTexture, static_cast<float>(pos.x - size.x /2.f), static_cast<float>(pos.y - size.y /2.f));
 		}
 	}
 }

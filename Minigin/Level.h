@@ -17,14 +17,15 @@ namespace dae
 		void Update();
 		void Render();
 		bool AreAllTilesWalkable(const Rect& aabb);
-		Tile* GetTileAtPos(glm::vec2 pos);
+		bool IsTileWalkable(const glm::ivec2& position, const glm::ivec2& direction);
+		Tile* GetTileAtPos(glm::ivec2 pos);
 		void End();
 		int GetRows() { return m_Rows; }
 		int GetColumns() { return m_Columns; }
 		int GetTileHeight() { return m_TileHeight; }
 		int GetTileWidth() { return m_TileWidth; }
-		std::tuple<int, int> GetRowColIdx(const glm::vec2& pos);
-		glm::vec2 PositionFromRowCol(int row, int col);
+		std::tuple<int, int> GetRowColIdx(const glm::ivec2& pos);
+		glm::ivec2 PositionFromRowCol(int row, int col);
 		Tile* GetTileFromIdx(int row, int col);
 
 		//void SetTileIsColliding(int row, int column, bool isColliding);

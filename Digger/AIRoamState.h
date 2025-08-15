@@ -18,6 +18,7 @@ namespace dae
 		virtual void Update() override;
 		virtual void Exit() override;
 		virtual void Enter() override;
+		virtual void Render() override;
 
 	private:
 		GameObject* m_pAIOwner;
@@ -25,8 +26,8 @@ namespace dae
 		bool ShouldPath();
 		float m_MaxRoamInterval{1.5f};
 		float m_CurrentRoamTimer{};
-		glm::vec2 m_Choice{};
-		glm::vec2 m_LastChoice{};
+		glm::ivec2 m_Choice{};
+		glm::ivec2 m_LastChoice{};
 		int m_CurrentNumberOptions{};
 		int m_PreviousNumberOptions{};
 	};

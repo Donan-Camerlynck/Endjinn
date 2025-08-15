@@ -10,7 +10,7 @@ namespace dae
 	class MoveCommand : public AxisCommand
 	{
 	public:
-		explicit MoveCommand(glm::vec2 direction, MovementComponent* moveComp);
+		explicit MoveCommand(glm::ivec2 direction, MovementComponent* moveComp);
 		void Execute() override;
 
 	private:

@@ -21,6 +21,7 @@ namespace dae
 		virtual void Update() override;
 		virtual void Exit() override;
 		virtual void Enter() override;
+		virtual void Render() override;
 
 	private:
 		GameObject* m_pAIOwner;
@@ -31,6 +32,11 @@ namespace dae
 		float m_PathCalcInterval{ 0.5f };
 		float m_CurrentPathCalcTime{};
 
-		std::deque<glm::vec2> m_Path{};
+		std::deque<glm::ivec2> m_Path{};
+
+		glm::ivec2 m_CurrentPathNode{};
+		glm::ivec2 m_NextPathNode{};
+
+		bool m_bIsPathing{ false };
 	};
 }

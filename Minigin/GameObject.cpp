@@ -49,9 +49,9 @@ void dae::GameObject::Render() const
 	}
 }
 
-void dae::GameObject::SetPosition(float x, float y)
+void dae::GameObject::SetPosition(int x, int y)
 {
-	m_transform.SetPosition(x, y, 0.0f);
+	m_transform.SetPosition(x, y, 0);
 }
 
 

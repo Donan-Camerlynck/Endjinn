@@ -38,7 +38,7 @@ namespace dae
 		virtual void Render() const;
 		virtual void End();
 
-		void SetPosition(float x, float y);
+		void SetPosition(int x, int y);
 		Transform GetTransform() { return m_transform; }
 
 		
