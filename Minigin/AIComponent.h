@@ -12,7 +12,7 @@ namespace dae
 	class AIComponent : public BaseComponent
 	{
 	public:
-		AIComponent(GameObject* owner, std::unique_ptr<AIState> state);
+		AIComponent(GameObject* owner, std::unique_ptr<AIState> state, int pathingDistance);
 		virtual ~AIComponent() override = default;
 		AIComponent(const AIComponent& other) = delete;
 		AIComponent(AIComponent&& other) = delete;
@@ -30,7 +30,7 @@ namespace dae
 	private:
 		std::unique_ptr<AIState> m_pState;
 		float m_speed{ 150.f };
-		int m_PathingDistance{ 250 };
+		int m_PathingDistance{};
 
 		std::deque<glm::ivec2> m_Path;
 

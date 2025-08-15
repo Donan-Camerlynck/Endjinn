@@ -27,8 +27,8 @@ void dae::AIComponent::SetState(std::unique_ptr<AIState> newState)
 
 
 
-dae::AIComponent::AIComponent(GameObject* owner, std::unique_ptr<AIState> state)
-	:BaseComponent(owner), m_pState(std::move(state)), m_pTarget(nullptr)
+dae::AIComponent::AIComponent(GameObject* owner, std::unique_ptr<AIState> state, int pathingDistance)
+	:BaseComponent(owner), m_pState(std::move(state)), m_pTarget(nullptr), m_PathingDistance(pathingDistance)
 {
 
 }

@@ -21,7 +21,7 @@ namespace dae
 		}
 		else
 		{
-			glm::vec2 pos = GetOwner()->GetWorldPos() + glm::vec2{ GetOwner()->GetComponent<SpriteComponent>()->GetSize().x / 2, GetOwner()->GetComponent<SpriteComponent>()->GetSize().y / 2 };
+			glm::vec2 pos = GetOwner()->GetWorldPos();
 			BulletManager::GetInstance().SpawnBullet(pos, glm::normalize(m_Direction) * m_Speed, GetOwner());
 			m_Direction.x = 0;
 			m_Direction.y = 0;

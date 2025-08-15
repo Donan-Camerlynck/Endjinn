@@ -88,7 +88,7 @@ void load()
 	go5->AddComponent<dae::HealthComponent>(3);
 	go5->AddComponent<dae::ScoreComponent>(0);
 	go5->AddComponent<dae::MovementComponent>(100.f);
-	go5->AddComponent<dae::AIComponent>( std::make_unique<dae::AIRoamState>(go5.get(), go5->GetComponent<dae::MovementComponent>()));
+	go5->AddComponent<dae::AIComponent>( std::make_unique<dae::AIRoamState>(go5.get(), go5->GetComponent<dae::MovementComponent>()), 250);
 	go5->GetComponent<dae::AIComponent>()->SetTarget(mainObj);
 	go5->SetLocalPos(glm::vec2{ level.GetTileWidth() *1.5f  , level.GetTileHeight() * 18.5f });
 	auto enemyObj = scene.Add(std::move(go5));
@@ -134,10 +134,10 @@ void load()
 
 	input.AddCommand(SDL_SCANCODE_SPACE, dae::InputEventType::Down, std::make_unique<dae::ShootCommand>(mainObj, mainObj->GetComponent<dae::ShootingComponent>()));
 
-	input.AddCommand(SDL_SCANCODE_L, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{1,0}, mainObj->GetComponent<dae::ShootingComponent>()));
-	input.AddCommand(SDL_SCANCODE_J, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ -1,0 }, mainObj->GetComponent<dae::ShootingComponent>()));
-	input.AddCommand(SDL_SCANCODE_I, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ 0,-1 }, mainObj->GetComponent<dae::ShootingComponent>()));
-	input.AddCommand(SDL_SCANCODE_K, dae::InputEventType::Down, std::make_unique<dae::AimCommand>(glm::vec2{ 0,1 }, mainObj->GetComponent<dae::ShootingComponent>()));
+	input.AddCommand(SDL_SCANCODE_L, dae::InputEventType::Pressed, std::make_unique<dae::AimCommand>(glm::vec2{1,0}, mainObj->GetComponent<dae::ShootingComponent>()));
+	input.AddCommand(SDL_SCANCODE_J, dae::InputEventType::Pressed, std::make_unique<dae::AimCommand>(glm::vec2{ -1,0 }, mainObj->GetComponent<dae::ShootingComponent>()));
+	input.AddCommand(SDL_SCANCODE_I, dae::InputEventType::Pressed, std::make_unique<dae::AimCommand>(glm::vec2{ 0,-1 }, mainObj->GetComponent<dae::ShootingComponent>()));
+	input.AddCommand(SDL_SCANCODE_K, dae::InputEventType::Pressed, std::make_unique<dae::AimCommand>(glm::vec2{ 0,1 }, mainObj->GetComponent<dae::ShootingComponent>()));
 
 }
 

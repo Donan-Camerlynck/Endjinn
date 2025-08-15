@@ -177,7 +177,7 @@ namespace dae
 
 	std::tuple<int, int> Level::GetRowColIdx(const glm::ivec2& pos)
 	{
-		int colIdx = static_cast<int>(pos.x) / m_TileWidth;
+		int colIdx = static_cast<int>(pos.x) / m_TileWidth ;
 		int rowIdx = static_cast<int>(pos.y) / m_TileHeight;
 
 		return std::make_tuple(rowIdx, colIdx);
@@ -185,8 +185,8 @@ namespace dae
 
 	glm::ivec2 Level::PositionFromRowCol(int row, int col)
 	{
-		const float x = static_cast<float>(col * m_TileWidth);
-		const float y = static_cast<float>(row * m_TileHeight);
+		const float x = static_cast<float>(col * m_TileWidth + m_TileWidth/2.f);
+		const float y = static_cast<float>(row * m_TileHeight + m_TileHeight/2.f);
 		return { x, y };
 	}
 

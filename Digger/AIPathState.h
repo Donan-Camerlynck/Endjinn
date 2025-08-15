@@ -27,9 +27,10 @@ namespace dae
 		GameObject* m_pAIOwner;
 		MovementComponent* m_pMoveComp;
 		bool ShouldRoam();
+		void UpdateMovement();
 		std::unique_ptr<AStarPathfinding> m_pAStar;
 
-		float m_PathCalcInterval{ 0.5f };
+		float m_PathCalcInterval{ 3.f };
 		float m_CurrentPathCalcTime{};
 
 		std::deque<glm::ivec2> m_Path{};

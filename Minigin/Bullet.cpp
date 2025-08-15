@@ -34,7 +34,7 @@ namespace dae
             else
             {
                 //determine bounce
-                glm::vec2 tileCenter = CurrentTile->m_Coordinates + glm::vec2{ CurrentTile->GetSize().x / 2, CurrentTile->GetSize().y / 2 }; // e.g., tilePos + half tile size
+                glm::vec2 tileCenter = CurrentTile->m_Coordinates; // e.g., tilePos + half tile size
                 glm::vec2 diff = oldPos - tileCenter;
 
                 if (std::abs(diff.x) > std::abs(diff.y))
