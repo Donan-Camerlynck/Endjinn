@@ -31,6 +31,7 @@
 #include "AimCommand.h"
 #include <AIComponent.h>
 #include "AIRoamState.h"
+#include "ShootingAIComponent.h"
 
 
 
@@ -88,7 +89,8 @@ void load()
 	go5->AddComponent<dae::HealthComponent>(3);
 	go5->AddComponent<dae::ScoreComponent>(0);
 	go5->AddComponent<dae::MovementComponent>(125.f);
-	go5->AddComponent<dae::AIComponent>( std::make_unique<dae::AIRoamState>(go5.get(), go5->GetComponent<dae::MovementComponent>()), 250);
+	go5->AddComponent<dae::ShootingComponent>(150.f);
+	go5->AddComponent<dae::ShootingAIComponent>( std::make_unique<dae::AIRoamState>(go5.get(), go5->GetComponent<dae::MovementComponent>()), 250, go5->GetComponent<dae::ShootingComponent>());
 	go5->GetComponent<dae::AIComponent>()->SetTarget(mainObj);
 	go5->SetLocalPos(glm::vec2{ level.GetTileWidth() *1.5f  , level.GetTileHeight() * 18.5f });
 	auto enemyObj = scene.Add(std::move(go5));

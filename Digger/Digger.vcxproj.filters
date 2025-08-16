@@ -54,6 +54,9 @@
     <ClCompile Include="AIRoamState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShootingAIComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ScoreComand.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="AIRoamState.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShootingAIComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

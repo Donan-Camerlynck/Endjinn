@@ -170,6 +170,7 @@
     <ClCompile Include="ScoreComand.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
     <ClCompile Include="ShootCommand.cpp" />
+    <ClCompile Include="ShootingAIComponent.cpp" />
     <ClCompile Include="ShootingComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -182,6 +183,7 @@
     <ClInclude Include="ScoreComand.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
     <ClInclude Include="ShootCommand.h" />
+    <ClInclude Include="ShootingAIComponent.h" />
     <ClInclude Include="ShootingComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
