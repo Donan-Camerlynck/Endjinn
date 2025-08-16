@@ -9,12 +9,12 @@
 #include <thread>
 
 #include "InputManager.h"
-#include "Physics.h"
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "TimeManager.h"
 #include "ResourceManager.h"
 #include "Level.h"
+#include "Soundsystem.h"
 
 SDL_Window* g_window{};
 
@@ -70,7 +70,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 
 	Renderer::GetInstance().Init(g_window);
 
-	ResourceManager::GetInstance().Init(dataPath);
+	ResourceManager::GetInstance().Init(dataPath);;
 }
 
 dae::Minigin::~Minigin()
@@ -85,17 +85,14 @@ void dae::Minigin::Run(const std::function<void()>& load)
 {
 	load();
 	auto& timeManager = TimeManager::GetInstance();
-
 	auto& renderer = Renderer::GetInstance();
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& inputManager = InputManager::GetInstance();
-	auto& physics = Physics::GetInstance();
 	sceneManager.Initialize();
 	inputManager.Initialize();
-	physics.Initialize();
 	auto& input = InputManager::GetInstance();
 
-	// todo: this update loop could use some work.
+
 
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.0f;
@@ -111,7 +108,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		lag += deltaTime;
 
 		doContinue = input.ProcessInput();
-		physics.Update();
 		sceneManager.Update();
 
 		renderer.Render();
@@ -120,5 +116,4 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		std::this_thread::sleep_for(sleepTime);
 	}
 	sceneManager.End();
-	physics.End();
 }
