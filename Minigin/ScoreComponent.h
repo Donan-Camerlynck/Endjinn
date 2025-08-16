@@ -5,8 +5,8 @@
 
 namespace dae
 {
-    class ScoreComponent : public BaseComponent
-    {
+	class ScoreComponent : public BaseComponent, public IObserver
+	{
 	public:
 		explicit ScoreComponent(GameObject* owner, int initialScore = 0);
 		void Update() override;
@@ -15,6 +15,7 @@ namespace dae
 		int GetScore() const { return m_Score; }
 		void AddScore(int score);
 		void ResetScore();
+		void Notify() override;
 
 		virtual ~ScoreComponent() = default;
 		ScoreComponent(const ScoreComponent& other) = delete;
@@ -28,7 +29,7 @@ namespace dae
 		int m_Score{ 0 };
 
 		std::unique_ptr<Subject> m_ScoreChangedEvent{ nullptr };
-    };
+	};
 
 }
 

@@ -10,7 +10,7 @@ namespace dae
 	Bullet::Bullet(glm::vec2 position, glm::vec2 velocity, GameObject* caster)
 		:m_Position(position), m_Velocity(velocity), m_pCaster(caster)
 	{
-
+        m_BulletCollisionEvent = std::make_unique<Subject>();
 	}
 
 	Bullet::~Bullet() = default;
@@ -53,6 +53,7 @@ namespace dae
             }
 		}
 
+        //todo: check for gameobject collision, on hit use observer pattern to change score
 
 	}
 

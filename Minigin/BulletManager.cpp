@@ -4,6 +4,8 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include "Texture2D.h"
+#include <iostream>
+#include "ScoreComponent.h"
 
 namespace dae
 {
@@ -12,6 +14,7 @@ namespace dae
     void BulletManager::SpawnBullet(glm::vec2 pos, glm::vec2 vel, GameObject* caster)
     {
         m_Bullets.push_back(std::make_unique<Bullet>(pos, vel, caster));
+        m_Bullets.back()->GetSubject()->AddObserver(caster->GetComponent<ScoreComponent>());
     }
 
 	void BulletManager::Update()
@@ -22,6 +25,8 @@ namespace dae
         {
             bullet->Update();
         }
+
+        CheckCollision();
 
         // Remove dead bullets
         m_Bullets.erase(
@@ -46,5 +51,50 @@ namespace dae
     void BulletManager::SetTexture(const std::string& filename)
     {
         m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
+    }
+
+    void BulletManager::AddPlayer(GameObject* player)
+    {
+        m_Players.push_back(player);
+    }
+
+    void BulletManager::AddEnemy(GameObject* enemy)
+    {
+        m_Enemies.push_back(enemy);
+    }
+
+    void BulletManager::CheckCollision()
+    {
+        for (auto& bullet : m_Bullets)
+        {
+            for (auto& enemy : m_Enemies)
+            {
+                if (std::find(m_Enemies.begin(), m_Enemies.end(), bullet->GetCaster()) != m_Enemies.end())
+                {
+                    continue;
+                }
+                float distance = glm::distance(enemy->GetWorldPos(), bullet->GetPos());
+                if (distance < 10.f)
+                {
+                    bullet->GetSubject()->NotifyAll();
+                    bullet->m_bActive = false;
+                    std::cout << "hit\n";
+                }
+            }
+            for (auto& player : m_Players)
+            {
+                if (std::find(m_Players.begin(), m_Players.end(), bullet->GetCaster()) != m_Players.end())
+                {
+                    continue;
+                }
+                float distance = glm::distance(player->GetWorldPos(), bullet->GetPos());
+                if (distance < 10.f)
+                {
+                    bullet->GetSubject()->NotifyAll();
+                    bullet->m_bActive = false;
+                    std::cout << "hit\n";
+                }
+            }
+        }
     }
 }

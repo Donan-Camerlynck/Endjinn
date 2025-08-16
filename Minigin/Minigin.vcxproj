@@ -251,6 +251,7 @@ xcopy "$(SolutionDir)3rdParty\Box2d\lib\$(Configuration)\$(PlatformTarget)\*.dll
     <ClInclude Include="RotationComponent.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Subject.h" />
@@ -289,6 +290,7 @@ xcopy "$(SolutionDir)3rdParty\Box2d\lib\$(Configuration)\$(PlatformTarget)\*.dll
     <ClCompile Include="RotationComponent.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Structs.h" />
     <ClCompile Include="Subject.cpp" />

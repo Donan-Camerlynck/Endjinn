@@ -15,7 +15,7 @@ void dae::ScoreComponent::Update()
 void dae::ScoreComponent::Initialize()
 {
 	BaseComponent::Initialize();
-	
+
 }
 
 void dae::ScoreComponent::AddScore(int score)
@@ -28,4 +28,9 @@ void dae::ScoreComponent::ResetScore()
 {
 	m_Score = 0;
 	m_ScoreChangedEvent->NotifyAll();
+}
+
+void dae::ScoreComponent::Notify()
+{
+	AddScore(1);
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <glm.hpp>
 #include "GameObject.h"
+#include "Subject.h"
 
 namespace dae
 {
@@ -11,6 +12,8 @@ namespace dae
 		void Update();
 		bool m_bActive{ true };
 		glm::vec2 GetPos() { return m_Position; }
+		Subject* GetSubject() { return m_BulletCollisionEvent.get(); }
+		GameObject* GetCaster() { return m_pCaster; }
 		~Bullet();
 	private:
 		int m_Bounces{};
@@ -18,5 +21,7 @@ namespace dae
 		glm::vec2 m_Position;
 		glm::vec2 m_Velocity;
 		GameObject* m_pCaster;//gameobject that spawned bullet
+
+		std::unique_ptr<Subject> m_BulletCollisionEvent{ nullptr };
 	};
 }

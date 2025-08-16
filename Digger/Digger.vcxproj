@@ -168,7 +168,6 @@
     <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ScoreComand.cpp" />
-    <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
     <ClCompile Include="ShootCommand.cpp" />
     <ClCompile Include="ShootingComponent.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="HealthDisplayComponent.h" />
     <ClInclude Include="ScoreComand.h" />
-    <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
     <ClInclude Include="ShootCommand.h" />
     <ClInclude Include="ShootingComponent.h" />

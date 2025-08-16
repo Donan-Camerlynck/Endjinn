@@ -78,7 +78,7 @@ void load()
 	go4->AddComponent<dae::SpriteComponent>("Sprites/RedTank.png");
 	go4->AddComponent<dae::HealthComponent>(3);
 	go4->AddComponent<dae::ScoreComponent>(0);
-	go4->AddComponent<dae::MovementComponent>(100.f);
+	go4->AddComponent<dae::MovementComponent>(500.f);
 	go4->AddComponent<dae::ShootingComponent>(150.f);
 	go4->SetLocalPos(glm::ivec2{ level.GetTileWidth() *1.5f  , level.GetTileHeight() *1.5f});
 	auto mainObj = scene.Add(std::move(go4));
@@ -87,17 +87,14 @@ void load()
 	go5->AddComponent<dae::SpriteComponent>("Sprites/GreenTank.png");
 	go5->AddComponent<dae::HealthComponent>(3);
 	go5->AddComponent<dae::ScoreComponent>(0);
-	go5->AddComponent<dae::MovementComponent>(100.f);
+	go5->AddComponent<dae::MovementComponent>(200.f);
 	go5->AddComponent<dae::AIComponent>( std::make_unique<dae::AIRoamState>(go5.get(), go5->GetComponent<dae::MovementComponent>()), 250);
 	go5->GetComponent<dae::AIComponent>()->SetTarget(mainObj);
 	go5->SetLocalPos(glm::vec2{ level.GetTileWidth() *1.5f  , level.GetTileHeight() * 18.5f });
 	auto enemyObj = scene.Add(std::move(go5));
 	
-
-	//auto go5 = std::make_unique<dae::GameObject>(&scene, dae::RenderLayer::ObjectTop);
-	//go5->AddComponent<dae::SpriteComponent>("digger2.png");
-	//go5->AddComponent<dae::RotationComponent>(60.f, 300.f);
-	//auto childObj = scene.Add(std::move(go5));
+	bulletManager.AddPlayer(mainObj);
+	bulletManager.AddEnemy(enemyObj);
 
 	mainObj->SetParent(rootObj, false);
 	enemyObj->SetParent(rootObj, false);
