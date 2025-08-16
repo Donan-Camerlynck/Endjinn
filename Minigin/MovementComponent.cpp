@@ -21,35 +21,36 @@ void dae::MovementComponent::Update()
             m_bNeedsToMove = false;
             return;
         }
-       // dae::Level& level= dae::Level::GetInstance();
+        // dae::Level& level= dae::Level::GetInstance();
         glm::vec2 dir = m_Direction;
         glm::vec2 offset{};
         m_MoveVector = dir * m_Speed * dae::TimeManager::GetInstance().GetDeltaTime();
 
-        if (m_MoveVector.x > 1.f)
-        {
-            offset.x = 1.f;
-            m_MoveVector.x -= 1.f;
-        }
-        if (m_MoveVector.x < -1.f)
-        {
-            offset.x = -1.f;
-            m_MoveVector.x += 1.f;
-        }
-        if (m_MoveVector.y > 1.f)
-        {
-            offset.y = 1.f;
-            m_MoveVector.y -= 1.f;
-        }
-        if (m_MoveVector.y < -1.f)
-        {
-            offset.y = -1.f;
-            m_MoveVector.y += 1.f;
-        }
+        /*    if (m_MoveVector.x > 1.f)
+            {
+                offset.x = 1.f;
+                m_MoveVector.x -= 1.f;
+            }
+            if (m_MoveVector.x < -1.f)
+            {
+                offset.x = -1.f;
+                m_MoveVector.x += 1.f;
+            }
+            if (m_MoveVector.y > 1.f)
+            {
+                offset.y = 1.f;
+                m_MoveVector.y -= 1.f;
+            }
+            if (m_MoveVector.y < -1.f)
+            {
+                offset.y = -1.f;
+                m_MoveVector.y += 1.f;
+            }*/
 
 
 
-        glm::vec2 updatedPos = m_PosToCalcFrom + offset;
+        glm::vec2 updatedPos = m_PosToCalcFrom + m_MoveVector;
+       
        
         GetOwner()->SetLocalPos(updatedPos);
         
