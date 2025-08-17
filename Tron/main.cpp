@@ -24,7 +24,6 @@
 #include "HealthDisplayComponent.h"
 #include "ScoreDisplayComponent.h"
 #include "ScoreComponent.h"
-#include "ScoreComand.h"
 #include "Level.h"
 #include "ShootCommand.h"
 #include "AimCommand.h"
