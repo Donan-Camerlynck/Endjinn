@@ -1,4 +1,5 @@
 #pragma once
+#include <SDL.h>
 #include "Singleton.h"
 #include "Interfaces.h"
 #include "GamePad.h"
@@ -27,6 +28,7 @@ namespace dae
 		InputManager& operator=(InputManager&&) = delete;
 
 		void Initialize();
+		void ClearCommands();
 		void AddCommand(GamepadKey key, InputEventType type, std::unique_ptr<ICommand> command, unsigned int controllerID);
 		void AddCommand(SDL_Scancode key, InputEventType type, std::unique_ptr<ICommand> command);
 		void AddCommand(GamepadAxis2D axis, std::unique_ptr<AxisCommand> command, unsigned int controllerID, bool diagonalAllowed = false);

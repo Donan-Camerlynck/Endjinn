@@ -3,17 +3,18 @@
 namespace dae
 {
 
-	void Subject::NotifyAll()
+
+	void Subject::NotifyAll(const Event& event)
 	{
 		for (auto observer : m_Observers)
 		{
-			observer->Notify();
+			observer->Notify(event);
 		}
 	}
 
 	void Subject::AddObserver(IObserver* observer)
 	{
-		m_Observers.emplace_back(observer);
+ 		m_Observers.emplace_back(observer);
 	}
 
 	void Subject::RemoveObserver(IObserver* observer)

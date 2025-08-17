@@ -1,9 +1,11 @@
 #pragma once
 #include "Observer.h"
 #include <vector>
+#include "GameObject.h"
 
 namespace dae
 {
+	
 
 	class Subject final
 	{
@@ -14,7 +16,7 @@ namespace dae
 		Subject(Subject&& other) = delete;
 		Subject& operator=(const Subject& other) = delete;
 		Subject& operator=(Subject&& other) = delete;
-		void NotifyAll();
+		void NotifyAll(const Event& event);
 		void AddObserver(IObserver* observer);
 		void RemoveObserver(IObserver* observer);
 

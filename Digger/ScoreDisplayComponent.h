@@ -17,7 +17,7 @@ namespace dae
 		ScoreDisplayComponent& operator=(const ScoreDisplayComponent& other) = delete;
 		ScoreDisplayComponent& operator=(ScoreDisplayComponent&& other) = delete;
 
-		void Notify() override;
+		void Notify(const Event& event) override;
 	private:
 		TextComponent* m_pTextComp{ nullptr };
 		GameObject* m_pCharacterToDisplay{ nullptr };

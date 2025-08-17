@@ -53,7 +53,6 @@ namespace dae
             }
 		}
 
-        //todo: check for gameobject collision, on hit use observer pattern to change score
 
 	}
 

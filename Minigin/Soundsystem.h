@@ -10,6 +10,7 @@ namespace dae
     public:
 
         void playSound(const std::string& file, int channel = -1);
+        void Mute();
 
         ~SoundSystem();
         SoundSystem();

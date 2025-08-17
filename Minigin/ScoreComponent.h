@@ -15,7 +15,7 @@ namespace dae
 		int GetScore() const { return m_Score; }
 		void AddScore(int score);
 		void ResetScore();
-		void Notify() override;
+		void Notify(const Event& event) override;
 
 		virtual ~ScoreComponent() = default;
 		ScoreComponent(const ScoreComponent& other) = delete;

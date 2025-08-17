@@ -12,7 +12,7 @@ namespace dae
 		void Initialize() override;
 		void Update() override;
 
-		void Notify() override;
+		void Notify(const Event& event) override;
 
 		virtual ~HealthDisplayComponent() = default;
 		HealthDisplayComponent(const HealthDisplayComponent& other) = delete;

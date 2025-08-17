@@ -27,6 +27,10 @@ namespace dae
 		std::tuple<int, int> GetRowColIdx(const glm::ivec2& pos);
 		glm::ivec2 PositionFromRowCol(int row, int col);
 		Tile* GetTileFromIdx(int row, int col);
+		glm::vec2 GetPlayerSpawn(int player);
+		glm::vec2 GetEnemySpawn();
+
+		std::vector<glm::vec2> GetAllEnemySpawns();
 
 		//void SetTileIsColliding(int row, int column, bool isColliding);
 	private:
@@ -38,7 +42,8 @@ namespace dae
 
 		std::vector<std::vector<std::unique_ptr<Tile>>> m_Tiles;
 		
-		
+		std::vector<std::pair<int, int>> m_PlayerSpawnTileIDs;
+		std::vector<std::pair<int, int>> m_EnemySpawnTileIDs;
 
 		//some data to collect from file to init the level
 

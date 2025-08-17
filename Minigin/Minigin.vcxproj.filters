@@ -159,6 +159,18 @@
     <ClInclude Include="Soundsystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameModeBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModeManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MuteCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -264,6 +276,12 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Soundsystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MuteCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

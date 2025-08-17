@@ -1,7 +1,24 @@
 #pragma once
+#include "GameObject.h"
 
 namespace dae
 {
+	enum class EventType
+	{
+		OnDamage,
+		OnDeath,
+		OnScore,
+		OnHeal,
+		OnSetHealth
+	};
+
+	struct Event
+	{
+		EventType type;
+		GameObject* caster;
+		int value{};
+	};
+
 	class IObserver
 	{
 
@@ -13,6 +30,6 @@ namespace dae
 		IObserver& operator=(const IObserver& other) = delete;
 		IObserver& operator=(IObserver&& other) = delete;
 
-		virtual void Notify() = 0;
+		virtual void Notify(const Event& event) = 0;
 	};
 }

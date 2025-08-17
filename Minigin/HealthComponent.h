@@ -5,7 +5,7 @@
 
 namespace dae
 {
-	class HealthComponent : public BaseComponent
+	class HealthComponent : public BaseComponent, public IObserver
 	{
 	public:
 		explicit HealthComponent(GameObject* owner, int maxHealth);
@@ -13,9 +13,10 @@ namespace dae
 		void Initialize() override;
 		int GetHealth() const { return m_Health; }
 		void SetMaxHealth(int health) { m_MaxHealth = health; }
-		void DoDamage(int damage);
+		void DoDamage(const Event& event);
 		void Heal(int heal);
 		void SetHealth(int health);
+		void Notify(const Event& event) override;
 
 		Subject* GetHealthChangedEvent() const { return m_HealthChangedEvent.get(); }
 
@@ -27,5 +28,4 @@ namespace dae
 		std::unique_ptr<Subject> m_HealthChangedEvent;
 	};
 }
-
 

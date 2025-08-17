@@ -6,15 +6,31 @@
 #include "Texture2D.h"
 #include <iostream>
 #include "ScoreComponent.h"
+#include "HealthComponent.h"
 
 namespace dae
 {
    
 
-    void BulletManager::SpawnBullet(glm::vec2 pos, glm::vec2 vel, GameObject* caster)
+    void BulletManager::SpawnBullet(glm::vec2 pos, glm::vec2 vel, GameObject* caster, bool isPlayer)
     {
         m_Bullets.push_back(std::make_unique<Bullet>(pos, vel, caster));
         m_Bullets.back()->GetSubject()->AddObserver(caster->GetComponent<ScoreComponent>());
+        if (isPlayer)
+        {
+            for (auto& enemy : m_Enemies)
+            {
+                m_Bullets.back()->GetSubject()->AddObserver(enemy->GetComponent<HealthComponent>());
+            }
+        }
+        else
+        {
+            for (auto& player : m_Players)
+            {
+                m_Bullets.back()->GetSubject()->AddObserver(player->GetComponent<HealthComponent>());
+            }
+        }
+       
     }
 
 	void BulletManager::Update()
@@ -53,6 +69,12 @@ namespace dae
         m_pTexture = ResourceManager::GetInstance().LoadTexture(filename);
     }
 
+    void BulletManager::ClearPlayersEnemies()
+    {
+        m_Players.clear();
+        m_Enemies.clear();
+    }
+
     void BulletManager::AddPlayer(GameObject* player)
     {
         m_Players.push_back(player);
@@ -76,7 +98,7 @@ namespace dae
                 float distance = glm::distance(enemy->GetWorldPos(), bullet->GetPos());
                 if (distance < 10.f)
                 {
-                    bullet->GetSubject()->NotifyAll();
+                    bullet->GetSubject()->NotifyAll({ EventType::OnDamage, enemy, 1 });
                     bullet->m_bActive = false;
                     std::cout << "hit\n";
                 }
@@ -90,7 +112,7 @@ namespace dae
                 float distance = glm::distance(player->GetWorldPos(), bullet->GetPos());
                 if (distance < 10.f)
                 {
-                    bullet->GetSubject()->NotifyAll();
+                    bullet->GetSubject()->NotifyAll({ EventType::OnDamage, player, 1 });
                     bullet->m_bActive = false;
                     std::cout << "hit\n";
                 }

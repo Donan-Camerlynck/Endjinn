@@ -4,6 +4,7 @@
 #include "BulletManager.h"
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 
 using namespace dae;
 
@@ -13,7 +14,7 @@ Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
 
-GameObject* Scene::Add(std::unique_ptr<GameObject> object)
+GameObject* Scene::Add(std::unique_ptr<GameObject> object, bool isPlayer, bool isEnemy)
 {
 
 	if (!object)
@@ -22,7 +23,14 @@ GameObject* Scene::Add(std::unique_ptr<GameObject> object)
 	}
 	auto obj = std::move(object);
 	const auto pRaw = obj.get();
-
+	if (isPlayer)
+	{
+		m_Players.push_back(pRaw);
+	}
+	if (isEnemy)
+	{
+		m_Enemies.push_back(pRaw);
+	}
 	m_objects.emplace_back(std::move(obj));
 	return pRaw;
 }
@@ -68,7 +76,14 @@ void Scene::Update()
 {
 	for(auto& object : m_objects)
 	{
-		object->Update();
+		if (object->GetActive())
+		{
+			object->Update();
+		}
+		else
+		{
+			std::cout << "not active\n";
+		}
 	}
 	BulletManager::GetInstance().Update();
 }
@@ -80,9 +95,16 @@ void Scene::Render() const
 	{
 		for (const auto& object : m_objects)
 		{
-			if (static_cast<int>(object->GetRenderLayer()) == i)
+			if (object->GetActive())
 			{
-				object->Render();
+				if (static_cast<int>(object->GetRenderLayer()) == i)
+				{
+					object->Render();
+				}
+			}
+			else
+			{
+				std::cout << "not active\n";
 			}
 		}
 	}

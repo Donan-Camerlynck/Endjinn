@@ -4,13 +4,14 @@
 #include <sstream>
 #include <iostream>
 #include "ResourceManager.h"
+#include <random>
 
 namespace dae
 {
 
 	void Level::Load(const std::string levelPath)
 	{
-
+		m_Tiles.clear();
 		const std::filesystem::path fullPath = dae::ResourceManager::GetInstance().GetPath()/ levelPath;
 		const auto filename = std::filesystem::path(fullPath).string();
 
@@ -42,8 +43,14 @@ namespace dae
 				{
 				case 0: row.push_back(std::make_unique<Tile>(TileType::wall, glm::vec2{ columnCount, rowCount })); break;
 				case 1: row.push_back(std::make_unique<Tile>(TileType::path, glm::vec2{ columnCount, rowCount })); break;
-				case 2: row.push_back(std::make_unique<Tile>(TileType::path, glm::vec2{ columnCount, rowCount })); break;
-				case 3: row.push_back(std::make_unique<Tile>(TileType::path, glm::vec2{ columnCount, rowCount })); break;
+				case 2: 
+					row.push_back(std::make_unique<Tile>(TileType::path, glm::vec2{ columnCount, rowCount })); 
+					m_PlayerSpawnTileIDs.push_back(std::pair<int, int>(columnCount, rowCount));
+					break;
+				case 3: 
+					row.push_back(std::make_unique<Tile>(TileType::path, glm::vec2{ columnCount, rowCount }));
+					m_EnemySpawnTileIDs.push_back(std::pair<int, int>(columnCount, rowCount));
+					break;
 				case 4: row.push_back(std::make_unique<Tile>(TileType::teleporter, glm::vec2{ columnCount, rowCount })); break;
 				default:
 					std::cerr << "Unknown tile code: " << tileCode << std::endl;
@@ -193,6 +200,41 @@ namespace dae
 	Tile* Level::GetTileFromIdx(int row, int col)
 	{
 		return m_Tiles[row][col].get();
+	}
+
+	glm::vec2 Level::GetPlayerSpawn(int player)
+	{
+		if (player < 0 || player > static_cast<int>(m_PlayerSpawnTileIDs.size())) return glm::vec2();
+		int column = m_PlayerSpawnTileIDs[player].first;
+		int row = m_PlayerSpawnTileIDs[player].second;
+		glm::vec2 result = PositionFromRowCol(row, column);
+
+		return result;
+	}
+
+	glm::vec2 Level::GetEnemySpawn()
+	{
+		std::random_device rd;
+		std::mt19937 gen(rd());
+
+		std::uniform_int_distribution<> dist(0, static_cast<int>(m_EnemySpawnTileIDs.size()) - 1);
+
+		int randomIndex = dist(gen);
+		int column = m_EnemySpawnTileIDs[randomIndex].first;
+		int row = m_EnemySpawnTileIDs[randomIndex].second;
+		glm::vec2 result = PositionFromRowCol(row, column);
+		return result;
+	}
+
+	std::vector<glm::vec2> Level::GetAllEnemySpawns()
+	{
+		std::vector<glm::vec2> result;
+		for (auto enemySpawn : m_EnemySpawnTileIDs)
+		{
+			result.push_back(PositionFromRowCol(enemySpawn.second, enemySpawn.first));
+		}
+		
+		return result;
 	}
 	
 }

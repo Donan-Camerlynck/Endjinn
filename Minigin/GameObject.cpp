@@ -72,6 +72,15 @@ void dae::GameObject::SetPositionDirty()
 	m_bPositionDirty = true;
 }
 
+void dae::GameObject::SetActive(bool bActive)
+{
+	m_bActive = bActive;
+	if (!bActive)
+	{
+		std::cout << "set not active\n";
+	}
+}
+
 void dae::GameObject::UpdateWorldPos()
 {
 	if (m_bPositionDirty)
@@ -86,12 +95,13 @@ void dae::GameObject::UpdateWorldPos()
 
 void dae::GameObject::End()
 {
+	for (int idx{}; idx < static_cast<int>(m_Components.size()); idx++)
+	{
+		m_Components[idx]->Update();
+	}
 	m_Components.clear();
 
-	for (const auto& child : m_Children)
-	{
-		child->End();
-	}
+	
 	for (int idx{}; idx < static_cast<int>(m_Children.size()); idx++)
 	{
 		m_Children[idx]->End();

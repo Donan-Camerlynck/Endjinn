@@ -3,8 +3,9 @@
 #include "GameObject.h"
 #include <format>
 
-void dae::ScoreDisplayComponent::Notify()
+void dae::ScoreDisplayComponent::Notify(const Event& event)
 {
+	if (EventType::OnDeath == event.type) return;
 	if (m_pCharacterToDisplay != nullptr)
 	{
 		m_NeedsUpdate = true;

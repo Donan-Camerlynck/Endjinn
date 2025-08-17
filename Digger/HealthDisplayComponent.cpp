@@ -34,8 +34,9 @@ namespace dae
 		}
 	}
 
-	void HealthDisplayComponent::Notify()
+	void HealthDisplayComponent::Notify(const Event& event)
 	{
+		if (EventType::OnDeath == event.type) return;
 		if (m_pCharacterToDisplay != nullptr)
 		{
 			m_NeedsUpdate = true;

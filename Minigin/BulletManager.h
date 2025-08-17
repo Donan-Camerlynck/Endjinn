@@ -12,11 +12,12 @@ namespace dae
 		void Update();
 		void Render();
 		void End();
-		void SpawnBullet(glm::vec2 pos, glm::vec2 vel, GameObject* caster);
+		void SpawnBullet(glm::vec2 pos, glm::vec2 vel, GameObject* caster, bool isPlayer);
 		void CheckCollision();
 		void SetTexture(const std::string& filename);
 		void AddPlayer(GameObject* player);
 		void AddEnemy(GameObject* enemy);
+		void ClearPlayersEnemies();
 
 	private:
 		std::vector<std::unique_ptr<Bullet>> m_Bullets;

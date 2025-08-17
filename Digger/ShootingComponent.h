@@ -7,7 +7,7 @@ namespace dae
     class ShootingComponent : public BaseComponent
     {
     public:
-        ShootingComponent(GameObject* owner,  float speed);
+        ShootingComponent(GameObject* owner,  float speed, bool bIsPlayer);
         virtual ~ShootingComponent() override = default;
         ShootingComponent(const ShootingComponent& other) = delete;
         ShootingComponent(ShootingComponent&& other) = delete;
@@ -18,6 +18,7 @@ namespace dae
         void SetDirection(glm::vec2 direction);
     private:
         glm::vec2 m_Direction{};
+        bool m_bIsPlayer{ false };
         float m_Speed;
         bool m_bShouldShoot;
     };

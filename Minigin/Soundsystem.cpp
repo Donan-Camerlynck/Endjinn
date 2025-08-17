@@ -40,6 +40,19 @@ namespace dae
             SDL_Quit();
         }
 
+        void Mute()
+        {
+            m_bMuted = !m_bMuted;
+            if (m_bMuted)
+            {
+                Mix_Volume(-1, 0);
+            }
+            else
+            {
+                Mix_Volume(-1, MIX_MAX_VOLUME);
+            }
+        }
+
         void playSound(const std::string& file, int channel) 
         {
            
@@ -102,6 +115,8 @@ namespace dae
 
         std::mutex activeMtx;
         std::vector<Mix_Chunk*> activeChunks;
+
+        bool m_bMuted{ false };
     
     };
 
@@ -114,6 +129,11 @@ namespace dae
     SoundSystem::SoundSystem()
         :pImpl(std::make_unique<Impl>())
     {
+    }
+
+    void SoundSystem::Mute()
+    {
+        pImpl->Mute();
     }
     
    

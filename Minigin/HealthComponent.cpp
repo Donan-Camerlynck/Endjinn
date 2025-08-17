@@ -27,7 +27,8 @@ void dae::HealthComponent::Update()
 		if (m_Health <= 0)
 		{
 			m_bIsDead = true;
-			GetOwner()->End();
+			GetOwner()->SetActive(false);
+
 		}
 		m_bUpdateHealth = false;
 	}
@@ -36,28 +37,37 @@ void dae::HealthComponent::Update()
 void dae::HealthComponent::Initialize()
 {
 	BaseComponent::Initialize();
-	
-	
 }
 
-void dae::HealthComponent::DoDamage(int damage)
+void dae::HealthComponent::DoDamage(const Event& event)
 {
-	m_Health -= damage;
-	m_bUpdateHealth = true;	
-	m_HealthChangedEvent->NotifyAll();
+	m_Health -= event.value;
+	m_bUpdateHealth = true;
+	Event damageEvent{ EventType::OnDamage, GetOwner(), event.value };
+	m_HealthChangedEvent->NotifyAll( damageEvent);
 }
 
 void dae::HealthComponent::Heal(int heal)
 {
 	m_Health += heal;
 	m_bUpdateHealth = true;
-	m_HealthChangedEvent->NotifyAll();
+	Event healEvent{ EventType::OnHeal, GetOwner(), heal };
+	m_HealthChangedEvent->NotifyAll(healEvent);
 }
 
 void dae::HealthComponent::SetHealth(int health)
 {
 	m_Health = health;
 	m_bUpdateHealth = true;
-	m_HealthChangedEvent->NotifyAll();
+	Event setHealthEvent{ EventType::OnSetHealth, GetOwner(), health };
+	m_HealthChangedEvent->NotifyAll(setHealthEvent);
+}
+
+void dae::HealthComponent::Notify(const Event& event)
+{
+	if (event.caster == GetOwner())
+	{
+		DoDamage(event);
+	}
 }
 

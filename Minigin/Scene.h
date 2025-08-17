@@ -12,7 +12,7 @@ namespace dae
 	{
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
-		GameObject* Add(std::unique_ptr<GameObject> object);
+		GameObject* Add(std::unique_ptr<GameObject> object, bool isPlayer = false, bool isEnemy = false);
 		void Remove(std::unique_ptr<GameObject> object);
 		void RemoveAll();
 		std::unique_ptr<GameObject> Release(GameObject* object);
@@ -21,6 +21,11 @@ namespace dae
 		void Update();
 		void Render() const;
 		void End();
+		void SetActive(bool bIsActive) { m_bIsActive = bIsActive; }
+		bool IsActive() { return m_bIsActive; }
+
+		std::vector<GameObject*> GetEnemyObjects() { return m_Enemies; }
+		std::vector<GameObject*> GetPlayers() { return m_Players; }
 
 		~Scene();
 		Scene(const Scene& other) = delete;
@@ -31,11 +36,12 @@ namespace dae
 
 	private: 
 		explicit Scene(const std::string& name);
-
+		bool m_bIsActive{ false };
 
 		std::string m_name;
 		std::vector < std::unique_ptr<GameObject>> m_objects{};
-
+		std::vector<GameObject*> m_Enemies;
+		std::vector<GameObject*> m_Players;
 
 		static unsigned int m_idCounter; 
 	};

@@ -15,6 +15,7 @@
 #include "ResourceManager.h"
 #include "Level.h"
 #include "Soundsystem.h"
+#include "GameModeManager.h"
 
 SDL_Window* g_window{};
 
@@ -92,7 +93,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	inputManager.Initialize();
 	auto& input = InputManager::GetInstance();
 
-
+	auto& gamemodeManager = GameModeManager::GetInstance();
 
 	auto lastTime = std::chrono::high_resolution_clock::now();
 	float lag = 0.0f;
@@ -109,6 +110,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 
 		doContinue = input.ProcessInput();
 		sceneManager.Update();
+		gamemodeManager.Update();
 
 		renderer.Render();
 

@@ -163,11 +163,9 @@
     <ClCompile Include="AimCommand.cpp" />
     <ClCompile Include="AIPathState.cpp" />
     <ClCompile Include="AIRoamState.cpp" />
-    <ClCompile Include="HealthCommand.cpp" />
-    <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="HealthDisplayComponent.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ScoreComand.cpp" />
     <ClCompile Include="ScoreDisplayComponent.cpp" />
     <ClCompile Include="ShootCommand.cpp" />
     <ClCompile Include="ShootingAIComponent.cpp" />
@@ -177,14 +175,15 @@
     <ClInclude Include="AimCommand.h" />
     <ClInclude Include="AIPathState.h" />
     <ClInclude Include="AIRoamState.h" />
-    <ClInclude Include="HealthCommand.h" />
-    <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="GameMode.h" />
     <ClInclude Include="HealthDisplayComponent.h" />
-    <ClInclude Include="ScoreComand.h" />
+    <ClInclude Include="PVECommand.h" />
+    <ClInclude Include="PVPCommand.h" />
     <ClInclude Include="ScoreDisplayComponent.h" />
     <ClInclude Include="ShootCommand.h" />
     <ClInclude Include="ShootingAIComponent.h" />
     <ClInclude Include="ShootingComponent.h" />
+    <ClInclude Include="SkipLevelCommand.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

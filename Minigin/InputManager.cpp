@@ -10,6 +10,13 @@ void dae::InputManager::Initialize()
 	m_KeyStatesSDL.resize(SDL_NUM_SCANCODES, false);
 }
 
+void dae::InputManager::ClearCommands()
+{
+	m_GamePadAxisBindings.clear();
+	m_GamePadBindings.clear();
+	m_KeyboardBindings.clear();
+}
+
 void dae::InputManager::AddCommand(GamepadKey key, InputEventType type, std::unique_ptr<ICommand> command, unsigned int controllerID)
 {
 	if (m_GamePads.size() <= controllerID)

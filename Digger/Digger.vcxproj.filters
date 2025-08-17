@@ -24,16 +24,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreComand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreDisplayComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthCommand.cpp">
-      <Filter>Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="HealthComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="HealthDisplayComponent.cpp">
@@ -57,18 +48,12 @@
     <ClCompile Include="ShootingAIComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="GameMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ScoreComand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
     <ClInclude Include="ScoreDisplayComponent.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthCommand.h">
-      <Filter>Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="HealthDisplayComponent.h">
@@ -91,6 +76,18 @@
     </ClInclude>
     <ClInclude Include="ShootingAIComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkipLevelCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PVPCommand.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="PVECommand.h">
+      <Filter>Commands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

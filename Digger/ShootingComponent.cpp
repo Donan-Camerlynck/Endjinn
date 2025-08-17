@@ -9,8 +9,8 @@
 
 namespace dae
 {
-	ShootingComponent::ShootingComponent(GameObject* owner, float speed) 
-		:BaseComponent(owner), m_Speed(speed), m_bShouldShoot{false}
+	ShootingComponent::ShootingComponent(GameObject* owner, float speed, bool bIsPlayer) 
+		:BaseComponent(owner), m_Speed(speed), m_bShouldShoot{false}, m_bIsPlayer(bIsPlayer)
 	{
 		
 	}
@@ -27,7 +27,7 @@ namespace dae
 			else
 			{
 				glm::vec2 pos = GetOwner()->GetWorldPos();
-				BulletManager::GetInstance().SpawnBullet(pos, glm::normalize(m_Direction) * m_Speed, GetOwner());
+				BulletManager::GetInstance().SpawnBullet(pos, glm::normalize(m_Direction) * m_Speed, GetOwner(), m_bIsPlayer);
 				std::filesystem::path path = ResourceManager::GetInstance().GetPath() / std::string{"Sounds/Shoot.mp3"};
 				const std::string soundPath = path.string();
 				SoundSystem::GetInstance().playSound(soundPath, 1);

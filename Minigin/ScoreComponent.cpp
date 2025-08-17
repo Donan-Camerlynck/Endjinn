@@ -21,16 +21,16 @@ void dae::ScoreComponent::Initialize()
 void dae::ScoreComponent::AddScore(int score)
 {
 	m_Score += score;
-	m_ScoreChangedEvent->NotifyAll();
+	m_ScoreChangedEvent->NotifyAll({});
 }
 
 void dae::ScoreComponent::ResetScore()
 {
 	m_Score = 0;
-	m_ScoreChangedEvent->NotifyAll();
+	m_ScoreChangedEvent->NotifyAll({});
 }
 
-void dae::ScoreComponent::Notify()
+void dae::ScoreComponent::Notify(const Event& event)
 {
-	AddScore(1);
+	AddScore(event.value);
 }

@@ -125,6 +125,9 @@ namespace dae
 		void SetPositionDirty();
 		void UpdateWorldPos();
 
+		void SetActive(bool bActive);
+		bool GetActive() { return m_bActive; }
+
 		RenderLayer GetRenderLayer() { return m_RenderLayer; }
 		
 	private:
@@ -136,13 +139,13 @@ namespace dae
 		GameObject* m_pParent{};
 
 		RenderLayer m_RenderLayer{ RenderLayer::ObjectMiddle };
-		
 
 		Scene* m_pScene;
 
 		glm::vec2 m_WorldPos{};
 		glm::vec2 m_LocalPos{};
 
+		bool m_bActive{ true };
 		bool m_bPositionDirty{ false };
 	};
 }
